@@ -57,7 +57,7 @@ export default function Home() {
                     </svg>
                   </div>
                   <p className="text-sm font-medium text-primary-dark/70">
-                    Patients report an average of 15-20% body weight reduction
+                    In clinical trials, semaglutide patients lost an average of ~15% of body weight*
                   </p>
                 </div>
               </div>
@@ -80,9 +80,21 @@ export default function Home() {
               and reducing cravings.
             </p>
             <p className="mt-4 text-lg text-foreground/70 leading-relaxed">
-              In clinical trials, patients using semaglutide lost an average of{" "}
-              <strong className="text-foreground">15% of their body weight</strong> — a result that
-              was previously achievable only through bariatric surgery.
+              In the STEP 1 clinical trial (Wilding et al., NEJM 2021), adults with obesity who
+              took semaglutide 2.4 mg weekly lost an average of{" "}
+              <strong className="text-foreground">~14.9% of body weight</strong> over 68 weeks,
+              compared with ~2.4% on placebo.
+            </p>
+            <p className="mt-2 text-xs text-foreground/50">
+              * Individual results vary. Semaglutide is associated with potential side effects and
+              is not appropriate for everyone. See our{" "}
+              <Link
+                href="/medical-disclaimer"
+                className="text-primary-dark underline hover:text-primary"
+              >
+                Medical Disclaimer
+              </Link>
+              {" "}for important safety information.
             </p>
             <Link
               href="/how-it-works"

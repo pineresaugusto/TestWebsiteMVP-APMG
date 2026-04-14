@@ -88,7 +88,14 @@ export default function Pricing() {
           <p className="mt-12 text-center text-xs text-foreground/40 max-w-2xl mx-auto">
             Pricing shown is illustrative. Final pricing is determined during your consultation
             based on your individual treatment plan. Compounded semaglutide is not an FDA-approved
-            product. All medical decisions are made by your independent licensed provider.
+            product. All medical decisions are made by your independent licensed provider. See our{" "}
+            <Link
+              href="/medical-disclaimer"
+              className="underline hover:text-foreground/70"
+            >
+              Medical Disclaimer
+            </Link>
+            {" "}for important safety information.
           </p>
         </div>
       </section>

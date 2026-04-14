@@ -42,10 +42,8 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white">Support</h3>
             <ul className="mt-3 space-y-2">
               {[
-                { href: "/how-it-works#faq", label: "FAQ" },
-                { href: "#", label: "Contact Us" },
-                { href: "#", label: "Privacy Policy" },
-                { href: "#", label: "Terms of Service" },
+                { href: "/faq", label: "FAQ" },
+                { href: "/providers", label: "For Providers" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link
@@ -59,26 +57,24 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* For Providers */}
+          {/* Legal */}
           <div>
-            <h3 className="text-sm font-semibold text-white">For Healthcare Professionals</h3>
+            <h3 className="text-sm font-semibold text-white">Legal</h3>
             <ul className="mt-3 space-y-2">
-              <li>
-                <Link
-                  href="/providers"
-                  className="text-sm text-white/60 hover:text-white transition-colors"
-                >
-                  Partner With Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/providers#apply"
-                  className="text-sm text-white/60 hover:text-white transition-colors"
-                >
-                  Provider Application
-                </Link>
-              </li>
+              {[
+                { href: "/privacy", label: "Privacy Policy" },
+                { href: "/terms", label: "Terms of Service" },
+                { href: "/medical-disclaimer", label: "Medical Disclaimer" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-white/60 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
