@@ -40,9 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-<<<<<<< HEAD
 # Claude Code — per-developer local settings (not for sharing)
 .claude/settings.local.json
-=======
-.vercel
->>>>>>> 3f0d110ead95f7db49949ba653e2b7ba9f03ad53
+
+# Skill distribution artifacts
+*.zip

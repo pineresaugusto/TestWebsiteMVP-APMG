@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nuvela — GLP-1 Weight Loss Telehealth MVP
 
-## Getting Started
+> **Quick start:** Run `/load-context` in Claude Code to bootstrap a session.
 
-First, run the development server:
+## Session Log
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Reverse-chronological. Add an entry when you finish a work session.
+Format: `### YYYY-MM-DD — github-username`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2026-04-14 — Mauger00
+- Iteration 1: Added /faq, /privacy, /terms, /medical-disclaimer
+- Updated Footer with real routes, extracted FAQItem client component
+- Softened drug-efficacy copy with STEP 1 trial citation (Wilding et al., NEJM 2021)
+- Added Medical Disclaimer link to pricing fine print
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2026-04-14 — adpineres-ef
+- Built initial MVP site: 6 core pages (Home, How It Works, Pricing, About, Assessment Quiz, Providers)
+- Established brand: Nuvela, warm wellness aesthetic, color tokens, Inter font
+- Tech stack: Next.js 16 + Tailwind v4 + react-hook-form
+- Interactive 7-step health assessment quiz with eligibility/disqualification paths
+- Provider partner page with inquiry form
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Backlog / What's Next
 
-## Learn More
+Priority order. Check items off or move to CHANGELOG.md when completed.
 
-To learn more about Next.js, take a look at the following resources:
+- [ ] Run verification debt from Iteration 1 (npm install, dev, build, lint — see CHANGELOG.md)
+- [ ] Social proof decision: mock testimonials/stats/trust badges? (deferred from initial build)
+- [ ] Decide on specific US states for "available" list in quiz
+- [ ] Responsive polish pass: test all pages at 375px, 768px, 1440px
+- [ ] Scroll animations (fade-in on viewport entry)
+- [ ] OG image for social link previews
+- [ ] Reconcile known issues when business prerequisites are met (see CHANGELOG.md § Known issues)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Known Issues
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> Detailed tracking with file paths and line numbers lives in
+> [`CHANGELOG.md`](./CHANGELOG.md) under "Known issues (deferred)."
+> These are intentional placeholders, NOT bugs to fix — they require
+> real business infrastructure (licensure, pharmacy partner, provider group).
 
-## Deploy on Vercel
+Summary: fabricated state list, placeholder pricing for undispensable medication,
+provider recruitment for non-existent network, dead "Schedule Consultation" CTA,
+inaccurate 503B pharmacy claim in footer, PHI-adjacent form with no backend.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Overview
+
+### What is Nuvela?
+
+Nuvela is a **GLP-1 weight loss telehealth concept**. This repo is a
+consumer-styled **demo website** used to present to potential medical group
+partners in the US. It is NOT live for real patients and has no healthcare
+infrastructure behind it (no providers, pharmacies, or telehealth platform).
+
+The website is the pitch tool: show medical groups what the patient experience
+would look like so they want to join as the provider network.
+
+**Modeled after:** [Medvi](https://home.medvi.org/) — but focused exclusively
+on GLP-1 weight loss (not multi-service).
+
+### Business Model
+
+| Layer | How it works |
+|-------|--------------|
+| Patient acquisition | Marketing site → health assessment quiz → lead capture |
+| Consultation | Licensed provider conducts virtual visit via telehealth platform |
+| Prescription | Provider prescribes compounded semaglutide (not brand Ozempic/Wegovy) |
+| Fulfillment | FDA-regulated 503B compounding pharmacy prepares & ships medication |
+| Ongoing care | Regular provider check-ins, dose adjustments, messaging support |
+| Revenue | All-inclusive monthly subscription: $199 / $299 / $399 tiers |
+
+**Target partners:** Medical groups / licensed providers (the real audience).
+**Target market:** US, specific states (TBD which ones).
+**Compounded meds:** Same active ingredient as brand-name at a fraction of cost.
+
+### Brand Identity
+
+| Element | Value |
+|---------|-------|
+| Name | Nuvela |
+| Style | Warm & approachable wellness (not clinical) |
+| Primary color | Sage green `#7C9A82` |
+| Accent color | Warm coral `#E07A5F` |
+| Background | Cream `#FAF8F5` |
+| Text | Warm charcoal `#2D2D2D` |
+| Secondary | Soft tan `#D4C5B2` |
+| Font | Inter (Google Fonts) |
+| Tone | Supportive, empowering, simple — no medical jargon |
+| Logo | Text wordmark "Nuvela" (no graphic for MVP) |
+
+### Tech Stack
+
+| Tool | Version | Notes |
+|------|---------|-------|
+| Next.js | 16.2.3 | App Router. **Warning: breaking changes** — check `node_modules/next/dist/docs/` |
+| React | 19.2.4 | |
+| TypeScript | 5 | |
+| Tailwind CSS | 4 | Utility-first, v4 syntax |
+| react-hook-form | 7.72.1 | Multi-step assessment quiz |
+| Hosting | Vercel | Free tier, auto-deploy from GitHub |
+
+### Site Map
+
+| Route | Page | Notes |
+|-------|------|-------|
+| `/` | Home | Hero, GLP-1 explainer, how it works, why Nuvela, CTA |
+| `/how-it-works` | How It Works | Patient journey, medication info, compounded meds, 10 FAQs |
+| `/pricing` | Pricing | 3 tiers (Start/Accelerate/Transform), all-inclusive |
+| `/about` | About Us | Mission, problem/solution, platform model, trust elements |
+| `/get-started` | Assessment Quiz | 7-step form → eligible/not-eligible result → plan recommendation |
+| `/providers` | For Providers | Partner value prop + inquiry form. **Footer link only, not in main nav** |
+| `/faq` | FAQ | 18 questions across 6 sections |
+| `/privacy` | Privacy Policy | 12 sections, plain language |
+| `/terms` | Terms of Service | 14 sections |
+| `/medical-disclaimer` | Medical Disclaimer | Side effects, disqualifications, emergencies |
+
+### Key Design Decisions
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Scope | GLP-1 only | Focused pitch > diluted multi-service. Show depth, not breadth. |
+| Medication | Compounded semaglutide | Enables ~$199-399 pricing vs $1,300+ brand-name. Standard in market. |
+| Quiz disqualification | Yes — screens for contraindications | Medical partners will test this. A quiz that qualifies everyone looks irresponsible. |
+| "For Providers" placement | Footer link only | Keeps consumer-facing illusion intact. Show providers page directly in meetings. |
+| Social proof | TBD (deferred) | Haven't decided on mock testimonials vs stats-only vs none. |
+| Pricing display | Placeholder with disclaimer | "Illustrative" fine print. Can't dispense medication yet. |
+
+## Team
+
+| GitHub | Role |
+|--------|------|
+| adpineres-ef | Co-founder, initial MVP build |
+| Mauger00 | Co-founder, Iteration 1 (legal/info scaffolding) |
+
+## Conventions
+
+- **Start every Claude Code session** with `/load-context`
+- **End every session** by adding a Session Log entry to this README
+- **Each iteration** gets a new `## [Unreleased] — Iteration N` section in `CHANGELOG.md`
+- Don't commit `.claude/settings.local.json` (gitignored, per-developer)
+- Check `node_modules/next/dist/docs/` for Next.js 16 API questions
+- See [`AGENTS.md`](./AGENTS.md) for agent-specific behavioral rules
+- See [`CHANGELOG.md`](./CHANGELOG.md) for detailed iteration diffs and known issue tracking
