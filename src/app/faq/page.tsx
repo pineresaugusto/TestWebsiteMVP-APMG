@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import FAQItem from "@/components/FAQItem";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "FAQ — Nuvela",
@@ -240,24 +241,21 @@ const SECTIONS: Section[] = [
 export default function FAQ() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary-light/40 to-background py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-            Frequently Asked Questions
-          </h1>
-          <p className="mt-4 text-lg text-foreground/70 max-w-2xl mx-auto">
-            Straight answers about eligibility, treatment, safety, and how Nuvela works.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        size="sm"
+        kicker="FAQ"
+        title="Frequently asked questions"
+        description="Straight answers about eligibility, treatment, safety, and how Nuvela works."
+      />
 
       {/* Sections */}
-      <section className="py-16 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-12">
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-14">
           {SECTIONS.map((section) => (
             <div key={section.title}>
-              <h2 className="text-2xl font-bold text-foreground mb-6">{section.title}</h2>
+              <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
+                {section.title}
+              </h2>
               <div className="space-y-3">
                 {section.items.map((item, i) => (
                   <FAQItem key={`${section.title}-${i}`} q={item.q}>

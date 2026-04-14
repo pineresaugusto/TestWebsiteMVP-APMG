@@ -6,6 +6,130 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 2: Aesthetic Pass (Design + Tone)
+
+This iteration is purely cosmetic and structural — no new business claims,
+no new pages, no new information. The goal is to move the site away from the
+generic-Tailwind starting aesthetic and toward a deliberate "editorial
+wellness" voice that a prospective medical-group partner could plausibly take
+seriously on first impression.
+
+The concrete moves: introduce a serif display face (Fraunces), give every page
+a shared warm-atmospheric hero rhythm, replace the home hero's SVG-heart
+placeholder with a real editorial composition, replace the emoji tiles on
+How&nbsp;It&nbsp;Works with iconographic SVGs, add subtle scroll-reveal motion,
+and tighten section rhythm across the whole site.
+
+### Added
+
+- `src/components/Reveal.tsx` — tiny client-side scroll-reveal wrapper using
+  `IntersectionObserver`. Adds an `is-visible` class once the element enters
+  the viewport, which triggers a short `reveal-up` keyframe defined in
+  `globals.css`. Honors `prefers-reduced-motion`. No animation library added;
+  we explicitly chose CSS-only to avoid a dependency.
+- `src/components/PageHero.tsx` — server component used for the top of every
+  non-home page. Standardizes kicker, serif headline, optional description,
+  and atmospheric background (sage radial glow + grain overlay) so every
+  secondary page shares the same rhythm. Three sizes (`sm` / `md` / `lg`).
+- `globals.css` additions:
+  - `--font-display` CSS variable bound to Fraunces.
+  - `.font-display` utility (optical-sized, soft axis, tracked tighter).
+  - `.bg-grain` — inline-SVG fractal-noise overlay for tactile warmth.
+  - `.bg-glow-sage` — layered radial gradient used in heroes and CTA banners.
+  - `.bg-dots` — dotted pattern used as a decorative back-layer on tiles.
+  - `.rule-kicker` — hairline rule preceding uppercase kicker labels.
+  - `.reveal` / `.reveal.is-visible` classes + `@keyframes reveal-up`, with
+    a `prefers-reduced-motion` block that disables the animation and
+    smooth-scroll.
+
+### Changed
+
+- `src/app/layout.tsx` — added `Fraunces` via `next/font/google` with SOFT +
+  opsz axes. Both `--font-inter` and `--font-fraunces` variables are now
+  applied to `<html>`. Body explicitly sets `bg-background text-foreground`
+  so the page matches the new atmospheric treatments.
+- `src/app/page.tsx` — fully rebuilt home hero and section rhythm. The right
+  column of the hero is now a layered editorial card (clinical-trial stat
+  with citation, decorative dotted back-tile, accent "Clinically studied"
+  pill). Body copy uses "gently guided" framing in the H1 with an italic
+  display emphasis. All sections use the serif display face for H2s, the new
+  `.rule-kicker` for section kickers, and `<Reveal>` wrappers for staggered
+  in-view reveals. CTA banner now has grain + soft blob backgrounds rather
+  than flat sage.
+- `src/app/how-it-works/page.tsx` — hero swapped to `<PageHero>`. Emoji tiles
+  (📋 👩‍⚕️ 📦 💪) replaced with four iconographic SVG tiles matched to the
+  step order. Section rhythm unified at `py-20 md:py-28`. All H2/H3 use the
+  display serif. FAQ accordion section tightened.
+- `src/app/pricing/page.tsx` — hero swapped to `<PageHero>`. Tier cards lift
+  on hover, use serif numerals for prices, and display a softer uppercase
+  "Most popular" pill. CTA banner uses the new atmospheric treatment.
+- `src/app/about/page.tsx` — hero swapped to `<PageHero>`. Stat cards on the
+  "why traditional approaches fall short" block use serif numerals. Platform
+  and trust sections gain kickers, reveal staggering, and serif headings.
+- `src/app/faq/page.tsx` — hero swapped to `<PageHero>` (size `sm`). Section
+  H2s use the display serif.
+- `src/app/privacy/page.tsx` — hero swapped to `<PageHero>` (size `sm`).
+  "In plain language" heading and all numbered section headings use the
+  display serif.
+- `src/app/terms/page.tsx` — same treatment as privacy.
+- `src/app/medical-disclaimer/page.tsx` — same treatment; block headings use
+  the display serif.
+- `src/app/providers/page.tsx` — hero rebuilt with atmospheric background,
+  rule kicker, reveals, and a display-serif headline with italic emphasis.
+  Benefit cards now hover-lift; all section headings use the display serif.
+- `src/components/Navbar.tsx` — logo now uses the display serif with tighter
+  tracking. "Get Started" CTA gains a soft accent shadow and 1-pixel
+  hover-lift. Backdrop switched to `bg-background/80 backdrop-blur-md` so it
+  reads as part of the cream canvas rather than a detached white bar.
+- `src/components/Footer.tsx` — brand wordmark uses the display serif.
+
+### Removed
+
+- The "placeholder SVG heart in a gradient box" right-column of the home hero
+  is gone; replaced by the editorial stat card described above.
+- Inline `🎯 👩‍⚕️ 📦 💪` emoji on `/how-it-works` journey tiles are gone;
+  replaced with SVG iconography.
+
+### Known issues (carried over, still deferred)
+
+All items from Iteration 1's "Known issues (deferred)" list remain. None of
+this iteration's changes touched them. In particular:
+
+- Fabricated state list in `src/app/get-started/page.tsx`.
+- Advertised pricing for currently-undispensable medication.
+- Provider recruitment page for a network that does not yet operationally
+  exist.
+- Dead "Schedule Your Consultation" CTA.
+- Footer 503B pharmacy claim.
+- Intake form is PHI-adjacent but has no backend.
+
+### Verification steps owed
+
+Same as Iteration 1 — **no Node toolchain was available in the authoring
+environment**, so none of the following were run and they remain owed on the
+next machine that has Node installed:
+
+1. `npm install`
+2. `npm run dev` — confirm every page renders without console errors and the
+   new Fraunces font loads (check Network tab for the `fraunces` request).
+3. Scroll each page and confirm `<Reveal>` wrappers fade-in smoothly without
+   layout shift; confirm `prefers-reduced-motion: reduce` disables them.
+4. On `/how-it-works`, confirm the four SVG tile icons render (assessment,
+   stethoscope, package, heart+pulse) and that the alternating layout still
+   reverses correctly on the second and fourth steps.
+5. Resize to 375 px, 768 px, 1440 px. Confirm the home hero's card-stack
+   right column remains legible and that the decorative dotted back-tile and
+   "Clinically studied" pill don't overflow containers.
+6. `npm run build` — confirm Tailwind 4 picks up the new utility classes
+   (`.font-display`, `.bg-grain`, `.bg-glow-sage`, `.bg-dots`, `.rule-kicker`,
+   `.reveal`) and that `next/font/google` compiles Fraunces with the SOFT
+   and opsz axes.
+7. `npm run lint` — should be clean. The `emoji` field on `journeySteps` in
+   `how-it-works/page.tsx` is now unused but not referenced anywhere outside
+   the data object; left in place to minimize diff churn.
+8. Lighthouse or similar accessibility pass — no color-contrast or heading
+   hierarchy regressions expected, but verify.
+
 ## [Unreleased] — Iteration 1: Information + Legal Scaffolding
 
 This iteration adds substantive informational and legal content to the site and

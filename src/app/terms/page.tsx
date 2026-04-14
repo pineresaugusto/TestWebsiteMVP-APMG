@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Terms of Service — Nuvela",
@@ -12,19 +13,18 @@ const EFFECTIVE_DATE = "April 13, 2026";
 export default function Terms() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary-light/40 to-background py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Terms of Service</h1>
-          <p className="mt-4 text-sm text-foreground/60">Effective date: {EFFECTIVE_DATE}</p>
-        </div>
-      </section>
+      <PageHero
+        size="sm"
+        kicker="Legal"
+        title="Terms of Service"
+        description={<span className="text-foreground/60">Effective date: {EFFECTIVE_DATE}</span>}
+      />
 
       {/* Body */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-6 md:p-8">
-            <h2 className="text-lg font-semibold text-foreground">In plain language</h2>
+            <h2 className="font-display text-xl text-foreground">In plain language</h2>
             <ul className="mt-4 space-y-2 text-sm text-foreground/70 leading-relaxed list-disc pl-5">
               <li>Using this website does not create a doctor-patient relationship.</li>
               <li>Information on the website is not medical advice.</li>
@@ -223,7 +223,7 @@ function Prose({ children }: { children: React.ReactNode }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+      <h2 className="font-display text-xl md:text-2xl text-foreground">{title}</h2>
       <div className="mt-3 space-y-3 text-sm leading-relaxed [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:mt-3 [&_strong]:text-foreground">
         {children}
       </div>

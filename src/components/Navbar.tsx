@@ -14,11 +14,14 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-secondary/40">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-secondary/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold tracking-tight text-primary-dark">
+          {/* Logo — display serif, slight optical tracking */}
+          <Link
+            href="/"
+            className="font-display text-2xl text-primary-dark tracking-[-0.01em] hover:text-primary transition-colors"
+          >
             Nuvela
           </Link>
 
@@ -35,7 +38,7 @@ export default function Navbar() {
             ))}
             <Link
               href="/get-started"
-              className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark transition-colors"
+              className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white shadow-sm shadow-accent/25 hover:bg-accent-dark hover:shadow-md hover:-translate-y-[1px] transition-all"
             >
               Get Started
             </Link>

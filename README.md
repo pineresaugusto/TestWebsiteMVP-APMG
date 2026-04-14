@@ -8,6 +8,14 @@ Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
 ### 2026-04-14 — Mauger00
+- Iteration 2 (aesthetic pass): paired Inter with Fraunces display serif
+- Added `<Reveal>` scroll-reveal component and shared `<PageHero>`
+- Rebuilt home hero (editorial card-stack with STEP 1 stat, no more SVG-heart placeholder)
+- Swapped emoji tiles on /how-it-works with iconographic SVGs
+- Added grain + radial-glow atmosphere utilities; unified section rhythm site-wide
+- Verification debt from Iteration 1 + Iteration 2 still owed (no Node toolchain in this env)
+
+### 2026-04-14 — Mauger00
 - Iteration 1: Added /faq, /privacy, /terms, /medical-disclaimer
 - Updated Footer with real routes, extracted FAQItem client component
 - Softened drug-efficacy copy with STEP 1 trial citation (Wilding et al., NEJM 2021)

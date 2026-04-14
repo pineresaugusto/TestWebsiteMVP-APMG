@@ -1,77 +1,91 @@
 import Link from "next/link";
+import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 
 export default function Pricing() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary-light/40 to-background py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-            Simple, All-Inclusive Pricing
-          </h1>
-          <p className="mt-4 text-lg text-foreground/70 max-w-2xl mx-auto">
-            One monthly price covers everything — medication, provider consultations, shipping, and
-            ongoing support. No hidden fees, no surprises.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        kicker="Pricing"
+        title={
+          <>
+            Simple, <em className="not-italic text-primary-dark">all-inclusive</em> pricing
+          </>
+        }
+        description="One monthly price covers everything — medication, provider consultations, shipping, and ongoing support. No hidden fees, no surprises."
+      />
 
       {/* Pricing Tiers */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {tiers.map((tier) => (
-              <div
-                key={tier.name}
-                className={`relative rounded-2xl border p-8 flex flex-col ${
-                  tier.popular
-                    ? "border-accent bg-white shadow-xl shadow-accent/10 ring-2 ring-accent"
-                    : "border-secondary/40 bg-white"
-                }`}
-              >
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-xs font-semibold text-white">
-                    Most Popular
-                  </div>
-                )}
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground">{tier.name}</h3>
-                  <p className="mt-1 text-sm text-foreground/60">{tier.tagline}</p>
-                  <div className="mt-6 flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-foreground">${tier.price}</span>
-                    <span className="text-foreground/50">/mo</span>
-                  </div>
-                  <p className="mt-1 text-xs text-foreground/40">{tier.dose}</p>
-                </div>
-
-                <ul className="mt-8 space-y-3 flex-1">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground/70">
-                      <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/get-started"
-                  className={`mt-8 block rounded-full py-3 text-center text-sm font-semibold transition-colors ${
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+            {tiers.map((tier, i) => (
+              <Reveal key={tier.name} delay={i * 100}>
+                <div
+                  className={`relative h-full rounded-2xl border p-8 flex flex-col transition-all hover:-translate-y-[2px] ${
                     tier.popular
-                      ? "bg-accent text-white hover:bg-accent-dark"
-                      : "bg-primary/10 text-primary-dark hover:bg-primary/20"
+                      ? "border-accent bg-white shadow-xl shadow-accent/15 ring-1 ring-accent"
+                      : "border-secondary/40 bg-white hover:shadow-lg hover:border-primary/30"
                   }`}
                 >
-                  Get Started
-                </Link>
-              </div>
+                  {tier.popular && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-white shadow-md shadow-accent/30">
+                      Most popular
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="font-display text-2xl text-foreground">{tier.name}</h3>
+                    <p className="mt-1 text-sm text-foreground/60">{tier.tagline}</p>
+                    <div className="mt-6 flex items-baseline gap-1">
+                      <span className="font-display text-5xl text-foreground">${tier.price}</span>
+                      <span className="text-foreground/50">/mo</span>
+                    </div>
+                    <p className="mt-1 text-xs text-foreground/40">{tier.dose}</p>
+                  </div>
+
+                  <ul className="mt-8 space-y-3 flex-1">
+                    {tier.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2.5 text-sm text-foreground/70"
+                      >
+                        <svg
+                          className="w-5 h-5 text-primary flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5"
+                          />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    href="/get-started"
+                    className={`mt-8 block rounded-full py-3 text-center text-sm font-semibold transition-colors ${
+                      tier.popular
+                        ? "bg-accent text-white hover:bg-accent-dark shadow-md shadow-accent/25"
+                        : "bg-primary/10 text-primary-dark hover:bg-primary/20"
+                    }`}
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              </Reveal>
             ))}
           </div>
 
           {/* What's included */}
-          <div className="mt-16 max-w-3xl mx-auto text-center">
-            <h3 className="text-xl font-semibold text-foreground">Every plan includes</h3>
+          <div className="mt-20 max-w-3xl mx-auto text-center">
+            <h3 className="font-display text-2xl text-foreground">Every plan includes</h3>
             <div className="mt-6 grid sm:grid-cols-2 md:grid-cols-4 gap-4">
               {allIncluded.map((item) => (
                 <div key={item} className="flex items-center gap-2 justify-center text-sm text-foreground/60">
@@ -101,15 +115,25 @@ export default function Pricing() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white">Not sure which plan is right for you?</h2>
-          <p className="mt-4 text-white/80">
+      <section className="relative overflow-hidden bg-primary py-20">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-25 pointer-events-none mix-blend-soft-light"
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-24 -right-12 w-80 h-80 rounded-full bg-accent/25 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-white">
+            Not sure which plan is right for you?
+          </h2>
+          <p className="mt-5 text-white/85 max-w-xl mx-auto">
             Take our free assessment and your provider will recommend the best plan for your goals.
           </p>
           <Link
             href="/get-started"
-            className="mt-8 inline-block rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark hover:bg-white/90 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
             Start Your Assessment
           </Link>

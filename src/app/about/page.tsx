@@ -1,24 +1,27 @@
 import Link from "next/link";
+import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 
 export default function About() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary-light/40 to-background py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">About Nuvela</h1>
-          <p className="mt-4 text-lg text-foreground/70 max-w-2xl mx-auto">
-            We believe everyone deserves access to clinically-proven weight loss treatment —
-            without the barriers, without the stigma, and without the confusion.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        kicker="About"
+        title={
+          <>
+            About <em className="not-italic text-primary-dark">Nuvela</em>
+          </>
+        }
+        description="We believe everyone deserves access to clinically-proven weight-loss treatment — without the barriers, the stigma, or the confusion."
+      />
 
       {/* Mission */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground">Our Mission</h2>
+            <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+              Our mission
+            </h2>
             <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
               Nuvela exists to make GLP-1 weight loss treatment accessible, affordable, and
               genuinely supportive. We&apos;re not selling a quick fix — we&apos;re building a
@@ -36,12 +39,12 @@ export default function About() {
       </section>
 
       {/* The Problem */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-foreground">
-                Why Traditional Approaches Fall Short
+              <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+                Why traditional approaches fall short
               </h2>
               <p className="mt-6 text-foreground/70 leading-relaxed">
                 For decades, weight loss advice has boiled down to &quot;eat less, move more.&quot;
@@ -57,12 +60,16 @@ export default function About() {
                 and cravings that derail so many weight loss efforts.
               </p>
             </div>
-            <div className="space-y-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="rounded-xl bg-background p-6 border border-secondary/40">
-                  <div className="text-3xl font-bold text-primary">{stat.value}</div>
-                  <p className="mt-1 text-sm text-foreground/60">{stat.label}</p>
-                </div>
+            <div className="space-y-3.5">
+              {stats.map((stat, i) => (
+                <Reveal key={stat.label} delay={i * 80}>
+                  <div className="rounded-2xl bg-background p-6 border border-secondary/40 hover:border-primary/30 transition-colors">
+                    <div className="font-display text-4xl text-primary-dark leading-none">
+                      {stat.value}
+                    </div>
+                    <p className="mt-2 text-sm text-foreground/65">{stat.label}</p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -70,61 +77,80 @@ export default function About() {
       </section>
 
       {/* How the Platform Works */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-foreground">How Our Platform Works</h2>
+            <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+              The platform
+            </p>
+            <h2 className="mt-5 font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+              How our platform works
+            </h2>
             <p className="mt-4 text-foreground/70">
               Nuvela is the connective layer between patients, providers, and pharmacies.
             </p>
           </div>
-          <div className="mt-12 grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {platformParts.map((part) => (
-              <div key={part.title} className="text-center">
-                <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-                  {part.icon}
+          <div className="mt-14 grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {platformParts.map((part, i) => (
+              <Reveal key={part.title} delay={i * 100}>
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
+                    {part.icon}
+                  </div>
+                  <h3 className="font-display text-xl text-foreground">{part.title}</h3>
+                  <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
+                    {part.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">{part.title}</h3>
-                <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
-                  {part.description}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* Trust Elements */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-foreground text-center">
-            Built on Trust & Safety
+          <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground text-center">
+            Built on trust & safety
           </h2>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {trustElements.map((item) => (
-              <div key={item.title} className="text-center">
-                <div className="w-12 h-12 mx-auto rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                  {item.icon}
+          <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {trustElements.map((item, i) => (
+              <Reveal key={item.title} delay={i * 80}>
+                <div className="text-center">
+                  <div className="w-12 h-12 mx-auto rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                    {item.icon}
+                  </div>
+                  <h3 className="font-display text-lg text-foreground">{item.title}</h3>
+                  <p className="mt-2 text-sm text-foreground/60">{item.description}</p>
                 </div>
-                <h3 className="font-semibold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-sm text-foreground/60">{item.description}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white">Join the Nuvela community</h2>
-          <p className="mt-4 text-white/80">
-            Take the first step toward a healthier you. Our assessment is free and takes less than 5
-            minutes.
+      <section className="relative overflow-hidden bg-primary py-20">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-25 pointer-events-none mix-blend-soft-light"
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-24 -right-12 w-80 h-80 rounded-full bg-accent/25 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-white">
+            Join the Nuvela community
+          </h2>
+          <p className="mt-5 text-white/85 max-w-xl mx-auto">
+            Take the first step toward a healthier you. Our assessment is free and takes less than
+            5 minutes.
           </p>
           <Link
             href="/get-started"
-            className="mt-8 inline-block rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark hover:bg-white/90 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
             Get Started Today
           </Link>

@@ -25,7 +25,9 @@
       "Bash(mkdir -p __TRACKED_VAR__/.claude/skills/load-context)",
       "Bash(cp C:/GitHub/TestWebsiteMVP-APMG/.claude/skills/load-context/SKILL.md __TRACKED_VAR__/.claude/skills/load-context/SKILL.md)",
       "Bash(zip -r \"load-context-skill.zip\" .claude/skills/load-context/)",
-      "Bash(powershell -Command \"Compress-Archive -Path '.claude/skills/load-context' -DestinationPath 'load-context-skill.zip' -Force\")"
+      "Bash(powershell -Command \"Compress-Archive -Path '.claude/skills/load-context' -DestinationPath 'load-context-skill.zip' -Force\")",
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//Users/mauriciogerlein/**)"
     ]
   }
 }

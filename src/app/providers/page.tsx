@@ -1,83 +1,99 @@
 "use client";
 
 import { useState } from "react";
+import Reveal from "@/components/Reveal";
 
 export default function Providers() {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-primary/5 to-background py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Hero — left-aligned editorial, different from centered PageHero so the
+          Providers page feels like the distinct audience it is. */}
+      <section className="relative overflow-hidden bg-glow-sage py-20 md:py-28">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-[0.35] pointer-events-none mix-blend-multiply"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold text-primary-dark uppercase tracking-wide mb-4">
-              For Healthcare Professionals
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-              Partner With Nuvela — Grow Your Practice With GLP-1 Telehealth
-            </h1>
-            <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
-              Join our network of licensed providers and help patients achieve lasting weight loss
-              with GLP-1 treatment. We handle patient acquisition, technology, and operations — you
-              focus on what you do best: practicing medicine.
-            </p>
+            <Reveal>
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                For Healthcare Professionals
+              </p>
+            </Reveal>
+            <Reveal delay={80}>
+              <h1 className="mt-6 font-display text-4xl md:text-5xl lg:text-[3.75rem] leading-[1.05] text-foreground">
+                Partner with Nuvela — grow your practice with{" "}
+                <em className="not-italic text-primary-dark">GLP-1 telehealth</em>.
+              </h1>
+            </Reveal>
+            <Reveal delay={160}>
+              <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
+                Join our network of licensed providers and help patients achieve lasting weight loss
+                with GLP-1 treatment. We handle patient acquisition, technology, and operations — you
+                focus on what you do best: practicing medicine.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Value Proposition */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-12">
-            Why Providers Choose Nuvela
+          <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground text-center mb-14">
+            Why providers choose Nuvela
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit) => (
-              <div
-                key={benefit.title}
-                className="rounded-2xl border border-secondary/40 bg-white p-8"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
-                  {benefit.icon}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {benefits.map((benefit, i) => (
+              <Reveal key={benefit.title} delay={i * 80}>
+                <div className="h-full rounded-2xl border border-secondary/40 bg-white p-8 transition-all hover:-translate-y-[2px] hover:shadow-lg hover:border-primary/30">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+                    {benefit.icon}
+                  </div>
+                  <h3 className="font-display text-xl text-foreground">{benefit.title}</h3>
+                  <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
+                    {benefit.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">{benefit.title}</h3>
-                <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
-                  {benefit.description}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* How It Works for Providers */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-12">
-            Getting Started Is Simple
+          <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground text-center mb-14">
+            Getting started is simple
           </h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {providerSteps.map((step, i) => (
-              <div key={step.title} className="text-center">
-                <div className="w-14 h-14 mx-auto rounded-full bg-primary text-white flex items-center justify-center text-xl font-bold mb-5">
-                  {i + 1}
+              <Reveal key={step.title} delay={i * 100}>
+                <div className="text-center">
+                  <div className="w-14 h-14 mx-auto rounded-full bg-primary text-white flex items-center justify-center font-display text-xl mb-5">
+                    {i + 1}
+                  </div>
+                  <h3 className="font-display text-xl text-foreground">{step.title}</h3>
+                  <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-                <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* Partner Inquiry Form */}
-      <section id="apply" className="py-16 md:py-24">
+      <section id="apply" className="py-20 md:py-28">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground">Partner With Us</h2>
+            <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+              Partner with us
+            </h2>
             <p className="mt-4 text-foreground/70">
               Interested in joining the Nuvela provider network? Fill out the form below and our
               partnerships team will be in touch within 2 business days.
@@ -91,7 +107,7 @@ export default function Providers() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-foreground">Thank you for your interest!</h3>
+              <h3 className="font-display text-2xl text-foreground">Thank you for your interest!</h3>
               <p className="mt-3 text-foreground/70">
                 We&apos;ve received your inquiry and our partnerships team will review it shortly.
                 Expect to hear from us within 2 business days.

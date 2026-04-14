@@ -2,71 +2,104 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 
 export default function HowItWorks() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary-light/40 to-background py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">How Nuvela Works</h1>
-          <p className="mt-4 text-lg text-foreground/70 max-w-2xl mx-auto">
-            From your first assessment to ongoing support — here&apos;s exactly what to expect on
-            your weight loss journey.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        kicker="How it works"
+        title={
+          <>
+            How Nuvela <em className="not-italic text-primary-dark">works</em>
+          </>
+        }
+        description="From your first assessment to ongoing support — here's exactly what to expect on your weight-loss journey."
+      />
 
-      {/* Patient Journey */}
-      <section className="py-16 md:py-24">
+      {/* Patient Journey — alternating layout, iconographic tile replaces emoji */}
+      <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-16">
+          <div className="space-y-20 md:space-y-24">
             {journeySteps.map((step, i) => (
-              <div
-                key={step.title}
-                className={`flex flex-col md:flex-row items-center gap-10 ${
-                  i % 2 !== 0 ? "md:flex-row-reverse" : ""
-                }`}
-              >
-                <div className="flex-1">
-                  <div className="inline-flex items-center gap-3 mb-4">
-                    <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-sm">
-                      {i + 1}
-                    </span>
-                    <span className="text-sm font-semibold text-primary-dark uppercase tracking-wide">
-                      Step {i + 1}
-                    </span>
+              <Reveal key={step.title}>
+                <div
+                  className={`flex flex-col md:flex-row items-center gap-10 md:gap-14 ${
+                    i % 2 !== 0 ? "md:flex-row-reverse" : ""
+                  }`}
+                >
+                  <div className="flex-1">
+                    <div className="inline-flex items-center gap-3 mb-5">
+                      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-display text-base">
+                        {i + 1}
+                      </span>
+                      <span className="text-[11px] font-semibold text-primary-dark uppercase tracking-[0.2em]">
+                        Step {i + 1}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-3xl md:text-4xl leading-[1.1] text-foreground">
+                      {step.title}
+                    </h3>
+                    <p className="mt-5 text-foreground/70 leading-relaxed">
+                      {step.description}
+                    </p>
+                    <ul className="mt-5 space-y-2.5">
+                      {step.details.map((detail) => (
+                        <li
+                          key={detail}
+                          className="flex items-start gap-2.5 text-sm text-foreground/65"
+                        >
+                          <svg
+                            className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            aria-hidden
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M4.5 12.75l6 6 9-13.5"
+                            />
+                          </svg>
+                          {detail}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-foreground">{step.title}</h3>
-                  <p className="mt-4 text-foreground/70 leading-relaxed">{step.description}</p>
-                  <ul className="mt-4 space-y-2">
-                    {step.details.map((detail) => (
-                      <li key={detail} className="flex items-start gap-2 text-sm text-foreground/60">
-                        <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        </svg>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex-1 w-full">
-                  <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-primary/10 to-secondary-light flex items-center justify-center">
-                    <div className="text-6xl">{step.emoji}</div>
+                  {/* Iconographic tile — layered sage frame + dotted corner */}
+                  <div className="flex-1 w-full">
+                    <div className="relative mx-auto max-w-md md:max-w-none">
+                      <div
+                        aria-hidden
+                        className={`absolute w-32 h-32 rounded-3xl bg-dots opacity-60 hidden md:block ${
+                          i % 2 !== 0 ? "-top-4 -left-4" : "-top-4 -right-4"
+                        }`}
+                      />
+                      <div className="relative aspect-[4/3] rounded-[1.75rem] bg-gradient-to-br from-primary/25 via-secondary-light to-secondary/50 p-1">
+                        <div className="h-full w-full rounded-[1.5rem] bg-background/80 backdrop-blur-sm flex items-center justify-center">
+                          <div className="text-primary-dark">
+                            {journeyIcons[i]}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* About the Medication */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center">
-              Understanding GLP-1 Medications
+            <h2 className="font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground text-center">
+              Understanding GLP-1 medications
             </h2>
             <p className="mt-6 text-foreground/70 leading-relaxed">
               GLP-1 (glucagon-like peptide-1) receptor agonists are a class of injectable
@@ -75,7 +108,7 @@ export default function HowItWorks() {
               that natural process.
             </p>
 
-            <h3 className="mt-10 text-xl font-semibold text-foreground">How Semaglutide Works</h3>
+            <h3 className="mt-10 font-display text-2xl text-foreground">How Semaglutide Works</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
               Semaglutide, the active ingredient in our treatment plans, works through three key
               mechanisms:
@@ -89,7 +122,7 @@ export default function HowItWorks() {
               ))}
             </div>
 
-            <h3 className="mt-10 text-xl font-semibold text-foreground">Clinical Results</h3>
+            <h3 className="mt-10 font-display text-2xl text-foreground">Clinical Results</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
               In the landmark STEP clinical trial program, participants using semaglutide 2.4mg
               achieved an average weight loss of approximately 15% of their body weight over 68
@@ -97,7 +130,7 @@ export default function HowItWorks() {
               reduction.
             </p>
 
-            <h3 className="mt-10 text-xl font-semibold text-foreground">Common Side Effects</h3>
+            <h3 className="mt-10 font-display text-2xl text-foreground">Common Side Effects</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
               Like all medications, GLP-1 treatments can cause side effects. The most common are
               gastrointestinal and typically mild, especially when starting at a low dose:
@@ -117,8 +150,8 @@ export default function HowItWorks() {
 
             {/* Compounded medication notice */}
             <div className="mt-10 rounded-2xl bg-primary/5 border border-primary/20 p-8">
-              <h3 className="text-xl font-semibold text-foreground">
-                About Compounded Medications
+              <h3 className="font-display text-2xl text-foreground">
+                About compounded medications
               </h3>
               <p className="mt-3 text-foreground/70 leading-relaxed">
                 Nuvela prescribes <strong>compounded semaglutide</strong>, which contains the same
@@ -139,12 +172,12 @@ export default function HowItWorks() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-16 md:py-24">
+      <section id="faq" className="py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground text-center mb-12">
-            Frequently Asked Questions
+          <h2 className="font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground text-center mb-12">
+            Frequently asked questions
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq) => (
               <FAQItem key={faq.question} question={faq.question} answer={faq.answer} />
             ))}
@@ -153,15 +186,25 @@ export default function HowItWorks() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white">Ready to get started?</h2>
-          <p className="mt-4 text-white/80">
+      <section className="relative overflow-hidden bg-primary py-20">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-25 pointer-events-none mix-blend-soft-light"
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-24 -right-12 w-80 h-80 rounded-full bg-accent/25 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-white">
+            Ready to get started?
+          </h2>
+          <p className="mt-5 text-white/85 max-w-xl mx-auto">
             Take our free assessment to see if you&apos;re a candidate for GLP-1 treatment.
           </p>
           <Link
             href="/get-started"
-            className="mt-8 inline-block rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark hover:bg-white/90 transition-colors"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
             See If You Qualify
           </Link>
@@ -198,6 +241,36 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
     </div>
   );
 }
+
+// Iconographic SVG tiles replacing the emoji placeholders. Matched 1:1 to the
+// journey-step order below: assessment → consult → delivery → ongoing care.
+const journeyIcons = [
+  // Clipboard / assessment
+  <svg key="assessment" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10h18a2 2 0 012 2v28a2 2 0 01-2 2H15a2 2 0 01-2-2V12a2 2 0 012-2z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v-2a2 2 0 012-2h6a2 2 0 012 2v2" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M18 22l3 3 7-7M18 30h12M18 35h8" />
+  </svg>,
+  // Stethoscope / consultation
+  <svg key="consult" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14 8v12a8 8 0 0016 0V8" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M22 28c0 6 4 10 10 10s10-4 10-10" />
+    <circle cx="36" cy="24" r="3.5" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="14" cy="8" r="2" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="30" cy="8" r="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>,
+  // Package / delivery
+  <svg key="delivery" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16l16-8 16 8v16l-16 8-16-8V16z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16l16 8 16-8M24 24v16" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M16 12l16 8" />
+  </svg>,
+  // Heart pulse / ongoing care
+  <svg key="ongoing" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M24 40s-14-8-14-20a8 8 0 0114-5 8 8 0 0114 5c0 12-14 20-14 20z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10 24h6l3-6 4 12 3-6h12" />
+  </svg>,
+];
 
 const journeySteps = [
   {

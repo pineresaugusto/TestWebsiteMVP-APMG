@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
   title: "Medical Disclaimer — Nuvela",
@@ -10,15 +11,12 @@ export const metadata: Metadata = {
 export default function MedicalDisclaimer() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary-light/40 to-background py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Medical Disclaimer</h1>
-          <p className="mt-4 text-base text-foreground/70 max-w-2xl mx-auto">
-            Please read carefully before relying on any information on this website.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        size="sm"
+        kicker="Legal"
+        title="Medical Disclaimer"
+        description="Please read carefully before relying on any information on this website."
+      />
 
       {/* Body */}
       <section className="py-16 md:py-20">
@@ -135,7 +133,7 @@ function Callout({ children }: { children: React.ReactNode }) {
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl border border-secondary/40 bg-white p-6 md:p-8">
-      <h2 className="text-lg md:text-xl font-semibold text-foreground">{title}</h2>
+      <h2 className="font-display text-xl md:text-2xl text-foreground">{title}</h2>
       <div className="mt-3 space-y-3 text-sm text-foreground/70 leading-relaxed">{children}</div>
     </div>
   );
