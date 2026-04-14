@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)",
+      "Bash(npx create-next-app@latest nuvela-temp --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)",
+      "Bash(cp -r nuvela-temp/* .)",
+      "Bash(cp nuvela-temp/.gitignore .)",
+      "Bash(cp nuvela-temp/.eslintrc.json .)",
+      "Bash(cp nuvela-temp/tsconfig.json .)",
+      "Bash(ls nuvela-temp/.*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git push:*)",
+      "Bash(gh auth:*)",
+      "Bash(ssh -T -o StrictHostKeyChecking=no -o BatchMode=yes git@github.com)",
+      "Bash(git --version)",
+      "Bash(git -C /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG branch -a)",
+      "Bash(git -C /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG log --all --oneline -5)",
+      "Bash(git config:*)",
+      "Bash(git -C /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/.claude/worktrees/sleepy-nightingale config --get credential.helper)",
+      "Bash(git -C /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/.claude/worktrees/sleepy-nightingale remote -v)",
+      "Bash(git remote:*)",
+      "Bash(git credential-osxkeychain:*)"
+    ]
+  }
+}
