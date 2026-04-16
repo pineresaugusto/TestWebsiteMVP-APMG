@@ -258,7 +258,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={140}>
               <p className="mt-4 text-lg text-foreground/70">
-                Nothing clinical, nothing rushed. Just thoughtful, provider-led support at every
+                Nothing cold, nothing rushed. Just thoughtful, provider-led support at every
                 step.
               </p>
             </Reveal>

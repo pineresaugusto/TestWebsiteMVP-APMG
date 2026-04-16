@@ -135,7 +135,7 @@ export default function Pricing() {
             href="/get-started"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
-            Start Your Assessment
+            Start your assessment
           </Link>
         </div>
       </section>
