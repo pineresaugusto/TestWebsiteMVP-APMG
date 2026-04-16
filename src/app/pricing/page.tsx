@@ -162,7 +162,7 @@ const tiers = [
   },
   {
     name: "Accelerate",
-    tagline: "Enhanced support for faster results",
+    tagline: "More frequent support as your plan builds",
     price: 299,
     dose: "Semaglutide 1.0 – 1.7 mg/week",
     popular: true,
@@ -179,7 +179,7 @@ const tiers = [
   },
   {
     name: "Transform",
-    tagline: "Maximum support for your transformation",
+    tagline: "Our most hands-on plan, for long-term care",
     price: 399,
     dose: "Semaglutide 2.0 – 2.4 mg/week",
     popular: false,

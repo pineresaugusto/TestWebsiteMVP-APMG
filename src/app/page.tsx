@@ -7,8 +7,8 @@ export default function Home() {
       {/* ----------------------------------------------------------------- */}
       {/* Hero — editorial composition                                       */}
       {/* Left: kicker rule, serif headline, lede, CTAs, trust strip.        */}
-      {/* Right: layered card-stack with a clinical-trial stat, a soft sage  */}
-      {/* frame, and a dotted tile — replaces the old SVG-heart placeholder. */}
+      {/* Right: a quiet 3-step 'how this works' card — lower emotional      */}
+      {/* temperature than a statistic, signals ease rather than efficacy.   */}
       {/* ----------------------------------------------------------------- */}
       <section className="relative overflow-hidden bg-glow-sage">
         <div
@@ -20,22 +20,19 @@ export default function Home() {
             <div className="md:col-span-7">
               <Reveal>
                 <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
-                  A new kind of weight-loss care
+                  Weight-loss care, reimagined
                 </p>
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
-                  Your weight-loss journey,{" "}
-                  <em className="not-italic text-primary-dark">
-                    gently guided
-                  </em>{" "}
-                  by experts.
+                  Real weight-loss care,{" "}
+                  <em className="italic font-normal text-primary-dark">made simple</em>.
                 </h1>
               </Reveal>
               <Reveal delay={160}>
                 <p className="mt-7 text-lg text-foreground/70 leading-relaxed max-w-lg">
-                  Nuvela connects you with licensed healthcare providers for personalized GLP-1
-                  treatment — delivered to your door with ongoing medical support.
+                  A short online assessment, a conversation with a licensed provider, and a plan
+                  shaped around you — delivered to your door, with ongoing medical support.
                 </p>
               </Reveal>
               <Reveal delay={240}>
@@ -44,14 +41,14 @@ export default function Home() {
                     href="/get-started"
                     className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-base font-semibold text-white shadow-md shadow-accent/25 hover:bg-accent-dark hover:shadow-lg hover:-translate-y-[1px] transition-all"
                   >
-                    See If You Qualify
+                    Start your assessment
                     <ArrowIcon className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                   <Link
                     href="/how-it-works"
                     className="inline-flex items-center justify-center rounded-full border border-primary/30 bg-white/60 backdrop-blur-sm px-8 py-3.5 text-base font-semibold text-primary-dark hover:bg-white hover:border-primary/50 transition-all"
                   >
-                    Learn More
+                    How it works
                   </Link>
                 </div>
               </Reveal>
@@ -63,17 +60,21 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckIcon />
-                    Home delivery
+                    No insurance needed
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckIcon />
-                    Ongoing support
+                    Private &amp; discreet
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckIcon />
+                    Cancel anytime
                   </li>
                 </ul>
               </Reveal>
             </div>
 
-            {/* Editorial card-stack */}
+            {/* Quiet 3-step journey card */}
             <Reveal delay={200} className="md:col-span-5">
               <div className="relative mx-auto max-w-sm md:max-w-none">
                 {/* Decorative dotted tile, back layer */}
@@ -85,35 +86,48 @@ export default function Home() {
                 <div className="relative rounded-[2rem] bg-gradient-to-br from-primary/25 via-secondary-light to-secondary/60 p-5 shadow-xl shadow-primary/10">
                   {/* Foreground card */}
                   <div className="rounded-[1.5rem] bg-background/95 backdrop-blur-sm p-8 md:p-10 border border-white">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-accent-dark">
-                      STEP 1 trial · NEJM 2021
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-dark">
+                      How it starts
                     </p>
-                    <p className="mt-5 font-display text-5xl md:text-6xl text-primary-dark leading-none">
-                      ~14.9%
-                    </p>
-                    <p className="mt-3 text-sm text-foreground/70 leading-relaxed">
-                      Average body-weight reduction in adults with obesity who took semaglutide
-                      2.4&nbsp;mg weekly over 68 weeks, vs. ~2.4% on placebo.<sup className="text-accent-dark">*</sup>
-                    </p>
-                    <div className="mt-6 h-px bg-foreground/10" />
+                    <h2 className="mt-4 font-display text-[1.75rem] leading-[1.15] text-foreground">
+                      Three simple steps
+                    </h2>
+                    <ol className="mt-6 space-y-5">
+                      <JourneyStep
+                        num="01"
+                        title="A short assessment"
+                        body="About 5 minutes — no account needed to start."
+                      />
+                      <JourneyStep
+                        num="02"
+                        title="Talk with a licensed provider"
+                        body="A clinician reviews your health and answers your questions."
+                      />
+                      <JourneyStep
+                        num="03"
+                        title="Your plan, delivered"
+                        body="If prescribed, medication ships discreetly with ongoing support."
+                      />
+                    </ol>
+                    <div className="mt-7 h-px bg-foreground/10" />
                     <p className="mt-5 text-xs text-foreground/50 leading-relaxed">
-                      Individual results vary. See our{" "}
+                      Eligibility and any prescription are determined by your provider. See our{" "}
                       <Link
                         href="/medical-disclaimer"
                         className="text-primary-dark underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
                       >
                         Medical Disclaimer
-                      </Link>{" "}
-                      for important safety information.
+                      </Link>
+                      .
                     </p>
                   </div>
                 </div>
-                {/* Accent pill, front layer */}
+                {/* Soft corner pill */}
                 <div
                   aria-hidden
-                  className="absolute -bottom-4 -left-4 rounded-full bg-accent px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white shadow-lg shadow-accent/30 hidden sm:block"
+                  className="absolute -bottom-4 -left-4 rounded-full bg-white border border-primary/25 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-dark shadow-lg shadow-primary/10 hidden sm:block"
                 >
-                  Clinically studied
+                  Gentle · Guided
                 </div>
               </div>
             </Reveal>
@@ -122,7 +136,9 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* What are GLP-1s — editorial single-column, serif H2                */}
+      {/* What are GLP-1s — editorial single-column, serif H2.               */}
+      {/* Efficacy citation lives here (not in the hero) so the first        */}
+      {/* impression leads with ease, and credibility supports it.           */}
       {/* ----------------------------------------------------------------- */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -140,9 +156,9 @@ export default function Home() {
             <Reveal delay={160}>
               <p className="mt-7 text-lg text-foreground/70 leading-relaxed">
                 GLP-1 receptor agonists are a class of prescription medications originally developed
-                for type 2 diabetes that have been shown to significantly reduce body weight. They
-                work by mimicking a natural hormone that regulates appetite, helping you feel fuller
-                longer and reducing cravings.
+                for type 2 diabetes that have been studied for body-weight reduction. They work by
+                mimicking a natural hormone that regulates appetite, helping many people feel fuller
+                longer and reduce cravings.
               </p>
             </Reveal>
             <Reveal delay={220}>
@@ -155,7 +171,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={280}>
               <p className="mt-3 text-xs text-foreground/50">
-                * Individual results vary. Semaglutide is associated with potential side effects and
+                Individual results vary. Semaglutide is associated with potential side effects and
                 is not appropriate for everyone. See our{" "}
                 <Link
                   href="/medical-disclaimer"
@@ -197,7 +213,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={140}>
               <p className="mt-4 text-lg text-foreground/70">
-                From assessment to your doorstep — in four simple steps.
+                From first question to your doorstep — in four unhurried steps.
               </p>
             </Reveal>
           </div>
@@ -223,39 +239,47 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* Why Nuvela                                                         */}
+      {/* Why Nuvela — typographic grid, no icons.                           */}
+      {/* Premium, editorial rhythm: hairline rule, serif numeral, title,    */}
+      {/* supporting body. Relies on type + whitespace, not iconography.     */}
       {/* ----------------------------------------------------------------- */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-16">
             <Reveal>
               <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
-                Why us
+                What sets us apart
               </p>
             </Reveal>
             <Reveal delay={80}>
               <h2 className="mt-5 font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground">
-                Why choose Nuvela
+                Care that feels different
               </h2>
             </Reveal>
             <Reveal delay={140}>
               <p className="mt-4 text-lg text-foreground/70">
-                We make weight-loss treatment accessible, affordable, and supported.
+                Nothing clinical, nothing rushed. Just thoughtful, provider-led support at every
+                step.
               </p>
             </Reveal>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 lg:gap-x-14">
             {features.map((feature, i) => (
-              <Reveal key={feature.title} delay={i * 80}>
-                <div className="group h-full rounded-2xl border border-secondary/40 bg-background p-8 transition-all hover:-translate-y-[2px] hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 transition-colors group-hover:bg-primary/15">
-                    {feature.icon}
+              <Reveal key={feature.title} delay={i * 70}>
+                <article className="group h-full">
+                  <div className="flex items-baseline gap-3">
+                    <span className="h-px w-8 bg-primary/40 translate-y-[-6px]" aria-hidden />
+                    <span className="font-display text-sm tracking-[0.14em] text-primary-dark">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                   </div>
-                  <h3 className="font-display text-xl text-foreground">{feature.title}</h3>
-                  <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
+                  <h3 className="mt-4 font-display text-[1.5rem] leading-[1.2] text-foreground">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-3 text-[15px] text-foreground/65 leading-relaxed">
                     {feature.description}
                   </p>
-                </div>
+                </article>
               </Reveal>
             ))}
           </div>
@@ -280,17 +304,17 @@ export default function Home() {
         />
         <Reveal className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-white">
-            Ready to start your journey?
+            Ready when you are.
           </h2>
           <p className="mt-5 text-lg text-white/85 max-w-xl mx-auto">
-            Take our free 5-minute assessment to see if GLP-1 treatment is right for you.
-            No commitment required.
+            Take the short assessment — about 5 minutes — and see if GLP-1 treatment might be a
+            good fit. No commitment.
           </p>
           <Link
             href="/get-started"
             className="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
-            See If You Qualify
+            Start your assessment
             <ArrowIcon className="w-4 h-4" />
           </Link>
         </Reveal>
@@ -329,11 +353,33 @@ function ArrowIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+function JourneyStep({
+  num,
+  title,
+  body,
+}: {
+  num: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <li className="flex gap-4">
+      <span className="font-display text-sm tracking-[0.14em] text-primary-dark pt-[3px] min-w-[2rem]">
+        {num}
+      </span>
+      <div>
+        <p className="font-display text-[1.05rem] leading-snug text-foreground">{title}</p>
+        <p className="mt-1 text-sm text-foreground/60 leading-relaxed">{body}</p>
+      </div>
+    </li>
+  );
+}
+
 const steps = [
   {
     title: "Online Assessment",
     description:
-      "Complete a quick health questionnaire from the comfort of your home. It takes less than 5 minutes.",
+      "A short health questionnaire from the comfort of your home. Most people finish in about five minutes.",
   },
   {
     title: "Provider Consultation",
@@ -343,74 +389,46 @@ const steps = [
   {
     title: "Personalized Treatment",
     description:
-      "If eligible, your provider prescribes a GLP-1 medication plan tailored to your needs and goals.",
+      "If your provider determines it's a good fit, they prescribe a GLP-1 medication plan tailored to you.",
   },
   {
     title: "Home Delivery & Support",
     description:
-      "Your medication ships directly to your door. Your provider is always available for ongoing guidance.",
+      "Medication ships directly to your door. Your provider is available for questions and check-ins along the way.",
   },
 ];
 
+// Why Nuvela — six editorial cards. Icons intentionally removed; content
+// reads as typographic rhythm, not a feature grid.
 const features = [
   {
-    title: "Licensed Providers",
+    title: "Licensed, human providers",
     description:
-      "Every consultation is with a board-certified healthcare professional licensed in your state.",
-    icon: (
-      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-      </svg>
-    ),
+      "Every consultation is with a board-certified clinician licensed in your state — not a form and not an algorithm.",
   },
   {
-    title: "All-Inclusive Pricing",
+    title: "One simple monthly price",
     description:
-      "One monthly price covers your medication, consultations, shipping, and ongoing provider support. No hidden fees.",
-    icon: (
-      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-      </svg>
-    ),
+      "Your plan covers the consultation, medication, supplies, and ongoing provider support. No surprises.",
   },
   {
-    title: "Discreet Home Delivery",
+    title: "Delivered to your door",
     description:
-      "Your medication and supplies are shipped in discreet packaging directly to your doorstep.",
-    icon: (
-      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H21M3.375 14.25V3.375c0-.621.504-1.125 1.125-1.125h9.75c.621 0 1.125.504 1.125 1.125v11.25m-18 0h18" />
-      </svg>
-    ),
+      "Discreet packaging, shipped straight to your home. Nothing to pick up, nothing to explain at a counter.",
   },
   {
-    title: "Ongoing Medical Support",
+    title: "Support that continues",
     description:
-      "Your provider monitors your progress with regular check-ins, adjusting your treatment plan as needed.",
-    icon: (
-      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-      </svg>
-    ),
+      "Regular check-ins mean your plan can evolve as you do — dose adjustments, questions, honest guidance.",
   },
   {
-    title: "Clinically Proven Results",
+    title: "Thoughtful, unhurried",
     description:
-      "GLP-1 medications have been shown in clinical trials to help patients lose an average of 15% of body weight.",
-    icon: (
-      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-      </svg>
-    ),
+      "Real time with a provider, in plain language. The pace of a quiet conversation, not a clinic visit.",
   },
   {
-    title: "Compounded for Affordability",
+    title: "Compounded for access",
     description:
-      "We use compounded semaglutide from FDA-regulated pharmacies — the same active ingredient at a fraction of brand-name cost.",
-    icon: (
-      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
+      "Compounded semaglutide from FDA-regulated pharmacies — the same active ingredient, at a more accessible price.",
   },
 ];

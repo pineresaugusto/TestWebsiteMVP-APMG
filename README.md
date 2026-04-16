@@ -7,6 +7,25 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-16 — Mauger00
+- Iteration 3 (UX + legal refinement): softer home hero — new H1
+  "Real weight-loss care, made simple.", efficacy moved out of first
+  impression, 3-step "how it starts" card replaces the STEP 1 stat
+- "Why Choose Nuvela" icons removed; replaced with typographic
+  monogram grid ("Care that feels different")
+- Hero trust strip gains "No insurance needed" and "Cancel anytime"
+- `/get-started`: softer disqualification copy; dead
+  "Schedule Your Consultation" CTA replaced with honest
+  "We'll be in touch" handoff
+- Terms of Service strengthened: explicit non-guarantee clauses
+  around prescription, availability, and fulfillment timing;
+  third-party provider/pharmacy responsibility; user duty of truthful
+  information; broader limitation of liability
+- Tone pass on `/how-it-works`, `/about`, `/pricing` — removed a
+  couple of outcome-promise phrasings, retitled a few CTAs
+- Verification debt from Iterations 1–3 still owed (no Node toolchain
+  in this env)
+
 ### 2026-04-14 — Mauger00
 - Iteration 2 (aesthetic pass): paired Inter with Fraunces display serif
 - Added `<Reveal>` scroll-reveal component and shared `<PageHero>`

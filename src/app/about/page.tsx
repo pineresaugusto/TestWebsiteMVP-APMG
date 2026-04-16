@@ -12,7 +12,7 @@ export default function About() {
             About <em className="not-italic text-primary-dark">Nuvela</em>
           </>
         }
-        description="We believe everyone deserves access to clinically-proven weight-loss treatment — without the barriers, the stigma, or the confusion."
+        description="We believe everyone deserves access to clinically-studied weight-loss care — without the barriers, the stigma, or the confusion."
       />
 
       {/* Mission */}
@@ -142,17 +142,16 @@ export default function About() {
         />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-white">
-            Join the Nuvela community
+            A gentler way to start
           </h2>
           <p className="mt-5 text-white/85 max-w-xl mx-auto">
-            Take the first step toward a healthier you. Our assessment is free and takes less than
-            5 minutes.
+            The assessment is free and takes about 5 minutes. No commitment, no insurance needed.
           </p>
           <Link
             href="/get-started"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
-            Get Started Today
+            Start your assessment
           </Link>
         </div>
       </section>

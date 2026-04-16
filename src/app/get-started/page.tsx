@@ -141,34 +141,35 @@ export default function GetStarted() {
         <div className="min-h-[70vh] flex items-center justify-center py-16">
           <div className="mx-auto max-w-lg px-4 text-center">
             <div className="w-16 h-16 mx-auto rounded-full bg-secondary-light flex items-center justify-center mb-6">
-              <svg className="w-8 h-8 text-foreground/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              <svg className="w-8 h-8 text-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-foreground">
-              GLP-1 Treatment May Not Be Right for You
+            <h1 className="font-display text-[1.75rem] md:text-3xl leading-tight text-foreground">
+              This path may not be the right fit for you right now
             </h1>
-            <p className="mt-4 text-foreground/70 leading-relaxed">
-              Based on your responses, we&apos;d recommend speaking with your primary care provider
-              before pursuing GLP-1 treatment. Certain medical conditions or health profiles require
-              in-person evaluation, and your safety is our top priority.
+            <p className="mt-5 text-foreground/70 leading-relaxed">
+              Based on what you shared, GLP-1 treatment through Nuvela may not be the best option
+              at the moment. That&apos;s not a judgment — just a careful first pass. A conversation
+              with your primary care provider is a great next step, and they can help you find
+              the right direction.
             </p>
             <p className="mt-4 text-sm text-foreground/50">
-              This assessment is not a medical diagnosis. A healthcare provider can give you
-              personalized guidance about weight loss treatment options.
+              This assessment is not a medical diagnosis, and things can change over time. You&apos;re
+              welcome to come back.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/how-it-works"
                 className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-white hover:bg-primary-dark transition-colors"
               >
-                Learn More About GLP-1s
+                Learn more about GLP-1s
               </Link>
               <button
                 onClick={() => { setSubmitted(false); setStep(1); }}
                 className="rounded-full border-2 border-secondary px-8 py-3 text-sm font-semibold text-foreground/70 hover:bg-secondary-light transition-colors"
               >
-                Retake Assessment
+                Retake assessment
               </button>
             </div>
           </div>
@@ -185,13 +186,12 @@ export default function GetStarted() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-foreground">
-              Great News — You May Be a Candidate!
+            <h1 className="font-display text-3xl md:text-[2.25rem] leading-tight text-foreground">
+              Good news — you look like a fit so far
             </h1>
-            <p className="mt-4 text-foreground/70 max-w-lg mx-auto">
-              Based on your responses, you may be eligible for GLP-1 weight loss treatment. A
-              licensed provider will review your information and make the final determination during
-              your consultation.
+            <p className="mt-5 text-foreground/70 max-w-lg mx-auto leading-relaxed">
+              A licensed provider will review what you shared and make the final call. No
+              payment is required until after that conversation, and you can stop at any point.
             </p>
           </div>
 
@@ -227,11 +227,16 @@ export default function GetStarted() {
               ))}
             </div>
             <div className="mt-8 text-center">
-              <button className="rounded-full bg-accent px-10 py-3.5 text-base font-semibold text-white hover:bg-accent-dark transition-colors">
-                Schedule Your Consultation
-              </button>
-              <p className="mt-3 text-xs text-foreground/40">
-                No payment required until after your provider visit
+              <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 border border-accent/30 px-6 py-3 text-sm font-medium text-accent-dark">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM19.5 19.5h-15" />
+                </svg>
+                We&apos;ll be in touch about next steps
+              </div>
+              <p className="mt-4 text-xs text-foreground/50 max-w-sm mx-auto leading-relaxed">
+                We&apos;re not booking consultations just yet — we&apos;ll reach out as soon as
+                our provider network is open in your area. No payment is required in the
+                meantime.
               </p>
             </div>
           </div>
@@ -276,7 +281,7 @@ export default function GetStarted() {
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Step 1: Basics */}
           {step === 1 && (
-            <StepWrapper title="Let's start with the basics" subtitle="This helps us determine your eligibility and connect you with a provider in your state.">
+            <StepWrapper title="Let's start with the basics" subtitle="About 5 minutes, in plain language. Nothing is submitted until the final step — you can go back or stop at any point.">
               <div className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1.5">Age</label>
@@ -424,7 +429,7 @@ export default function GetStarted() {
 
           {/* Step 4: Medical History */}
           {step === 4 && (
-            <StepWrapper title="Medical history" subtitle="This is critical for your safety. Please answer honestly — your provider needs accurate information.">
+            <StepWrapper title="Your medical history" subtitle="Honest answers keep you safe. Your provider will use this to make the right recommendation for you.">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-3">
                   Do you have any of the following conditions? (select all that apply)

@@ -6,6 +6,215 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 3: UX + Legal Refinement
+
+This iteration makes the site feel simpler, warmer, and less pushy on
+first impression, while quietly strengthening the legal backbone in
+Terms. Nothing about the visual system (Iteration 2) was rebuilt —
+this is a copy, structure, and subtle-composition pass guided by the
+`legal-nuvela` skill (minimal edits, no disclaimer-spraying, preserve
+sales tone) and a short grill-me round that resolved four branching
+design decisions.
+
+The concrete moves: rewrite the home hero so efficacy no longer
+dominates the first impression, remove generic icons from "Why
+Choose Nuvela" in favor of a typographic grid, add "No insurance
+needed" to the hero trust strip, soften the assessment-result pages
+(especially the disqualification result, which was coming across as
+a hard rejection), and replace the dead "Schedule Your Consultation"
+button with an honest "we'll be in touch" handoff. On the legal
+side, the Terms gained explicit non-guarantee clauses around
+prescription, medication availability, and fulfillment timing, a
+clearer third-party-provider/pharmacy responsibility clause, a
+tighter user-responsibility-for-truthful-information clause, and a
+broader limitation-of-liability clause.
+
+### Added
+
+- `JourneyStep` helper inside `src/app/page.tsx` — renders a single
+  line of the new 3-step hero card (monogram + title + body), used
+  three times for Assessment → Provider → Delivery.
+- New Terms clauses explicitly covering: (a) no guarantee that a
+  prescription will be issued; (b) no guarantee of availability, in-
+  stock status, or fulfillment timeframe; (c) independent providers
+  and pharmacies are solely responsible for their professional
+  services and subject to their own licensure and compliance;
+  (d) user acceptance of responsibility for outcomes that depend on
+  information they submit. These live as additions/extensions to
+  §§2, 4, 6, 8, 9, and 10 of `src/app/terms/page.tsx`.
+- Two new bullets in the Terms "In plain language" summary so the
+  non-guarantee-of-medication and honest-information points are
+  visible without reading the full legal body.
+
+### Changed
+
+- `src/app/page.tsx` — **home hero fully reworked.**
+  - H1 changed from *"Your weight-loss journey, gently guided by
+    experts"* to *"Real weight-loss care, made simple."* with an
+    italic Fraunces emphasis on "made simple".
+  - Kicker updated to "Weight-loss care, reimagined"; lede rewritten
+    to lead with ease (short assessment → conversation → plan to
+    your door) rather than the phrase "personalized GLP-1 treatment".
+  - Primary CTA changed from "See If You Qualify" to "Start your
+    assessment"; secondary CTA copy from "Learn More" to "How it
+    works".
+  - Trust strip beneath the CTAs now reads: **Licensed providers ·
+    No insurance needed · Private & discreet · Cancel anytime**
+    (previously three items, with no mention of insurance or
+    cancellation).
+  - Right-column card replaced. The "STEP 1 ~14.9% body weight
+    reduction" stat card that previously anchored the hero has been
+    replaced with a quiet 3-step "How it starts" card: Short
+    assessment → Talk with a licensed provider → Your plan,
+    delivered. Efficacy is preserved one section below, where it
+    supports rather than dominates. The "Clinically studied" accent
+    pill was replaced with a soft "Gentle · Guided" pill in the
+    same position.
+- `src/app/page.tsx` — **"Why Choose Nuvela" redesigned without
+  icons.** The sage-tinted icon grid has been replaced with a pure
+  typographic grid: a hairline rule + monogram numeral (01–06) +
+  serif title + supporting body. Section title changed from "Why
+  choose Nuvela" to "Care that feels different"; the sub-copy
+  emphasises that the experience is unhurried. Feature copy was
+  rewritten to match the editorial voice (e.g. "Support that
+  continues", "Thoughtful, unhurried") and the previous "Clinically
+  Proven Results — 15% body weight" bullet was retired so efficacy
+  remains in the STEP-1 section only.
+- `src/app/page.tsx` — hero CTA banner H2 softened from "Ready to
+  start your journey?" to "Ready when you are." with a shorter,
+  calmer sub-line.
+- `src/app/terms/page.tsx` — §2 now explicitly states Nuvela does
+  not prescribe or dispense medication, providers have sole
+  discretion to decline to prescribe, and participating providers
+  and pharmacies are independent third parties responsible for their
+  own professional services.
+- `src/app/terms/page.tsx` — §4 broadened from "Eligibility and
+  geographic availability" to "Eligibility, availability, and
+  fulfillment", and now expressly disclaims guarantees about
+  prescription, availability, in-stock status, timing, and
+  uninterrupted service (including force-majeure-adjacent factors).
+- `src/app/terms/page.tsx` — §5 clarifies that publishing prices is
+  not an offer to sell or to dispense.
+- `src/app/terms/page.tsx` — §6 extended with a truthful/current
+  information obligation, a duty to update, a same-patient-only use
+  clause, and an explicit acceptance of responsibility for outcomes
+  that result from inaccurate or out-of-date information.
+- `src/app/terms/page.tsx` — §8 retitled "Third-party providers,
+  pharmacies, and services" and now clearly frames Nuvela as not a
+  medical provider, not a pharmacy, and not a shipper, and
+  disclaims responsibility for any acts or omissions of independent
+  providers, pharmacies, laboratories, telehealth platforms, or
+  carriers.
+- `src/app/terms/page.tsx` — §9 expanded with an explicit
+  no-guarantee enumeration covering (A) eligibility / prescription,
+  (B) medication availability or suitability, (C) clinical or
+  weight-related outcomes, (D) service / consultation / shipment
+  timing or continuity.
+- `src/app/terms/page.tsx` — §10 broadened to cover officers,
+  directors, employees, agents, affiliates, and licensors; adds
+  loss-of-profits/data/goodwill/opportunity; applies the $100
+  aggregate cap across all claims and all legal theories; states the
+  limitation is an essential basis of the bargain.
+- `src/app/get-started/page.tsx` — step-1 subtitle rewritten to
+  reassure about duration and "nothing submitted until the final
+  step"; step-4 (medical history) subtitle softened from the
+  clinical "critical for your safety" framing.
+- `src/app/get-started/page.tsx` — **disqualification result
+  rewritten**. Headline changed from *"GLP-1 Treatment May Not Be
+  Right for You"* to *"This path may not be the right fit for you
+  right now"*; body reframed from "we recommend / safety is our top
+  priority" to a non-judgmental "that's not a judgment — just a
+  careful first pass", explicitly leaving the door open to return.
+  The red-circle "info" icon was replaced with a neutral star glyph
+  to match the softer voice.
+- `src/app/get-started/page.tsx` — **dead CTA removed.** The
+  "Schedule Your Consultation" button (no handler, a long-standing
+  known issue) has been replaced with an honest
+  "We'll be in touch about next steps" pill and a short explanation
+  that consultations are not yet being booked. Eligible-result
+  headline changed from *"Great News — You May Be a Candidate!"* to
+  the calmer *"Good news — you look like a fit so far"*.
+- `src/app/how-it-works/page.tsx` — hero description rewritten to
+  a calmer "step-by-step look at what the experience feels like";
+  "Clinical Results" copy tightened to cite STEP 1 directly and
+  removed the "some achieving 20%+ weight reduction" upsell;
+  shipping FAQ rewritten to remove the "3–5 business days"
+  timeframe guarantee that conflicted with the new Terms §4;
+  "How much weight can I expect to lose?" question reframed as
+  "How much weight can someone lose?" with an explicit no-guarantee
+  line; hero CTA and bottom CTA copy softened.
+- `src/app/pricing/page.tsx` — Accelerate tagline changed from
+  "Enhanced support for faster results" (results-promise) to "More
+  frequent support as your plan builds"; Transform tagline changed
+  from "Maximum support for your transformation" to "Our most
+  hands-on plan, for long-term care".
+- `src/app/about/page.tsx` — hero description changed from
+  "clinically-proven weight-loss treatment" to "clinically-studied
+  weight-loss care"; bottom CTA H2 changed from "Join the Nuvela
+  community" to "A gentler way to start" with a softer sub-line and
+  a "Start your assessment" button.
+
+### Removed
+
+- The "15% body weight" efficacy feature-bullet in the home page
+  "Why Choose Nuvela" grid — efficacy now appears only in the STEP 1
+  section (on the home page) and in the How-It-Works "Clinical
+  results" block, so it is present but not dominant on first scroll.
+- The dead "Schedule Your Consultation" CTA on the eligible-result
+  view of `/get-started` (see above).
+- The "some achieving 20%+ weight reduction" upsell line on
+  `/how-it-works`.
+
+### Intentionally left alone (legal-nuvela filter)
+
+- No new disclaimers on marketing pages. Stronger protections live
+  in Terms and (previously) Medical Disclaimer. Public-facing copy
+  is unchanged where it was already honest enough.
+- Footer 503B-pharmacy claim and the About "FDA-regulated 503B
+  compounding pharmacies" statement remain flagged in "Known issues
+  (deferred)" and are not edited here — they are factual-accuracy
+  issues tied to operational status, not rhetoric issues, and the
+  business prerequisites have not changed.
+- The fabricated `AVAILABLE_STATES` list in `/get-started`, and the
+  provider-recruitment framing of `/providers`, remain unchanged for
+  the same reason.
+
+### Known issues (carried over, still deferred)
+
+All items from Iterations 1 and 2 remain in place. See those
+sections for the full list and file/line references.
+
+### Verification steps owed
+
+Carried over from Iterations 1 and 2 (no Node toolchain available in
+this authoring environment), plus the following Iteration-3-specific
+checks:
+
+1. `npm run dev` — confirm the home hero right column renders the
+   new three-step card at 375 px, 768 px, and 1440 px, that the
+   decorative dotted tile doesn't overflow, and that the "Gentle ·
+   Guided" pill stays legible in the bottom-left.
+2. Confirm the trust strip under the hero CTA wraps correctly on
+   narrow screens with the fourth item added ("No insurance
+   needed").
+3. On `/`, scroll through "Care that feels different" and confirm
+   the monogram numerals (01–06) align on a hairline baseline and
+   that the grid doesn't collapse awkwardly at `sm` / `lg`.
+4. On `/get-started`, reach both result screens (eligible and
+   not-eligible) and confirm: the eligible view shows the new
+   "We'll be in touch about next steps" pill (not a dead button),
+   and the not-eligible view shows the softer headline + neutral
+   star glyph.
+5. On `/terms`, confirm the updated §§2, 4, 5, 6, 8, 9, 10 render
+   cleanly with the existing `Prose`/`Section` helpers, and that the
+   two new summary bullets are present in the "In plain language"
+   box.
+6. `npm run build` — no new utility classes were introduced this
+   iteration, but verify nothing regressed.
+7. `npm run lint` — should remain clean. The `emoji` field on
+   `journeySteps` in `how-it-works/page.tsx` is still unused; left
+   in place again to minimize diff churn.
+
 ## [Unreleased] — Iteration 2: Aesthetic Pass (Design + Tone)
 
 This iteration is purely cosmetic and structural — no new business claims,

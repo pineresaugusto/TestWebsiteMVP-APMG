@@ -33,6 +33,15 @@ export default function Terms() {
                 applicable pharmacy policies, and geographic availability.
               </li>
               <li>
+                Completing the assessment is not an offer or guarantee that you will be
+                prescribed or receive medication, or that anything will ship within a particular
+                timeframe.
+              </li>
+              <li>
+                The information you provide needs to be honest and current — eligibility and
+                clinical decisions depend on it.
+              </li>
+              <li>
                 These Terms may change. Continuing to use the site after we update them means you
                 accept the updated version.
               </li>
@@ -59,11 +68,23 @@ export default function Terms() {
                 Nuvela is a technology platform that is being built to connect prospective
                 patients with independent licensed healthcare providers and licensed pharmacies.
                 Nuvela itself does not practice medicine, does not provide medical advice, and
-                does not compound or dispense medication.
+                does not compound, prescribe, or dispense medication.
               </p>
               <p>
-                Any clinical decisions, including whether to prescribe medication, are made solely
-                by the licensed provider based on their independent medical judgment.
+                Any clinical decisions, including whether to prescribe any medication and which
+                medication or dosage is appropriate, are made solely by the licensed provider
+                based on their independent professional judgment. The provider may decline to
+                prescribe for any clinically appropriate reason, and nothing on the Site is an
+                offer, promise, or guarantee that a prescription will be issued, that any
+                particular medication will be recommended, or that any medication will be
+                dispensed.
+              </p>
+              <p>
+                Providers and pharmacies who participate through the Site are independent third
+                parties. They are responsible for their own professional services, clinical
+                judgment, recordkeeping, licensure, and compliance with applicable laws. Nuvela
+                is not responsible for the acts or omissions of any independent provider or
+                pharmacy.
               </p>
             </Section>
 
@@ -83,13 +104,28 @@ export default function Terms() {
               </p>
             </Section>
 
-            <Section title="4. Eligibility and geographic availability">
+            <Section title="4. Eligibility, availability, and fulfillment">
               <p>
-                You must be at least 18 years old to use the Site&apos;s services. Our services
-                are limited to residents of states where our provider network and pharmacy
-                partners are available, which may change over time. Nothing on the Site should be
-                taken as a guarantee of availability in any particular state at any particular
-                time.
+                You must be at least 18 years old to use the Site&apos;s services. Services are
+                limited to residents of states where our provider and pharmacy partners are
+                operating, which may change over time. Nothing on the Site is a guarantee of
+                availability in any particular state, at any particular time, or on any
+                particular timeline.
+              </p>
+              <p>
+                Passing the online assessment indicates only that a candidate may be appropriate
+                for a provider consultation. It is not a medical determination, an offer of
+                treatment, or a guarantee that you will be prescribed or dispensed any
+                medication. Final eligibility is determined by the treating provider.
+              </p>
+              <p>
+                If medication is prescribed, its preparation and shipment are handled by an
+                independent licensed pharmacy. Nuvela does not guarantee that medication will be
+                available, that any particular formulation will be in stock, that shipping will
+                occur within any specific timeframe, or that service will be uninterrupted.
+                Availability can be affected by pharmacy capacity, supply-chain conditions,
+                regulatory action, clinical review, shipping carriers, weather, and other
+                factors outside of our control.
               </p>
             </Section>
 
@@ -98,27 +134,35 @@ export default function Terms() {
                 Plan pricing shown on the Site is illustrative and subject to change. Final
                 pricing for any services or medication is determined at the time of your
                 consultation and depends on your individual treatment plan, the pharmacy serving
-                you, and other factors.
+                you, and other factors. Publication of pricing on the Site is not an offer to
+                sell or an offer to dispense medication.
               </p>
             </Section>
 
             <Section title="6. Your responsibilities">
               <p>When using the Site, you agree to:</p>
               <ul>
-                <li>Provide accurate, current, and complete information.</li>
+                <li>Provide accurate, current, complete, and truthful information.</li>
                 <li>
-                  Not misrepresent your identity, age, medical history, or other information.
+                  Not misrepresent your identity, age, residency, medical history, current
+                  medications, or any other information you submit.
                 </li>
-                <li>Use the Site only for lawful purposes.</li>
+                <li>
+                  Update your information promptly if it changes during or after your
+                  consultation.
+                </li>
+                <li>Use the Site only for lawful purposes, and only for your own care.</li>
                 <li>
                   Not attempt to access, tamper with, or disrupt the Site, its infrastructure, or
                   other users.
                 </li>
               </ul>
               <p>
-                Accurate information is especially important for the intake assessment, because
-                inaccurate responses can affect the eligibility result and any subsequent provider
-                decisions.
+                Accurate information is essential. Eligibility results, provider clinical
+                decisions, medication selection, and dosing all rely on what you tell us. You
+                accept responsibility for outcomes that result from information you submit that
+                is false, incomplete, or out of date, including any provider decision that would
+                have been different had accurate information been provided.
               </p>
             </Section>
 
@@ -131,11 +175,21 @@ export default function Terms() {
               </p>
             </Section>
 
-            <Section title="8. Third-party services">
+            <Section title="8. Third-party providers, pharmacies, and services">
               <p>
-                The Site may reference or link to third-party websites, services, or providers.
-                Nuvela is not responsible for the content, policies, or practices of any third
-                party.
+                The Site may reference or link to third-party websites, services, providers, or
+                pharmacies. Licensed providers and licensed pharmacies who work with patients
+                through the Site are independent third parties. They are solely responsible for
+                their professional services, clinical decisions, compounding, dispensing,
+                labeling, packaging, shipping, and compliance with applicable laws and
+                professional standards.
+              </p>
+              <p>
+                Nuvela is not a provider of medical care, not a pharmacy, and not a shipper. We
+                do not supervise the practice of medicine or pharmacy, and we are not
+                responsible for the content, policies, or practices of any third party, including
+                any act or omission by any independent provider, pharmacy, laboratory, telehealth
+                platform, or carrier.
               </p>
             </Section>
 
@@ -145,21 +199,40 @@ export default function Terms() {
                 WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED
                 WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
                 NON-INFRINGEMENT. NUVELA DOES NOT WARRANT THAT THE SITE WILL BE UNINTERRUPTED OR
-                ERROR-FREE, OR THAT ANY INFORMATION ON THE SITE IS ACCURATE, COMPLETE, OR CURRENT.
+                ERROR-FREE, OR THAT ANY INFORMATION ON THE SITE IS ACCURATE, COMPLETE, OR
+                CURRENT.
+              </p>
+              <p>
+                WITHOUT LIMITING THE FOREGOING, NUVELA MAKES NO WARRANTY, REPRESENTATION, OR
+                GUARANTEE THAT: (A) ANY USER WILL BE FOUND ELIGIBLE FOR TREATMENT OR WILL BE
+                PRESCRIBED ANY MEDICATION; (B) ANY MEDICATION WILL BE DISPENSED, AVAILABLE, IN
+                STOCK, OR SUITABLE FOR ANY USER; (C) ANY TREATMENT WILL PRODUCE ANY PARTICULAR
+                CLINICAL OR WEIGHT-RELATED OUTCOME; OR (D) ANY SERVICE, CONSULTATION, OR SHIPMENT
+                WILL OCCUR WITHIN ANY SPECIFIC TIMEFRAME OR WITHOUT INTERRUPTION.
               </p>
             </Section>
 
             <Section title="10. Limitation of liability">
               <p>
-                TO THE FULLEST EXTENT PERMITTED BY LAW, NUVELA WILL NOT BE LIABLE FOR ANY
-                INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF
-                OR RELATING TO YOUR USE OF THE SITE, EVEN IF NUVELA HAS BEEN ADVISED OF THE
-                POSSIBILITY OF SUCH DAMAGES. OUR TOTAL LIABILITY FOR ANY CLAIM RELATED TO THE SITE
-                WILL NOT EXCEED ONE HUNDRED U.S. DOLLARS ($100).
+                TO THE FULLEST EXTENT PERMITTED BY LAW, NUVELA AND ITS OFFICERS, DIRECTORS,
+                EMPLOYEES, AGENTS, AFFILIATES, AND LICENSORS WILL NOT BE LIABLE FOR ANY
+                INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR
+                FOR ANY LOSS OF PROFITS, REVENUE, DATA, GOODWILL, OR OPPORTUNITY, ARISING OUT OF
+                OR RELATING TO YOUR USE OF OR INABILITY TO USE THE SITE, ANY INTERRUPTION OR
+                DELAY IN SERVICES OR FULFILLMENT, ANY DECISION TO PRESCRIBE OR DECLINE TO
+                PRESCRIBE, OR ANY ACT OR OMISSION OF ANY INDEPENDENT PROVIDER OR PHARMACY, EVEN
+                IF NUVELA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+              </p>
+              <p>
+                OUR TOTAL AGGREGATE LIABILITY FOR ANY AND ALL CLAIMS RELATED TO THE SITE WILL NOT
+                EXCEED ONE HUNDRED U.S. DOLLARS ($100). THESE LIMITATIONS APPLY REGARDLESS OF THE
+                LEGAL THEORY (CONTRACT, TORT, STRICT LIABILITY, OR OTHERWISE) AND FORM AN
+                ESSENTIAL BASIS OF THE BARGAIN BETWEEN YOU AND NUVELA.
               </p>
               <p>
                 Nothing in these Terms limits liability that cannot be limited under applicable
-                law.
+                law, including liability for gross negligence, willful misconduct, or fraud where
+                applicable law does not permit such limitation.
               </p>
             </Section>
 

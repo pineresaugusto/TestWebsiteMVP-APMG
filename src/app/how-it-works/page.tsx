@@ -15,7 +15,7 @@ export default function HowItWorks() {
             How Nuvela <em className="not-italic text-primary-dark">works</em>
           </>
         }
-        description="From your first assessment to ongoing support — here's exactly what to expect on your weight-loss journey."
+        description="From your first assessment to ongoing support — a calm, step-by-step look at what the experience feels like."
       />
 
       {/* Patient Journey — alternating layout, iconographic tile replaces emoji */}
@@ -122,12 +122,12 @@ export default function HowItWorks() {
               ))}
             </div>
 
-            <h3 className="mt-10 font-display text-2xl text-foreground">Clinical Results</h3>
+            <h3 className="mt-10 font-display text-2xl text-foreground">Clinical results</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
-              In the landmark STEP clinical trial program, participants using semaglutide 2.4mg
-              achieved an average weight loss of approximately 15% of their body weight over 68
-              weeks. Many participants lost significantly more, with some achieving 20%+ weight
-              reduction.
+              In the STEP clinical trial program (Wilding et al., NEJM 2021), adults with obesity
+              who took semaglutide 2.4&nbsp;mg weekly lost an average of approximately 14.9% of
+              their body weight over 68 weeks, compared with ~2.4% on placebo. Individual results
+              vary and depend on many factors, including starting weight, adherence, and lifestyle.
             </p>
 
             <h3 className="mt-10 font-display text-2xl text-foreground">Common Side Effects</h3>
@@ -197,16 +197,17 @@ export default function HowItWorks() {
         />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-white">
-            Ready to get started?
+            Ready when you are.
           </h2>
           <p className="mt-5 text-white/85 max-w-xl mx-auto">
-            Take our free assessment to see if you&apos;re a candidate for GLP-1 treatment.
+            Start the short assessment — no commitment, and nothing is submitted until the final
+            step.
           </p>
           <Link
             href="/get-started"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-10 py-4 text-base font-semibold text-primary-dark shadow-lg hover:bg-background hover:-translate-y-[1px] transition-all"
           >
-            See If You Qualify
+            Start your assessment
           </Link>
         </div>
       </section>
@@ -364,9 +365,9 @@ const faqs = [
       "Compounded semaglutide contains the same active ingredient as brand-name medications like Ozempic® and Wegovy®, but is prepared by FDA-regulated 503B compounding pharmacies. This allows us to offer the medication at a significantly lower cost. Compounded medications are not FDA-approved products themselves, but are produced under strict manufacturing standards in FDA-regulated facilities.",
   },
   {
-    question: "How much weight can I expect to lose?",
+    question: "How much weight can someone lose?",
     answer:
-      "Results vary by individual. In clinical trials, patients using semaglutide 2.4mg lost an average of approximately 15% of their body weight over 68 weeks. Your results will depend on your starting weight, adherence to the medication, and lifestyle factors. Your provider will set realistic expectations during your consultation.",
+      "Results vary widely by individual, and no outcome is guaranteed. In clinical trials, adults using semaglutide 2.4\u00a0mg lost an average of approximately 14.9% of their body weight over 68 weeks. Your results depend on many factors, including starting weight, adherence, and lifestyle. Your provider will discuss realistic expectations during your consultation.",
   },
   {
     question: "How is the medication administered?",
@@ -396,7 +397,7 @@ const faqs = [
   {
     question: "How long does shipping take?",
     answer:
-      "Most orders ship within 3-5 business days of your provider visit. You'll receive tracking information via email so you know exactly when to expect your medication. Priority shipping is available on our Transform plan.",
+      "Once your provider visit is complete and any prescription is issued, orders are typically sent to the pharmacy within a few business days. Actual fulfillment and delivery times depend on the pharmacy and your shipping carrier, and can vary. You'll receive tracking information by email when your order ships.",
   },
   {
     question: "Is my information kept private?",
