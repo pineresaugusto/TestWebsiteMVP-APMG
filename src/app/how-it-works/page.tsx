@@ -95,7 +95,7 @@ export default function HowItWorks() {
               ))}
             </div>
 
-            <h3 className="mt-10 font-display text-2xl text-foreground">Clinical results</h3>
+            <h3 className="mt-10 font-display text-2xl text-foreground">Clinical Results</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
               In the STEP clinical trial program (Wilding et al., NEJM 2021), adults with obesity
               who took semaglutide 2.4&nbsp;mg weekly lost an average of approximately 14.9% of
@@ -128,9 +128,8 @@ export default function HowItWorks() {
               </h3>
               <p className="mt-3 text-foreground/70 leading-relaxed">
                 <strong>Compounded semaglutide</strong> contains the same active ingredient as
-                brand-name medications like Ozempic&reg; and Wegovy&reg;. When a provider
-                prescribes through Nuvela, the medication is prepared by an FDA-regulated 503B
-                outsourcing facility following strict quality standards.
+                brand-name medications like Ozempic&reg; and Wegovy&reg;. It is prepared by
+                FDA-regulated 503B outsourcing facilities following strict quality standards.
               </p>
               <p className="mt-3 text-foreground/70 leading-relaxed">
                 Compounded medications are not FDA-approved products, but they are produced in

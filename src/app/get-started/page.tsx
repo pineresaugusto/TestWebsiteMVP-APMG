@@ -187,11 +187,12 @@ export default function GetStarted() {
               </svg>
             </div>
             <h1 className="font-display text-3xl md:text-[2.25rem] leading-tight text-foreground">
-              Good news — you look like a fit so far
+              You&apos;re a good match so far
             </h1>
             <p className="mt-5 text-foreground/70 max-w-lg mx-auto leading-relaxed">
-              A licensed provider will review what you shared and make the final call. No
-              payment is required until after that conversation, and you can stop at any point.
+              Choose a plan to get started. Everything is included — your provider consultation,
+              medication, supplies, shipping, and ongoing support. One subscription, nothing
+              extra.
             </p>
           </div>
 
@@ -200,21 +201,21 @@ export default function GetStarted() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-accent uppercase tracking-wide">
-                  Recommended Plan
+                  Recommended for you
                 </p>
-                <h3 className="mt-1 text-2xl font-bold text-foreground">{tier.name}</h3>
+                <h3 className="mt-1 font-display text-2xl text-foreground">{tier.name}</h3>
               </div>
               <div className="text-right">
-                <span className="text-3xl font-bold text-foreground">${tier.price}</span>
+                <span className="font-display text-3xl text-foreground">${tier.price}</span>
                 <span className="text-foreground/50">/mo</span>
               </div>
             </div>
             <div className="mt-6 grid sm:grid-cols-2 gap-3">
               {[
-                "Compounded semaglutide",
                 "Provider consultation",
-                "Injection supplies",
-                "Free shipping",
+                "Compounded semaglutide",
+                "Injection supplies included",
+                "Discreet home delivery",
                 "Ongoing provider support",
                 "Cancel anytime",
               ].map((f) => (
@@ -227,16 +228,12 @@ export default function GetStarted() {
               ))}
             </div>
             <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 border border-accent/30 px-6 py-3 text-sm font-medium text-accent-dark">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zM19.5 19.5h-15" />
-                </svg>
-                We&apos;ll be in touch about next steps
-              </div>
-              <p className="mt-4 text-xs text-foreground/50 max-w-sm mx-auto leading-relaxed">
-                We&apos;re not booking consultations just yet — we&apos;ll reach out as soon as
-                our provider network is open in your area. No payment is required in the
-                meantime.
+              <button className="rounded-full bg-accent px-10 py-3.5 text-base font-semibold text-white shadow-md shadow-accent/25 hover:bg-accent-dark hover:shadow-lg hover:-translate-y-[1px] transition-all">
+                Choose this plan
+              </button>
+              <p className="mt-4 text-xs text-foreground/45 max-w-sm mx-auto leading-relaxed">
+                Your provider will review everything during your consultation. Prescription
+                and medication depend on their clinical assessment.
               </p>
             </div>
           </div>
@@ -253,7 +250,7 @@ export default function GetStarted() {
           {bmi && (
             <p className="mt-6 text-center text-xs text-foreground/40">
               Your estimated BMI: {bmi.toFixed(1)} — Recommendation is based on your BMI and
-              reported health profile. Final treatment plan determined by your provider.
+              reported health profile.
             </p>
           )}
         </div>

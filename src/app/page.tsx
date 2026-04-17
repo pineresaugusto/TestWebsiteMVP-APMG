@@ -25,8 +25,8 @@ export default function Home() {
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
-                  Real weight-loss care,{" "}
-                  <em className="italic font-normal text-primary-dark">made simple</em>.
+                  A provider, a plan, and{" "}
+                  <em className="italic font-normal text-primary-dark">nothing in the way</em>...
                 </h1>
               </Reveal>
               <Reveal delay={160}>
