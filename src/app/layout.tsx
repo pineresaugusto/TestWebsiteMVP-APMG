@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,23 +10,23 @@ const inter = Inter({
   display: "swap",
 });
 
-// Display serif for headlines. Optical sizing + soft-but-authoritative feel
-// suits a warm wellness brand; pairs cleanly with Inter for body copy.
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+// Display serif for headlines. Lora: clean, warm, conventional letterforms —
+// no quirky terminals. Pairs naturally with Inter for body copy.
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
   display: "swap",
-  axes: ["SOFT", "opsz"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Nuvela — GLP-1 Weight Loss Treatment Online",
   description:
-    "Nuvela connects you with licensed healthcare providers for clinically-proven GLP-1 weight loss treatment. All-inclusive monthly plans with medication, consultations, and home delivery.",
+    "Nuvela connects you with licensed healthcare providers for clinically-studied GLP-1 weight loss treatment. All-inclusive monthly plans with medication, consultations, and home delivery.",
   openGraph: {
     title: "Nuvela — GLP-1 Weight Loss Treatment Online",
     description:
-      "Clinically-proven GLP-1 weight loss treatment with licensed providers. All-inclusive plans starting at $199/mo.",
+      "Clinically-studied GLP-1 weight loss treatment with licensed providers. All-inclusive plans starting at $199/mo.",
     type: "website",
     locale: "en_US",
     siteName: "Nuvela",
@@ -41,7 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${inter.variable} ${lora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Navbar />

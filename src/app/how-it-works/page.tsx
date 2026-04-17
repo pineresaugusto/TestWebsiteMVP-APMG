@@ -18,76 +18,50 @@ export default function HowItWorks() {
         description="From your first assessment to ongoing support — a calm, step-by-step look at what the experience feels like."
       />
 
-      {/* Patient Journey — alternating layout, iconographic tile replaces emoji */}
+      {/* Patient Journey — clean stacked typography, no image tiles */}
       <section className="py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="space-y-20 md:space-y-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <div className="space-y-16 md:space-y-20">
             {journeySteps.map((step, i) => (
               <Reveal key={step.title}>
-                <div
-                  className={`flex flex-col md:flex-row items-center gap-10 md:gap-14 ${
-                    i % 2 !== 0 ? "md:flex-row-reverse" : ""
-                  }`}
-                >
-                  <div className="flex-1">
-                    <div className="inline-flex items-center gap-3 mb-5">
-                      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-display text-base">
-                        {i + 1}
-                      </span>
-                      <span className="text-[11px] font-semibold text-primary-dark uppercase tracking-[0.2em]">
-                        Step {i + 1}
-                      </span>
-                    </div>
-                    <h3 className="font-display text-3xl md:text-4xl leading-[1.1] text-foreground">
-                      {step.title}
-                    </h3>
-                    <p className="mt-5 text-foreground/70 leading-relaxed">
-                      {step.description}
-                    </p>
-                    <ul className="mt-5 space-y-2.5">
-                      {step.details.map((detail) => (
-                        <li
-                          key={detail}
-                          className="flex items-start gap-2.5 text-sm text-foreground/65"
+                <article>
+                  <p className="text-[11px] font-semibold text-primary-dark uppercase tracking-[0.2em]">
+                    Step {i + 1}
+                  </p>
+                  <h3 className="mt-3 font-display text-[1.75rem] md:text-3xl leading-[1.12] text-foreground">
+                    {step.title}
+                  </h3>
+                  <p className="mt-4 text-foreground/70 leading-relaxed">
+                    {step.description}
+                  </p>
+                  <ul className="mt-5 space-y-2.5">
+                    {step.details.map((detail) => (
+                      <li
+                        key={detail}
+                        className="flex items-start gap-2.5 text-sm text-foreground/65"
+                      >
+                        <svg
+                          className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden
                         >
-                          <svg
-                            className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            aria-hidden
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M4.5 12.75l6 6 9-13.5"
-                            />
-                          </svg>
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  {/* Iconographic tile — layered sage frame + dotted corner */}
-                  <div className="flex-1 w-full">
-                    <div className="relative mx-auto max-w-md md:max-w-none">
-                      <div
-                        aria-hidden
-                        className={`absolute w-32 h-32 rounded-3xl bg-dots opacity-60 hidden md:block ${
-                          i % 2 !== 0 ? "-top-4 -left-4" : "-top-4 -right-4"
-                        }`}
-                      />
-                      <div className="relative aspect-[4/3] rounded-[1.75rem] bg-gradient-to-br from-primary/25 via-secondary-light to-secondary/50 p-1">
-                        <div className="h-full w-full rounded-[1.5rem] bg-background/80 backdrop-blur-sm flex items-center justify-center">
-                          <div className="text-primary-dark">
-                            {journeyIcons[i]}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5"
+                          />
+                        </svg>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                  {i < journeySteps.length - 1 && (
+                    <div className="mt-12 h-px bg-secondary/60" aria-hidden />
+                  )}
+                </article>
               </Reveal>
             ))}
           </div>
@@ -110,8 +84,7 @@ export default function HowItWorks() {
 
             <h3 className="mt-10 font-display text-2xl text-foreground">How Semaglutide Works</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
-              Semaglutide, the active ingredient in our treatment plans, works through three key
-              mechanisms:
+              Semaglutide works through three key mechanisms:
             </p>
             <div className="mt-6 grid sm:grid-cols-3 gap-6">
               {mechanisms.map((m) => (
@@ -154,14 +127,12 @@ export default function HowItWorks() {
                 About compounded medications
               </h3>
               <p className="mt-3 text-foreground/70 leading-relaxed">
-                Nuvela prescribes <strong>compounded semaglutide</strong>, which contains the same
-                active ingredient as brand-name medications like Ozempic&reg; and Wegovy&reg;.
-                Compounded medications are prepared by FDA-regulated 503B outsourcing facilities
-                following strict quality standards.
+                <strong>Compounded semaglutide</strong> contains the same active ingredient as
+                brand-name medications like Ozempic&reg; and Wegovy&reg;. When a provider
+                prescribes through Nuvela, the medication is prepared by an FDA-regulated 503B
+                outsourcing facility following strict quality standards.
               </p>
               <p className="mt-3 text-foreground/70 leading-relaxed">
-                Compounding allows us to offer treatment at a significantly lower cost than
-                brand-name alternatives, making GLP-1 therapy accessible to more patients.
                 Compounded medications are not FDA-approved products, but they are produced in
                 FDA-regulated facilities subject to Current Good Manufacturing Practice (cGMP)
                 requirements.
@@ -242,36 +213,6 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
     </div>
   );
 }
-
-// Iconographic SVG tiles replacing the emoji placeholders. Matched 1:1 to the
-// journey-step order below: assessment → consult → delivery → ongoing care.
-const journeyIcons = [
-  // Clipboard / assessment
-  <svg key="assessment" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10h18a2 2 0 012 2v28a2 2 0 01-2 2H15a2 2 0 01-2-2V12a2 2 0 012-2z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19 10v-2a2 2 0 012-2h6a2 2 0 012 2v2" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M18 22l3 3 7-7M18 30h12M18 35h8" />
-  </svg>,
-  // Stethoscope / consultation
-  <svg key="consult" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14 8v12a8 8 0 0016 0V8" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M22 28c0 6 4 10 10 10s10-4 10-10" />
-    <circle cx="36" cy="24" r="3.5" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="14" cy="8" r="2" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="30" cy="8" r="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>,
-  // Package / delivery
-  <svg key="delivery" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16l16-8 16 8v16l-16 8-16-8V16z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M8 16l16 8 16-8M24 24v16" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M16 12l16 8" />
-  </svg>,
-  // Heart pulse / ongoing care
-  <svg key="ongoing" className="w-24 h-24" fill="none" viewBox="0 0 48 48" stroke="currentColor" strokeWidth={1.25} aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M24 40s-14-8-14-20a8 8 0 0114-5 8 8 0 0114 5c0 12-14 20-14 20z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M10 24h6l3-6 4 12 3-6h12" />
-  </svg>,
-];
 
 const journeySteps = [
   {

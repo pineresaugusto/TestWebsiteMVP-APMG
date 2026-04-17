@@ -20,7 +20,7 @@ export default function Home() {
             <div className="md:col-span-7">
               <Reveal>
                 <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
-                  Weight-loss care, reimagined
+                  GLP-1 treatment from home
                 </p>
               </Reveal>
               <Reveal delay={80}>
@@ -122,12 +122,12 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                {/* Soft corner pill */}
+                {/* No insurance needed — quiet reinforcement */}
                 <div
                   aria-hidden
                   className="absolute -bottom-4 -left-4 rounded-full bg-white border border-primary/25 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-dark shadow-lg shadow-primary/10 hidden sm:block"
                 >
-                  Gentle · Guided
+                  No insurance needed
                 </div>
               </div>
             </Reveal>
@@ -239,41 +239,29 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* Why Nuvela — typographic grid, no icons.                           */}
-      {/* Premium, editorial rhythm: hairline rule, serif numeral, title,    */}
-      {/* supporting body. Relies on type + whitespace, not iconography.     */}
+      {/* Value props — clean typographic grid, no icons, no numbering.      */}
       {/* ----------------------------------------------------------------- */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <Reveal>
-              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
-                What sets us apart
-              </p>
-            </Reveal>
-            <Reveal delay={80}>
-              <h2 className="mt-5 font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground">
-                Care that feels different
+              <h2 className="font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground">
+                Everything handled from home
               </h2>
             </Reveal>
-            <Reveal delay={140}>
+            <Reveal delay={80}>
               <p className="mt-4 text-lg text-foreground/70">
-                Nothing cold, nothing rushed. Just thoughtful, provider-led support at every
-                step.
+                Licensed providers, private consultations, and discreet delivery — without
+                leaving your couch.
               </p>
             </Reveal>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 lg:gap-x-14">
+          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-12 lg:gap-x-14 max-w-4xl mx-auto">
             {features.map((feature, i) => (
               <Reveal key={feature.title} delay={i * 70}>
                 <article className="group h-full">
-                  <div className="flex items-baseline gap-3">
-                    <span className="h-px w-8 bg-primary/40 translate-y-[-6px]" aria-hidden />
-                    <span className="font-display text-sm tracking-[0.14em] text-primary-dark">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 font-display text-[1.5rem] leading-[1.2] text-foreground">
+                  <span className="h-px w-8 block bg-primary/40 mb-5" aria-hidden />
+                  <h3 className="font-display text-[1.5rem] leading-[1.2] text-foreground">
                     {feature.title}
                   </h3>
                   <p className="mt-3 text-[15px] text-foreground/65 leading-relaxed">
@@ -398,8 +386,6 @@ const steps = [
   },
 ];
 
-// Why Nuvela — six editorial cards. Icons intentionally removed; content
-// reads as typographic rhythm, not a feature grid.
 const features = [
   {
     title: "Licensed, human providers",
@@ -420,15 +406,5 @@ const features = [
     title: "Support that continues",
     description:
       "Regular check-ins mean your plan can evolve as you do — dose adjustments, questions, honest guidance.",
-  },
-  {
-    title: "Thoughtful, unhurried",
-    description:
-      "Real time with a provider, in plain language. The pace of a quiet conversation, not a clinic visit.",
-  },
-  {
-    title: "Compounded for access",
-    description:
-      "Compounded semaglutide from FDA-regulated pharmacies — the same active ingredient, at a more accessible price.",
   },
 ];

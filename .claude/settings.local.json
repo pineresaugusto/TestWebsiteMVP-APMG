@@ -27,7 +27,8 @@
       "Bash(zip -r \"load-context-skill.zip\" .claude/skills/load-context/)",
       "Bash(powershell -Command \"Compress-Archive -Path '.claude/skills/load-context' -DestinationPath 'load-context-skill.zip' -Force\")",
       "Read(//opt/homebrew/bin/**)",
-      "Read(//Users/mauriciogerlein/**)"
+      "Read(//Users/mauriciogerlein/**)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }
