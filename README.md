@@ -7,6 +7,18 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-22 — adpineres-ef
+- Kicked off demo-flow plan (signup → plan → payment → dashboard) for
+  pitching medical-group partners; plan file lives at
+  `.claude/plans/whimsical-puzzling-chipmunk.md`
+- Phase 0 delivered: wrote `docs/DESIGN_BRIEF_APP.md` — spec for
+  designer-Claude covering all 10 `/app/*` screens
+- Investigated `claude-mem` plugin install; parked after Windows PATH
+  blocker (plugin package on disk, but `/plugin install` in-app
+  registration still owed before hooks/mem-search activate)
+- Build clean; pre-existing `Reveal.tsx` lint error remains from
+  earlier iteration verification debt
+
 ### 2026-04-16 — Mauger00
 - Iteration 3 (UX + legal refinement): softer home hero — new H1
   "Real weight-loss care, made simple.", efficacy moved out of first
