@@ -6,6 +6,126 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 4: Demo flow foundation
+
+This iteration adds the logged-in demo funnel behind `/app/*`:
+signup → select-plan → checkout → welcome, plus stub destinations
+for `/app/dashboard` (next iteration) and `/app/not-eligible`
+(Iteration C). The marketing site remains unchanged visually; it
+now hands off to the funnel via the assessment result.
+
+Brief on scope: this is "Iteration A" of the demo-flow plan
+(`.claude/plans/whimsical-puzzling-chipmunk.md`). It wires the
+four-step sign-up funnel end-to-end against a local-storage
+demo state with no network calls. Payment is a stubbed visual
+form with a 1.5s processing delay and a `TODO(stripe)` marker
+so the real Stripe Elements swap is a contained change later.
+
+### Added
+
+- `src/lib/plans.ts` — single source of truth for plan catalog
+  (`PLANS` record + `PLAN_LIST`). `PlanTier = "start" | "accelerate"
+  | "transform"`. Copy preserved verbatim from the existing pricing
+  page so the refactor is zero-visual-change.
+- `src/lib/demoState.ts` — versioned `localStorage` helpers
+  (`get` / `set` / `reset`) keyed on `nuvela_demo_v1`, plus a
+  `seed("newUser" | "week4" | "notEligible")` helper used by the
+  demo toolbar and the welcome screen. SSR-safe: all writes guard
+  on `typeof window`. Schema covers quiz, plan, payment, and
+  dashboard state (messages / orders / weight logs) so later
+  iterations can consume the same store.
+- `src/components/DemoToolbar.tsx` — a fixed bottom-right toolbar
+  visible only when the URL has `?demo=1` or
+  `sessionStorage.nuvela_demo_mode === "1"`. Buttons: Reset, Jump
+  "New user", Jump "Week 4", Jump "Not eligible", Hide. Rich-er than
+  the designer's `.demo-toggle` because it has to drive the pitch.
+- `src/components/ChromeGate.tsx` — `GatedNavbar` /
+  `GatedFooter` wrappers that hide the marketing chrome on any
+  `/app/*` route. Client-side only, one `usePathname()` read each.
+  Added instead of a route group so the existing marketing chrome
+  keeps rendering unchanged.
+- `src/app/app/layout.tsx` — funnel shell: cream background,
+  sticky `FunnelHeader`, no footer.
+- `src/app/app/_components/FunnelHeader.tsx` — sticky header with
+  Nuvela wordmark, `Step N of 4` indicator derived from
+  `usePathname`, and a sign-out that calls `reset()` then routes
+  to `/`. Sign-out is hidden on `/app/signup` (nothing yet to
+  abandon).
+- `src/app/app/signup/page.tsx` — email / password stub form with
+  `?from=quiz` pre-fill, "Continue as guest →" link to
+  `/app/select-plan`, two-column panel with the Nuvela quote and
+  three trust points.
+- `src/app/app/select-plan/page.tsx` — three-card plan picker.
+  Pre-selects from `demoState.quiz.recommendedPlan`, shows a
+  "Recommended for you" ribbon on the quiz-recommended card only
+  when coming from a completed quiz, and routes to checkout on
+  confirm.
+- `src/app/app/checkout/page.tsx` — stubbed Stripe-style form with
+  card-brand detection (VISA / MC / AMEX), formatted card / expiry
+  inputs, sticky order summary, 1.5 s processing spinner, and a
+  `TODO(stripe)` comment marking where real Stripe Elements will
+  drop in.
+- `src/app/app/welcome/page.tsx` — success state with a three-step
+  timeline (provider review → pharmacy ships → day 5–7 check-in).
+  "Go to your dashboard" calls `seed("newUser")` so the dashboard
+  lands in a realistic first-day state.
+- `src/app/app/dashboard/page.tsx` — stub page ("Dashboard coming
+  in next iteration"). Keeps the welcome → dashboard hand-off from
+  erroring and gives the demo toolbar's "New user" / "Week 4"
+  buttons a landing target.
+- `src/app/app/not-eligible/page.tsx` — stub parallel to the
+  dashboard stub. Inline not-eligible on `/get-started` stays the
+  canonical disqualification surface for Iteration A; the funnel
+  version lands in Iteration C.
+- `--primary-light: #a3bda8` in `src/app/globals.css` plus
+  `--color-primary-light` in `@theme inline`. Used nowhere yet —
+  added so the dashboard iteration has a warmer primary tint ready.
+
+### Changed
+
+- `src/app/pricing/page.tsx` now imports `PLAN_LIST` from
+  `src/lib/plans.ts` instead of declaring an inline `tiers` array.
+  Zero visual change; the copy is identical (it was the source the
+  new constant was seeded from).
+- `src/app/get-started/page.tsx` — on submit, writes the quiz
+  result to `demoState.quiz` and branches: eligible redirects to
+  `/app/signup?from=quiz` (the funnel picks up the recommended
+  plan); not-eligible stays on the existing inline disqualification
+  screen and also records the disqualifying condition. Added a
+  "Skip the assessment →" link on Step 1 that jumps to
+  `/app/signup?skipped=quiz`. Removed the inline "You're a good
+  match so far" recommended-plan card — it is now unreachable
+  (eligible users redirect before they can see it) and was the
+  precursor to what the funnel now does properly.
+- `src/app/layout.tsx` — swaps `Navbar` / `Footer` for
+  `GatedNavbar` / `GatedFooter` and mounts `<DemoToolbar />` at
+  the body root so `?demo=1` works from any route.
+
+### Known issues (deferred)
+
+- Checkout is a visual stub — swap for real Stripe Elements when
+  a `pk_test_` key is available. The `TODO(stripe)` marker in
+  `src/app/app/checkout/page.tsx` flags the exact swap point, and
+  the `payment` shape in `demoState` already records what the real
+  integration will persist (`cardLast4`, `subscribedAt`).
+- `/app/dashboard` and `/app/not-eligible` are intentional stubs.
+  Dashboard lands in Iteration B; the funnel-version not-eligible
+  surface lands in Iteration C.
+- Pre-existing `Reveal.tsx` lint error (setState in effect) is
+  untouched.
+
+### Verification steps owed
+
+- `npm run lint` (only the pre-existing Reveal error is acceptable).
+- `npm run build`.
+- Walk through scenario 1 (full flow: `/get-started` →
+  `/app/signup?from=quiz` → select-plan → checkout → welcome →
+  dashboard stub).
+- Walk through scenario 2 (skip quiz: `/app/signup?skipped=quiz`
+  → select-plan without ribbon → checkout → welcome).
+- Walk through scenario 3 (skip signup: marketing site → `?demo=1`
+  → toolbar "Jump New user" → dashboard stub; "Reset" → `/`).
+
 ## [Unreleased] — Iteration 3: UX + Legal Refinement
 
 This iteration makes the site feel simpler, warmer, and less pushy on

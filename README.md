@@ -7,6 +7,23 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-23 — adpineres-ef
+- Iter A of demo flow landed: `/app/*` funnel (signup → select-plan
+  → checkout → welcome) backed by localStorage `demoState` and a
+  versioned schema covering quiz/plan/payment/dashboard
+- Added `?demo=1` `DemoToolbar` for pitch walkthroughs
+  (Reset / New user / Week 4 / Not eligible / Hide) and a
+  `ChromeGate` that hides marketing nav + footer on funnel routes
+  without a route group
+- Shared `src/lib/plans.ts` now consumed by pricing page + quiz
+  recommendation + funnel — marketing site unchanged visually
+- Wrap-up fixes before Iter B: removed nested `<main>` in app
+  layout, welcome screen now preserves the funnel-captured user
+  instead of seeding "Demo Patient", FunnelHeader hides on
+  `/app/dashboard` so Iter B's sidebar won't double up
+- Verified via preview: full funnel + skip-quiz + toolbar paths
+  all green; build clean, no new lint errors
+
 ### 2026-04-22 — adpineres-ef
 - Kicked off demo-flow plan (signup → plan → payment → dashboard) for
   pitching medical-group partners; plan file lives at
