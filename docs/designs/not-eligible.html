@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvela — Not Eligible</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .not-eligible-page {
+    max-width: 620px; margin: 0 auto; padding: 64px 32px 80px;
+  }
+
+  .empathy-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(212,197,178,0.25);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px; color: var(--foreground); opacity: 0.6;
+  }
+  .empathy-icon svg { width: 28px; height: 28px; }
+
+  .not-eligible-page h1 {
+    font-family: 'Fraunces', Georgia, serif; font-size: 28px;
+    font-weight: 500; letter-spacing: -0.02em; margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .empathy-text {
+    font-size: 16px; line-height: 1.7; opacity: 0.7; margin-bottom: 12px;
+  }
+  .empathy-text strong { font-weight: 600; color: var(--foreground); opacity: 1; }
+
+  .next-step {
+    font-size: 15px; line-height: 1.6; color: var(--primary-dark);
+    font-weight: 500; margin-bottom: 32px; padding: 16px 0;
+    border-top: 1px solid rgba(212,197,178,0.3);
+    border-bottom: 1px solid rgba(212,197,178,0.3);
+  }
+
+  /* Doctor card */
+  .doctor-card {
+    background: var(--white); border-radius: var(--radius-xl);
+    border: 1px solid rgba(212,197,178,0.4); box-shadow: var(--shadow-sm);
+    padding: 28px; margin-bottom: 36px;
+  }
+  .doctor-card h3 {
+    font-size: 15px; font-weight: 700; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .doctor-card h3 svg { width: 18px; height: 18px; color: var(--primary); }
+  .doctor-card ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .doctor-card li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14.5px; line-height: 1.5;
+  }
+  .doctor-card li .bullet {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--primary); flex-shrink: 0; margin-top: 8px;
+  }
+
+  /* Actions */
+  .ne-actions {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ne-disclaimer-link {
+    font-size: 14px; color: var(--foreground); opacity: 0.45;
+    text-decoration: none; transition: opacity var(--transition);
+  }
+  .ne-disclaimer-link:hover { opacity: 0.7; }
+</style>
+</head>
+<body>
+<div class="funnel-header">
+  <a class="logo" href="dashboard.html"><span class="logo-dot"></span>Nuvela</a>
+  <span></span>
+  <span></span>
+</div>
+
+<div class="not-eligible-page">
+  <div class="empathy-icon animate-in stagger-1">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS.heart}</svg>
+  </div>
+
+  <h1 class="animate-in stagger-1">We are not able to serve you at this time</h1>
+
+  <p class="empathy-text animate-in stagger-2">
+    Based on your answers — specifically <strong id="reason">a history of medullary thyroid carcinoma</strong> — GLP-1 medications may not be right for you. This is not a reflection on you; it is how we keep treatment safe.
+  </p>
+
+  <div class="next-step animate-in stagger-3">
+    Please talk to your primary care physician about weight-loss options that fit your health history.
+  </div>
+
+  <div class="doctor-card animate-in stagger-4">
+    <h3>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS.info}</svg>
+      What to tell your doctor
+    </h3>
+    <ul>
+      <li>
+        <span class="bullet"></span>
+        <span>You explored GLP-1 receptor agonist therapy (semaglutide) for weight management and were screened out due to a contraindication</span>
+      </li>
+      <li>
+        <span class="bullet"></span>
+        <span>Ask about alternative weight-loss medications or programs that may be compatible with your medical history</span>
+      </li>
+      <li>
+        <span class="bullet"></span>
+        <span>Request a comprehensive metabolic panel if you have not had one recently — it gives your doctor a clearer picture of your options</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ne-actions animate-in stagger-5">
+    <a href="dashboard.html" class="btn btn-primary">Return to home</a>
+    <a href="#" class="ne-disclaimer-link">Read our medical disclaimer</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+// Read contraindication reason from state if available
+const state = getState();
+if (state && state.quiz && state.quiz.contraindicationReason) {
+  document.getElementById('reason').textContent = state.quiz.contraindicationReason;
+}
+</script>
+</body>
+</html>
