@@ -45,3 +45,4 @@ next-env.d.ts
 
 # Skill distribution artifacts
 *.zip
+.claude/worktrees/recursing-bouman-f9aace/
