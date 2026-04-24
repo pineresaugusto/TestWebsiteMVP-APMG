@@ -6,6 +6,113 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 6: Patient dashboard (Iter C)
+
+Iter C of the demo-flow plan. Fills the last four dashboard
+surfaces — Progress, Resources, Account, and a redesigned
+Not-Eligible funnel screen — and expands the sidebar from 5 to
+6 links. Designs under `docs/designs/` were the visual
+authority for Progress, Resources, and Not-Eligible. Account
+has no design file; built design-language-consistent per
+user direction to keep a 6-link sidebar (Option 3).
+
+### Added
+
+- `src/app/app/dashboard/progress/page.tsx` — full Progress
+  surface: 4 hero stat cards (Starting / Current / Total Change
+  / Goal Weight) when `weightLogs.length >= 2`, pure-SVG line
+  chart with polyline + area gradient + dashed goal line +
+  hover tooltips, "Log today's weight" form (number input
+  50–500 lb, Enter-to-submit, flash confirmation), recent 5
+  entries with per-entry signed delta (green down / coral up),
+  and two empty states (0-log and 1-log) per design.
+- `src/app/app/dashboard/resources/page.tsx` — 6-card
+  educational grid with per-card pastel gradient + inline SVG
+  illustrations + category pill + preview + read-time. Click
+  opens a modal dialog with full article body, scroll-locked
+  background, ESC-to-close, and outside-click-to-close. All 6
+  articles' content imported verbatim from the design file
+  (Getting Started / Side Effects / Nutrition / Mindset /
+  Plateaus / Community).
+- `src/app/app/dashboard/account/page.tsx` — profile header
+  (avatar + name + email + member-since), editable-look field
+  grid (read-only, "coming in future release" caveat), current
+  plan card pulled from `state.plan.tier` via `PLANS[...]`,
+  billing card showing masked card + last 4, notification
+  preferences list with 4 toggle rows (display-only), and a
+  soft-accented sign-out "danger zone" card.
+- `src/app/app/not-eligible/page.tsx` — replaced stub per
+  design. Empathy heart icon, H1 + empathetic body quoting
+  `state.quiz.contraindicationReason` (with fallback copy when
+  state is unseeded), mid-page call-to-action border band,
+  "What to tell your doctor" bullet card, Return-to-home
+  primary CTA, and medical-disclaimer subtle link.
+
+### Changed
+
+- `src/components/app/Sidebar.tsx` — expanded from 5 to 6
+  links: added `Resources` between Progress and Account.
+  Included new `IconResources` (book/clipboard glyph).
+  `activeKey()` now also matches `/app/dashboard/resources`.
+  `NavKey` union extended accordingly.
+- `src/lib/demoState.ts` —
+  - `DemoState.dashboard` gains optional `goalWeight?: number`.
+  - New exported helper `logWeight(weightLbs)` mirrors
+    `sendMessage`: range-validates (50–500), ISO-date-stamps,
+    appends to `dashboard.weightLogs`, writes + notifies.
+  - Week 4 seed now includes `goalWeight: 185` so the Progress
+    hero shows a 4th card and the chart draws its dashed goal
+    line immediately.
+  - `STORAGE_KEY` unchanged (`nuvela_demo_v2`) — the new
+    `goalWeight` field is optional, so existing Iter B
+    localStorage snapshots stay forward-compatible.
+
+### Deltas from design
+
+- **Account page has no design file.** Built under design
+  language (white cards, sage/coral accents, Fraunces display
+  font, tabular pricing) but layout choices (notification
+  toggles, soft-accent sign-out card) are mine — flagged per
+  convention. User opted for Option 3 (build Account anyway)
+  rather than dropping it.
+- **`weightLbs` field name retained.** Designs consistently
+  reference `.weight`; we kept `weightLbs` per Iter B
+  convention to avoid a storage migration. Internally-only
+  visible; all UI still renders "lb" as the unit.
+- **Not-eligible disclaimer link.** Design links to `#`; wired
+  to `/medical-disclaimer` (the real page).
+
+### Deferred
+
+- Profile editing, notification-toggle persistence, and
+  payment-method update remain display-only. Documented
+  inline ("available in a future release").
+- Article content in Resources is hard-coded; no CMS
+  integration — appropriate for a pitch demo.
+
+### Verification
+
+- `npm run build` — ✓ clean (all 24 routes pre-rendered,
+  including new `/app/dashboard/progress`, `/resources`,
+  `/account`).
+- `npm run lint` — ✓ no new errors introduced. Two pre-existing
+  errors remain and are explicitly out of scope per Iter B
+  handover:
+  - `src/app/app/dashboard/messages/page.tsx:75` —
+    set-state-in-effect (Iter B debt).
+  - `src/components/Reveal.tsx:38` — set-state-in-effect
+    (pre-Iter-A debt).
+- Preview-verified at 1440×900: seeded Week 4 → Progress
+  (4 stat cards + chart + goal line + dated entries with
+  deltas), Resources (6-card grid + modal open/ESC close),
+  Account (all four sections rendered with Sarah Mitchell's
+  seeded data). Seeded Not Eligible → not-eligible page
+  shows the seeded contraindication reason inline. Seeded
+  New User → Progress empty state + logWeight flow:
+  submitting 195.5 transitioned the chart to the "one data
+  point so far" state and the entry appeared in Recent
+  Entries immediately.
+
 ## [Unreleased] — Iteration 5: Patient dashboard
 
 Iter B of the demo-flow plan. Adds the logged-in patient
