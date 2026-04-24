@@ -8,6 +8,37 @@ Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
 ### 2026-04-24 — adpineres-ef
+- Iter C of demo flow landed: Progress, Resources, Account, and
+  a design-rebuilt Not-Eligible page. Sidebar now 6 links
+  (Resources added between Progress and Account) per user
+  Option 3 — designs only had Resources in that slot, but user
+  opted to keep Account too.
+- `/app/dashboard/progress`: 4 hero stat cards, pure-SVG line
+  chart (polyline + area gradient + dashed goal line + hover
+  tooltip), log-today's-weight form (range-validated,
+  Enter-to-submit), recent-5 entries with signed delta, 0-log
+  and 1-log empty states.
+- `/app/dashboard/resources`: 6-card educational grid with
+  inline SVG illustrations, category pills, modal dialog for
+  article body (ESC + outside-click + scroll-lock). Content
+  imported verbatim from `docs/designs/resources.html`.
+- `/app/dashboard/account`: profile header + field grid, plan
+  card, masked billing, notifications toggles (display-only),
+  soft-accent sign-out section. No design file existed —
+  built under design language; flagged as delta.
+- `/app/not-eligible`: rebuilt per design (empathy icon, H1,
+  reason interpolated from `state.quiz.contraindicationReason`
+  with fallback, bullet card, CTA + disclaimer link).
+- `src/lib/demoState.ts`: added optional `dashboard.goalWeight`,
+  exported `logWeight(weightLbs)` helper, seeded Week 4 with
+  `goalWeight: 185`. `STORAGE_KEY` unchanged — field is
+  optional, Iter B snapshots stay forward-compatible.
+- Verified at 1440×900 across populated / empty / one-log
+  states, modal open/close, and not-eligible reason
+  interpolation. `npm run build` clean; lint has no new
+  errors (2 pre-existing Iter B + Reveal debt remain).
+
+### 2026-04-24 — adpineres-ef
 - Iter B of demo flow landed: logged-in patient dashboard behind
   `/app/dashboard/*` with persistent `Sidebar` (Dashboard /
   Messages / Orders / Progress / Account + user block with

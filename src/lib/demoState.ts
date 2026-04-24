@@ -50,6 +50,7 @@ export type DemoState = {
     messages: Thread[];
     orders: Order[];
     weightLogs: { date: string; weightLbs: number }[];
+    goalWeight?: number;
   } | null;
 };
 
@@ -192,6 +193,16 @@ export function markThreadRead(threadId: string): void {
   });
   if (!changed) return;
   write({ ...state, dashboard: { ...state.dashboard, messages: nextThreads } });
+}
+
+export function logWeight(weightLbs: number): void {
+  if (!isBrowser()) return;
+  if (!Number.isFinite(weightLbs) || weightLbs < 50 || weightLbs > 500) return;
+  const state = get();
+  if (!state.dashboard) return;
+  const entry = { date: new Date().toISOString(), weightLbs };
+  const nextLogs = [...state.dashboard.weightLogs, entry];
+  write({ ...state, dashboard: { ...state.dashboard, weightLogs: nextLogs } });
 }
 
 export function getUnreadCount(state: DemoState): number {
@@ -370,6 +381,7 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
         { date: daysAgo(14), weightLbs: 207.2 },
         { date: daysAgo(7), weightLbs: 205.0 },
       ],
+      goalWeight: 185,
     },
   });
 }

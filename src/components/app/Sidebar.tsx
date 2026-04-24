@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { getUnreadCount, reset, useDemoState } from "@/lib/demoState";
 
-type NavKey = "dashboard" | "messages" | "orders" | "progress" | "account";
+type NavKey = "dashboard" | "messages" | "orders" | "progress" | "resources" | "account";
 
 const NAV: Array<{ key: NavKey; label: string; href: string; icon: React.ReactNode }> = [
   { key: "dashboard", label: "Dashboard", href: "/app/dashboard", icon: <IconDashboard /> },
   { key: "messages", label: "Messages", href: "/app/dashboard/messages", icon: <IconMessages /> },
   { key: "orders", label: "Orders", href: "/app/dashboard/orders", icon: <IconOrders /> },
   { key: "progress", label: "Progress", href: "/app/dashboard/progress", icon: <IconProgress /> },
+  { key: "resources", label: "Resources", href: "/app/dashboard/resources", icon: <IconResources /> },
   { key: "account", label: "Account", href: "/app/dashboard/account", icon: <IconAccount /> },
 ];
 
@@ -18,6 +19,7 @@ function activeKey(pathname: string): NavKey {
   if (pathname.startsWith("/app/dashboard/messages")) return "messages";
   if (pathname.startsWith("/app/dashboard/orders")) return "orders";
   if (pathname.startsWith("/app/dashboard/progress")) return "progress";
+  if (pathname.startsWith("/app/dashboard/resources")) return "resources";
   if (pathname.startsWith("/app/dashboard/account")) return "account";
   return "dashboard";
 }
@@ -165,6 +167,16 @@ function IconProgress() {
   return (
     <IconBase>
       <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </IconBase>
+  );
+}
+function IconResources() {
+  return (
+    <IconBase>
+      <path d="M4 4h11a3 3 0 013 3v13a2 2 0 00-2-2H4z" />
+      <path d="M4 4v15" />
+      <path d="M8 8h7" />
+      <path d="M8 12h7" />
     </IconBase>
   );
 }
