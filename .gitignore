@@ -47,3 +47,4 @@ next-env.d.ts
 *.zip
 .claude/worktrees/recursing-bouman-f9aace/
 .claude/settings.local.json
+/.claude
