@@ -29,7 +29,16 @@
       "Read(//opt/homebrew/bin/**)",
       "Read(//Users/mauriciogerlein/**)",
       "Bash(echo \"exit: $?\")",
-      "Bash(not exist *)"
+      "Bash(not exist *)",
+      "Bash(npx claude-mem *)",
+      "Read(//c/Users/USUARIO/AppData/Roaming/npm//**)",
+      "Read(//c/Users/USUARIO/.claude/**)",
+      "Read(//c/Program Files/nodejs//**)",
+      "Read(//c/Users/USUARIO/AppData/Local/Claude//**)",
+      "Read(//c/Users/USUARIO/AppData/Local/Claude/**)",
+      "Read(//c/Users/USUARIO/AppData/Local/**)",
+      "Read(//c/Users/USUARIO/AppData/Local/Programs//**)",
+      "Bash(powershell.exe -Command \"Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local' -Filter 'claude*' -Directory -ErrorAction SilentlyContinue | Select-Object FullName; Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local' -Filter '*nthropic*' -Directory -ErrorAction SilentlyContinue | Select-Object FullName; Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local\\\\Claude' -ErrorAction SilentlyContinue | Select-Object Name\")"
     ]
   }
 }
