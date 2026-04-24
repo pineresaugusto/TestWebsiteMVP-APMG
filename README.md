@@ -7,6 +7,31 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-24 — adpineres-ef
+- Iter B of demo flow landed: logged-in patient dashboard behind
+  `/app/dashboard/*` with persistent `Sidebar` (Dashboard /
+  Messages / Orders / Progress / Account + user block with
+  sign-out), `dashboard/layout.tsx` sub-layout, and four widgets
+  (NextInjection, InboxPreview, Orders, ProgressMini with
+  pure-SVG sparkline)
+- New full-page surfaces: `/app/dashboard/messages` (thread
+  list + pane with auto-select, auto-mark-read, send input
+  wired through `sendMessage`) and `/app/dashboard/orders`
+  (filter pills, grid table, status pills, empty state)
+- Reshaped `src/lib/demoState.ts` messages from flat
+  `Message[]` to `Thread[]` with `ThreadMessage[]` nested;
+  added `sendMessage`, `markThreadRead`, `getUnreadCount`;
+  bumped `STORAGE_KEY` v1 → v2 so stale Iter A state is
+  discarded on load
+- Designs treated as visual authority per instructions; added
+  design-sourced unread-messages CTA bar on the dashboard (not
+  in plan scope); confirmed with user before commit
+- `/app/dashboard/progress` + `/app/dashboard/account`
+  intentionally 404 — Iter C scope
+- Verified end-to-end via preview at 1440×900 (dashboard,
+  messages, orders, empty states); lint/build not re-run,
+  carrying forward existing verification debt
+
 ### 2026-04-23 — adpineres-ef
 - Iter A of demo flow landed: `/app/*` funnel (signup → select-plan
   → checkout → welcome) backed by localStorage `demoState` and a

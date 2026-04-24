@@ -19,18 +19,22 @@ export default function WelcomePage() {
       const now = new Date().toISOString();
       const nextInjection = new Date();
       nextInjection.setDate(nextInjection.getDate() + 7);
+      const welcome =
+        "Welcome to Nuvela! I've reviewed your intake and everything looks great. Your first shipment will go out within 2–3 business days. Reach out anytime with questions about your plan.";
       set({
         dashboard: {
           nextInjectionDate: nextInjection.toISOString(),
           currentDose: "0.25 mg",
           messages: [
             {
-              id: "m1",
-              from: "provider",
-              senderName: "Dr. Sarah Chen, NP",
-              text: "Welcome to Nuvela! I've reviewed your intake and everything looks great. Your first shipment will go out within 2–3 business days. Reach out anytime with questions about your plan.",
-              timestamp: now,
+              id: "t1",
+              sender: "Dr. Sarah Chen, NP",
               unread: true,
+              lastTimestamp: now,
+              preview: welcome.slice(0, 60) + "...",
+              messages: [
+                { from: "provider", text: welcome, timestamp: now },
+              ],
             },
           ],
           orders: [],

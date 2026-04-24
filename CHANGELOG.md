@@ -6,6 +6,98 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 5: Patient dashboard
+
+Iter B of the demo-flow plan. Adds the logged-in patient
+dashboard behind `/app/dashboard/*` with a persistent sidebar,
+four dashboard widgets, and two new full-page surfaces
+(Messages and Orders). Designs under `docs/designs/` were the
+visual authority; the plan/scope was followed for structure.
+Marketing site unchanged; funnel (Iter A) unchanged.
+
+### Added
+
+- `src/components/app/Sidebar.tsx` — fixed 260px left rail.
+  Links: Dashboard, Messages, Orders, Progress, Account. Active
+  state via pathname prefix; coral accent strip on active link.
+  Unread badge on Messages when `getUnreadCount(state) > 0`.
+  Bottom user block: initials avatar, firstName + lastName,
+  `${planName} Plan`, sign-out button (calls `reset()` then
+  routes to `/`).
+- `src/app/app/dashboard/layout.tsx` — sub-layout composing
+  Sidebar + content. No separate `AppHeader`; greeting and plan
+  badge live in `page.tsx`.
+- `src/components/app/widgets/NextInjectionCard.tsx` — gradient
+  card showing date / "In N days" / current dose / "Week N"
+  derived from `payment.subscribedAt`.
+- `src/components/app/widgets/InboxPreview.tsx` — latest 2
+  threads sorted by `lastTimestamp`, provider initials, unread
+  dot, short preview. Links to `/app/dashboard/messages`.
+- `src/components/app/widgets/OrdersCard.tsx` — latest 2
+  orders + status pills. Empty state when `orders.length === 0`.
+  Computes next refill as a 28-day cycle from `subscribedAt`.
+- `src/components/app/widgets/ProgressMiniCard.tsx` — pure-SVG
+  sparkline with polyline + area gradient when
+  `weightLogs.length >= 2`. Single centered dot when
+  `length === 1`. Empty-state CTA otherwise. Start weight,
+  current weight, delta rendered alongside.
+- `src/app/app/dashboard/messages/page.tsx` — two-pane view:
+  thread list (with `All` / `Unread` filter) + active thread
+  pane. Auto-selects most recent thread, auto-marks it read on
+  select. Textarea auto-grows, Enter-to-send, Shift+Enter for
+  newline. Scroll-pins to bottom when thread changes.
+- `src/app/app/dashboard/orders/page.tsx` — header bar
+  (Next Refill / Auto-ship Active / Total Orders), filter pills
+  (All / Shipped / Delivered), 6-column grid table with status
+  pills, disabled "Track" buttons, and a "Tracking unavailable
+  in demo mode" note.
+- Unread-messages CTA bar on the dashboard page when
+  `getUnreadCount(state) > 0` (design-sourced, not in plan
+  scope — flagged and approved).
+
+### Changed
+
+- `src/app/app/dashboard/page.tsx` — replaced the Iter A stub
+  with a real dashboard: greeting by time-of-day, plan badge
+  pill, optional unread CTA bar, 2-col widget grid.
+- `src/lib/demoState.ts` — messaging reshape from a flat
+  `Message[]` to a threaded model:
+  ```ts
+  type ThreadMessage = { from: "provider" | "user"; text: string; timestamp: string; };
+  type Thread = { id: string; sender: string; unread: boolean;
+                  lastTimestamp: string; preview: string;
+                  messages: ThreadMessage[]; };
+  ```
+  New helpers: `sendMessage(threadId, text)`,
+  `markThreadRead(threadId)`, `getUnreadCount(state)`.
+  `seed("newUser")` now seeds a single unread welcome thread
+  from Dr. Sarah Chen, NP. `seed("week4")` now seeds three
+  threads including an unread dose-adjustment message.
+- Bumped `STORAGE_KEY` from `nuvela_demo_v1` → `nuvela_demo_v2`
+  so stale Iter A state (flat messages shape) is discarded on
+  first load. No migration path — demo data only.
+- `src/app/app/welcome/page.tsx` — `goToDashboard` now seeds
+  the dashboard slice using the new `Thread` shape.
+
+### Deferred to Iter C
+
+- `/app/dashboard/progress` and `/app/dashboard/account` are
+  linked from the sidebar but not yet built — they currently
+  404. Intentional Iter C scope.
+
+### Verification
+
+- Full preview walkthrough at 1440×900:
+  - Dashboard (week4 seed): greeting, plan badge, unread CTA,
+    all 4 widgets populated correctly.
+  - Messages: 3 threads, auto-select of latest, send input
+    persists through `sendMessage` to localStorage.
+  - Orders: table + filters + header bar; empty state verified
+    separately via New User seed.
+- No runtime errors after `STORAGE_KEY` bump.
+- Lint / typecheck / build not re-run this session — carry
+  forward the existing verification debt from prior iterations.
+
 ## [Unreleased] — Iteration 4: Demo flow foundation
 
 This iteration adds the logged-in demo funnel behind `/app/*`:

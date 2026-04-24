@@ -1,13 +1,19 @@
 import { useSyncExternalStore } from "react";
 import type { PlanTier } from "./plans";
 
-export type Message = {
-  id: string;
+export type ThreadMessage = {
   from: "provider" | "user";
-  senderName: string;
   text: string;
   timestamp: string;
+};
+
+export type Thread = {
+  id: string;
+  sender: string;
   unread: boolean;
+  lastTimestamp: string;
+  preview: string;
+  messages: ThreadMessage[];
 };
 
 export type Order = {
@@ -41,13 +47,13 @@ export type DemoState = {
   dashboard: {
     nextInjectionDate: string;
     currentDose: string;
-    messages: Message[];
+    messages: Thread[];
     orders: Order[];
     weightLogs: { date: string; weightLbs: number }[];
   } | null;
 };
 
-const STORAGE_KEY = "nuvela_demo_v1";
+const STORAGE_KEY = "nuvela_demo_v2";
 
 const EMPTY: DemoState = {
   user: null,
@@ -61,8 +67,6 @@ function isBrowser(): boolean {
   return typeof window !== "undefined";
 }
 
-// Cached snapshot so useSyncExternalStore's getSnapshot returns a stable
-// reference across calls with unchanged data (React bails out on === refs).
 let cachedRaw: string | null | undefined = undefined;
 let cachedState: DemoState = EMPTY;
 
@@ -126,8 +130,6 @@ function subscribe(cb: () => void): () => void {
   };
 }
 
-// React hook: subscribe to the demo state. Returns EMPTY during SSR and the
-// hydration boundary, then updates to the localStorage value once mounted.
 export function useDemoState(): DemoState {
   return useSyncExternalStore(subscribe, readSnapshot, () => EMPTY);
 }
@@ -139,9 +141,6 @@ function readQueryParam(name: string): string | null {
   return new URLSearchParams(window.location.search).get(name);
 }
 
-// Reads a single query-string param on mount. Returns null on server / first
-// pre-hydration render; the real value after mount. Uses useSyncExternalStore
-// so we do not need an effect + setState to copy the URL into component state.
 export function useInitialQueryParam(name: string): string | null {
   return useSyncExternalStore(
     noopSubscribe,
@@ -158,6 +157,46 @@ function daysFromNow(n: number): string {
 
 function daysAgo(n: number): string {
   return daysFromNow(-n);
+}
+
+export function sendMessage(threadId: string, text: string): void {
+  if (!isBrowser()) return;
+  const state = get();
+  if (!state.dashboard) return;
+  const now = new Date().toISOString();
+  const preview = text.length > 60 ? `${text.slice(0, 57)}...` : text;
+  const nextThreads = state.dashboard.messages.map((t) =>
+    t.id === threadId
+      ? {
+          ...t,
+          lastTimestamp: now,
+          preview,
+          messages: [...t.messages, { from: "user" as const, text, timestamp: now }],
+        }
+      : t,
+  );
+  write({ ...state, dashboard: { ...state.dashboard, messages: nextThreads } });
+}
+
+export function markThreadRead(threadId: string): void {
+  if (!isBrowser()) return;
+  const state = get();
+  if (!state.dashboard) return;
+  let changed = false;
+  const nextThreads = state.dashboard.messages.map((t) => {
+    if (t.id === threadId && t.unread) {
+      changed = true;
+      return { ...t, unread: false };
+    }
+    return t;
+  });
+  if (!changed) return;
+  write({ ...state, dashboard: { ...state.dashboard, messages: nextThreads } });
+}
+
+export function getUnreadCount(state: DemoState): number {
+  if (!state.dashboard) return 0;
+  return state.dashboard.messages.filter((t) => t.unread).length;
 }
 
 export function seed(preset: "newUser" | "week4" | "notEligible"): void {
@@ -178,11 +217,15 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
 
   if (preset === "newUser") {
     const now = new Date().toISOString();
+    const welcomeText =
+      "Welcome to Nuvela! I've reviewed your intake and everything looks great. Your first shipment will go out within 2–3 business days.";
+    const followup =
+      "In the meantime, reach out anytime with questions about your plan or what to expect with your first injection.";
     write({
       user: {
-        firstName: "Demo",
-        lastName: "Patient",
-        email: "demo@nuvela.com",
+        firstName: "Sarah",
+        lastName: "Mitchell",
+        email: "sarah.mitchell@email.com",
         createdAt: now,
       },
       quiz: { completed: true, eligible: true, recommendedPlan: "accelerate" },
@@ -193,13 +236,15 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
         currentDose: "0.25 mg",
         messages: [
           {
-            id: "m1",
-            from: "provider",
-            senderName: "Dr. Sarah Chen, NP",
-            text:
-              "Welcome to Nuvela! I've reviewed your intake and everything looks great. Your first shipment will go out within 2–3 business days. Reach out anytime with questions about your plan.",
-            timestamp: now,
+            id: "t1",
+            sender: "Dr. Sarah Chen, NP",
             unread: true,
+            lastTimestamp: now,
+            preview: welcomeText.slice(0, 60) + "...",
+            messages: [
+              { from: "provider", text: welcomeText, timestamp: now },
+              { from: "provider", text: followup, timestamp: now },
+            ],
           },
         ],
         orders: [],
@@ -212,9 +257,9 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
   // preset === "week4"
   write({
     user: {
-      firstName: "Demo",
-      lastName: "Patient",
-      email: "demo@nuvela.com",
+      firstName: "Sarah",
+      lastName: "Mitchell",
+      email: "sarah.mitchell@email.com",
       createdAt: daysAgo(28),
     },
     quiz: { completed: true, eligible: true, recommendedPlan: "accelerate" },
@@ -226,34 +271,79 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
     },
     dashboard: {
       nextInjectionDate: daysFromNow(3),
-      currentDose: "1.0 mg",
+      currentDose: "0.5 mg",
       messages: [
         {
-          id: "m1",
-          from: "provider",
-          senderName: "Dr. Sarah Chen, NP",
-          text:
-            "Welcome to Nuvela! Everything looks great for your first shipment — arriving within 2–3 business days.",
-          timestamp: daysAgo(28),
+          id: "t1",
+          sender: "Dr. Sarah Chen, NP",
           unread: false,
+          lastTimestamp: daysAgo(24),
+          preview: "Great question! Most patients find it easiest...",
+          messages: [
+            {
+              from: "provider",
+              text: "Welcome to Nuvela! I've reviewed your intake and everything looks great. Your first shipment will go out within 2–3 business days.",
+              timestamp: daysAgo(25),
+            },
+            {
+              from: "user",
+              text: "Thanks, Dr. Chen! Quick question — should I take the injection in the morning or evening?",
+              timestamp: daysAgo(25),
+            },
+            {
+              from: "provider",
+              text: "Great question! Most patients find it easiest in the morning, but either time works. The key is consistency — pick a time and stick with it each week. Also rotate injection sites.",
+              timestamp: daysAgo(24),
+            },
+            {
+              from: "user",
+              text: "Perfect, mornings it is. Thanks!",
+              timestamp: daysAgo(24),
+            },
+          ],
         },
         {
-          id: "m2",
-          from: "user",
-          senderName: "Demo Patient",
-          text:
-            "Thanks, Dr. Chen! Quick question about injection timing — morning vs. evening?",
-          timestamp: daysAgo(21),
+          id: "t2",
+          sender: "Nuvela Care Team",
           unread: false,
+          lastTimestamp: daysAgo(13),
+          preview: "That's very typical and a great sign that the medication...",
+          messages: [
+            {
+              from: "provider",
+              text: "Hi Sarah! It's been two weeks since you started treatment. How are you feeling? Any side effects like nausea or changes in appetite? This is completely normal as your body adjusts.",
+              timestamp: daysAgo(14),
+            },
+            {
+              from: "user",
+              text: "Hi! Some mild nausea the first few days but it's mostly gone now. I've definitely noticed I'm less hungry between meals.",
+              timestamp: daysAgo(13),
+            },
+            {
+              from: "provider",
+              text: "That's very typical and a great sign that the medication is working. Keep logging your weight and reach out anytime!",
+              timestamp: daysAgo(13),
+            },
+          ],
         },
         {
-          id: "m3",
-          from: "provider",
-          senderName: "Dr. Sarah Chen, NP",
-          text:
-            "Either works — most patients find mornings easiest. Pick one and stay consistent.",
-          timestamp: daysAgo(21),
-          unread: false,
+          id: "t3",
+          sender: "Dr. Sarah Chen, NP",
+          unread: true,
+          lastTimestamp: daysAgo(1),
+          preview: "Time to discuss your dose adjustment...",
+          messages: [
+            {
+              from: "provider",
+              text: "Hi Sarah, you're coming up on week 4 which means it's time to discuss a dose adjustment. Based on your progress, I'd like to increase your dose from 0.25 mg to 0.5 mg starting next week. This is a standard step-up in the protocol.",
+              timestamp: daysAgo(1),
+            },
+            {
+              from: "provider",
+              text: "You may experience some of the initial side effects again briefly as your body adjusts to the higher dose. Please let me know if you have any concerns!",
+              timestamp: daysAgo(1),
+            },
+          ],
         },
       ],
       orders: [
@@ -269,7 +359,7 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
           id: "NV-1002",
           orderDate: daysAgo(5),
           medication: "Compounded semaglutide",
-          dose: "1.0 mg",
+          dose: "0.5 mg",
           status: "shipped",
           estimatedDelivery: daysFromNow(2),
         },
