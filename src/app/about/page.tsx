@@ -90,6 +90,60 @@ export default function About() {
         </div>
       </section>
 
+      {/* Editorial — sustainable change. Photo + restrained copy. */}
+      <section className="relative overflow-hidden bg-secondary-light/45 py-20 md:py-28">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-[0.18] pointer-events-none mix-blend-soft-light"
+        />
+        <div
+          aria-hidden
+          className="absolute -top-32 -left-20 w-96 h-96 rounded-full bg-primary/15 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+            <Reveal className="md:col-span-5">
+              <div className="relative mx-auto max-w-sm md:max-w-none">
+                <div
+                  aria-hidden
+                  className="absolute -top-5 -right-5 w-32 h-32 rounded-3xl bg-accent/15 hidden md:block"
+                />
+                <div className="relative overflow-hidden rounded-[2rem] aspect-[2/3] bg-secondary-light shadow-xl shadow-primary/10 ring-1 ring-white/50">
+                  <Image
+                    src="/images/about-jeans.jpg"
+                    alt="Person at home in soft daylight, holding a pair of jeans"
+                    fill
+                    sizes="(max-width: 768px) 90vw, 420px"
+                    className="object-cover object-center"
+                  />
+                </div>
+                <p className="mt-4 text-center text-[10.5px] uppercase tracking-[0.18em] text-foreground/35">
+                  Photography is illustrative — models shown.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={120} className="md:col-span-7">
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                Sustained change
+              </p>
+              <h2 className="mt-5 font-display text-[2rem] md:text-[2.75rem] leading-[1.05] text-foreground">
+                Real change is gradual — and it&apos;s easier with people in your corner.
+              </h2>
+              <p className="mt-6 text-foreground/70 leading-relaxed text-lg">
+                Lasting weight management isn&apos;t a sprint. It&apos;s a steady accumulation of
+                small choices, supported by a provider who knows your history and is available when
+                things shift. That&apos;s the experience Nuvela is designed for.
+              </p>
+              <p className="mt-4 text-foreground/65 leading-relaxed">
+                Individual results vary, and a healthy plan looks different for everyone. Your
+                provider will set realistic expectations during your consultation and adjust as you
+                go.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* How the Platform Works */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

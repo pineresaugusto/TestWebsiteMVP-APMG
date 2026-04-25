@@ -7,9 +7,41 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
-<<<<<<< HEAD
 ### 2026-04-24 — Mauger00
-- Iteration 4 (photography): first real photos on the site, six total
+- Iteration 7 polish (same-day follow-up to the photography landing):
+  user reported on review that the pricing photo was visibly
+  cropped, the GLP-1 product shot was still the original tight
+  crop because the re-saved file never actually landed on disk,
+  several discussed photos ("nuvela w1") were missing from the
+  site, and the home-page lifestyle tiles sat too far down the
+  page to bring warmth to first impression
+- Home page reworked: hero now ships with a real lifestyle
+  portrait on the right column (replaces the "Three simple steps"
+  card), 3-photo band moved up to immediately after the hero with
+  `<figcaption>` chips ("01 · Assessment", "02 · Consultation",
+  "03 · Delivery"), new mid-page "Beyond the prescription"
+  editorial section with a smoothie portrait
+- New editorial section on `/about` with a "real change is gradual"
+  big-jeans portrait, framed reflectively rather than as a
+  before/after trope; "Photography is illustrative — models
+  shown" attribution sits directly under every model photo
+- New editorial moment on `/how-it-works` with the kitchen-
+  portrait photo between the journey-steps section and the
+  GLP-1 explainer
+- Three new photo files (`home-hero.jpg`, `lifestyle-smoothie.jpg`,
+  `about-jeans.jpg`); two corrective re-saves (`glp1-pens.jpg`
+  was still 900×506 on disk, `kitchen-portrait.jpg` was missing
+  entirely — both verified post-write via `sips`)
+- Pricing band container changed `aspect-[16/9] md:aspect-[21/9]`
+  → `aspect-[3/2]`, GLP-1 container `aspect-[16/9]` →
+  `aspect-[3/2]` so source frames match container ratios and
+  `object-cover` no longer crops
+- Visual responsive pass at 375 / 768 / 1440 via Puppeteer-driven
+  headless Chromium — 12 screenshots, all four pages compose
+  cleanly at every width
+
+### 2026-04-24 — Mauger00
+- Iteration 7 (photography): first real photos on the site, six total
   across four pages — 3-photo band on home ("Everything handled from
   home"), GLP-1 pens shot on `/how-it-works`, outdoor portrait
   alongside the mission copy on `/about`, full-width aspirational
@@ -24,11 +56,12 @@ Format: `### YYYY-MM-DD — github-username`
   `npm install` / `build` / `dev` / `lint` all run. Build clean,
   TypeScript clean, all 13 routes prerender. Lint shows 1 error +
   1 warning, both in pre-existing files (`Reveal.tsx`,
-  `get-started/page.tsx`) outside Iteration 4 scope
+  `get-started/page.tsx`) outside Iteration 7 scope
 - Visual responsive pass at 375 / 768 / 1440 done via Puppeteer-driven
   headless Chromium — 12 screenshots, all pages composed cleanly at
   every width
-=======
+
+
 ### 2026-04-24 — adpineres-ef
 - Iter C of demo flow landed: Progress, Resources, Account, and
   a design-rebuilt Not-Eligible page. Sidebar now 6 links
@@ -113,7 +146,6 @@ Format: `### YYYY-MM-DD — github-username`
   registration still owed before hooks/mem-search activate)
 - Build clean; pre-existing `Reveal.tsx` lint error remains from
   earlier iteration verification debt
->>>>>>> e2d8c2a889132f578916b4946a7f2210a0205f24
 
 ### 2026-04-16 — Mauger00
 - Iteration 3 (UX + legal refinement): softer home hero — new H1

@@ -6,8 +6,151 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
-<<<<<<< HEAD
-## [Unreleased] — Iteration 4: Photography
+## [Unreleased] — Iteration 7: Photography polish (same-day follow-up)
+
+Same-day follow-up to Iteration 7's first photography landing.
+User feedback on review: (1) the pricing photo was visibly cropped
+at the chosen aspect — wanted it full; (2) the GLP-1 product shot
+on `/how-it-works` was still the original tight crop because the
+re-saved 1200×800 file never actually landed on disk in the prior
+pass; (3) several photos that had been discussed (notably
+"nuvela w1") were not on the site anywhere; (4) the three home-
+page lifestyle tiles sat too far down the page — "below
+'Everything handled from home'" — which defeated the warmth the
+photography was supposed to bring on first impression.
+
+This pass addresses all four. The home page is restructured so
+photography enters in the hero itself, the 3-photo band moves up
+to the section immediately after the hero, and a new editorial
+moment with a kitchen-portrait photo lands mid-page. `/about`
+gets a new editorial section with a "real change is gradual"
+photo. `/how-it-works` and `/pricing` re-source their existing
+photos so the source frames match the container aspect ratios
+(no `object-cover` cropping). All photos remain illustrative —
+the brand-model identity is intentionally distributed across
+pages (not stacked on one page) and labeled "Photography is
+illustrative — models shown" at every appearance.
+
+### Added
+
+- `public/images/home-hero.jpg` (1500×1048, q=88) — kitchen +
+  beige linen lifestyle portrait, cropped from the "nuvela w2"
+  source. Lives in the home hero on the right column at
+  `aspect-[3/2]` with `ring-1` and `shadow-2xl`, replacing the
+  prior right-side "Three simple steps" card.
+- `public/images/lifestyle-smoothie.jpg` (900×1352, q=86) —
+  portrait shot used in a new mid-home editorial section
+  ("Beyond the prescription / Small, daily things — done with
+  the support of a real care team."). Renders at `aspect-[2/3]`
+  on the right column, copy on left.
+- `public/images/about-jeans.jpg` (900×1352, q=86) — portrait
+  used in a new editorial section on `/about` between
+  "Why traditional approaches" and "How the Platform Works".
+  Framed as "Real change is gradual — and it's easier with
+  people in your corner.", deliberately not as a before/after
+  trope. The "Photography is illustrative — models shown"
+  attribution sits directly under the photo to keep the brand's
+  legal posture consistent.
+- `src/app/page.tsx` — hero now ships with a real photograph
+  rather than a typographic card; "FROM YOUR COUCH / Care that
+  fits inside your day." section moved up to immediately after
+  the hero (was previously deeper in the page); 3-photo band
+  re-labeled with `<figcaption>` chips ("01 · Assessment",
+  "02 · Consultation", "03 · Delivery"); new "Beyond the
+  prescription" editorial section with `lifestyle-smoothie.jpg`;
+  bottom features section retitled "Why Nuvela / Built around
+  how care should feel."
+- `src/app/about/page.tsx` — new editorial section between the
+  "Why traditional approaches" section and the "How the
+  Platform Works" section, with `about-jeans.jpg` portrait at
+  `aspect-[2/3]` and "Sustained change" kicker copy on the
+  right column.
+- `src/app/how-it-works/page.tsx` — new editorial section with
+  `kitchen-portrait.jpg` between the journey-steps section and
+  "Understanding GLP-1 medications". Frames day-to-day life
+  (hydration, nutrition, sleep, movement) as part of a broader
+  plan, deliberately avoiding outcome claims.
+
+### Changed
+
+- `public/images/glp1-pens.jpg` — re-cropped from PIL box
+  `(600, 200, 1536, 824)` and re-saved at 1200×800 q=88. The
+  prior pass logged "Wrote glp1-pens.jpg: (1200, 800)" but the
+  file on disk was still the 900×506 tight crop, which is why
+  the user reported "didn't see any update." Verified on disk
+  via `sips -g pixelWidth -g pixelHeight` post-write.
+- `public/images/kitchen-portrait.jpg` (900×1352, q=86) —
+  re-created from "nuvela w1" source. The prior pass's write
+  did not actually land on disk, so this is a corrective
+  re-save rather than a new asset.
+- `public/images/pricing-couple.jpg` — re-saved at 1600×1067
+  (3:2 native) at q=88 so the photo can render at its source
+  aspect without `object-cover` cropping the edges off.
+- `src/app/pricing/page.tsx` — pricing band container changed
+  from `aspect-[16/9] md:aspect-[21/9]` to `aspect-[3/2]` so it
+  matches the source image's native 3:2. No more letterbox-style
+  vertical cropping at desktop.
+- `src/app/how-it-works/page.tsx` — GLP-1 product container
+  changed from `aspect-[16/9]` to `aspect-[3/2]` to match the
+  re-cropped 1200×800 source. Pens render with the tablet
+  bottle removed (the source had been cropped specifically to
+  exclude the bottle so the site doesn't imply oral semaglutide).
+
+### Removed
+
+- The "Three simple steps" hero card on the home page, replaced
+  by the lifestyle portrait. The card's content (assessment /
+  consult / shipped) is preserved in the 3-photo band's
+  `<figcaption>` labels, so no information is lost — only the
+  card itself goes away.
+- `JourneyStep` helper component on the home page (no longer
+  referenced after the hero rebuild).
+
+### Decisions worth recording
+
+- **"One face, one page" relaxed slightly.** Iteration 7's first
+  pass committed to never reusing the same model across pages.
+  The user's "use all photos discussed" instruction makes that
+  rule unworkable for the available asset set, so the rule is
+  softened to "no two photos of the same model on the same page,
+  and 'Photography is illustrative — models shown' attribution
+  on every appearance." The visual identity stays consistent
+  without reading as a fabricated patient testimonial.
+- **Home hero gets a portrait, not a product or environment
+  shot.** The user's framing ("comfier, friendlier, more real
+  than just a bunch of words") pointed away from the editorial-
+  card-stack hero and toward something inhabited. The
+  kitchen-linen portrait on the right column is the one
+  decision that does the most work for that goal.
+- **Big-jeans photo lives on `/about`, not the home page.** The
+  trope is closer to weight-loss-scheme aesthetic than the
+  brand wants on a first-impression surface, but it carries
+  honest meaning ("real change is gradual"), and `/about` is the
+  right surface for that more reflective register.
+
+### Verification
+
+- `sips -g pixelWidth -g pixelHeight` checked against every new
+  and re-saved file in `public/images/` — all dimensions match
+  the values asserted in this changelog entry.
+- Visual responsive pass via Puppeteer-driven headless Chromium
+  at 375 / 768 / 1440 across home, about, how-it-works, pricing
+  — 12 screenshots, all four pages compose cleanly at every
+  width.
+
+### Verification still owed
+
+- `npm run build` after these edits (final-pass build clean
+  was confirmed at the end of Iteration 7's first landing,
+  but not re-run after this same-day polish).
+- `npm run lint` — Iteration 7's first landing surfaced 1 pre-
+  existing error and 1 pre-existing warning, both outside scope.
+  No new lint debt is expected from this pass, but it has not
+  been re-confirmed.
+
+---
+
+## [Unreleased] — Iteration 7: Photography
 
 First real photography pass on the site. The prior three iterations
 worked exclusively with typography, SVG icons, and color — no photos.
@@ -175,7 +318,9 @@ Iterations 1–3 could finally be retired alongside this one.
 - Cleanup: the Puppeteer install, Chromium download, and screenshot
   output all live in `/tmp/nuvela-shot/` — nothing bled into the
   project tree. Safe to `rm -rf` when no longer needed.
-=======
+
+---
+
 ## [Unreleased] — Iteration 6: Patient dashboard (Iter C)
 
 Iter C of the demo-flow plan. Fills the last four dashboard
@@ -494,7 +639,8 @@ so the real Stripe Elements swap is a contained change later.
   → select-plan without ribbon → checkout → welcome).
 - Walk through scenario 3 (skip signup: marketing site → `?demo=1`
   → toolbar "Jump New user" → dashboard stub; "Reset" → `/`).
->>>>>>> e2d8c2a889132f578916b4946a7f2210a0205f24
+
+---
 
 ## [Unreleased] — Iteration 3: UX + Legal Refinement
 

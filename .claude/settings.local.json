@@ -38,7 +38,26 @@
       "Read(//c/Users/USUARIO/AppData/Local/Claude/**)",
       "Read(//c/Users/USUARIO/AppData/Local/**)",
       "Read(//c/Users/USUARIO/AppData/Local/Programs//**)",
-      "Bash(powershell.exe -Command \"Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local' -Filter 'claude*' -Directory -ErrorAction SilentlyContinue | Select-Object FullName; Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local' -Filter '*nthropic*' -Directory -ErrorAction SilentlyContinue | Select-Object FullName; Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local\\\\Claude' -ErrorAction SilentlyContinue | Select-Object Name\")"
+      "Bash(powershell.exe -Command \"Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local' -Filter 'claude*' -Directory -ErrorAction SilentlyContinue | Select-Object FullName; Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local' -Filter '*nthropic*' -Directory -ErrorAction SilentlyContinue | Select-Object FullName; Get-ChildItem -Path 'C:\\\\Users\\\\USUARIO\\\\AppData\\\\Local\\\\Claude' -ErrorAction SilentlyContinue | Select-Object Name\")",
+      "Bash(export PATH=\"$HOME/.local/node/node-v22.12.0-darwin-arm64/bin:$PATH\")",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(nohup npm:*)",
+      "Bash(disown)",
+      "Bash(echo \"dev pid: $!\")",
+      "Bash(python3)",
+      "Bash(ls -la /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/public/images/*.jpg)",
+      "Bash(awk '{print $NF, $5}')",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/public/images/glp1-pens.jpg /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/public/images/home-hero.jpg /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/public/images/kitchen-portrait.jpg)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/public/images/glp1-pens.jpg /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/public/images/pricing-couple.jpg)",
+      "Bash(curl -s -o /dev/null -w \"home=%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"about=%{http_code}\\\\n\" http://localhost:3000/about)",
+      "Bash(curl -s -o /dev/null -w \"how-it-works=%{http_code}\\\\n\" http://localhost:3000/how-it-works)",
+      "Bash(curl -s -o /dev/null -w \"pricing=%{http_code}\\\\n\" http://localhost:3000/pricing)",
+      "Read(//private/tmp/nuvela-shot/**)",
+      "Bash(rm -f out/*.png)",
+      "Bash(node shoot.js)",
+      "Bash(ls /tmp/nuvela-shot/extracts/*.png)",
+      "Bash(export PATH=\"$HOME/.local/node/bin:$PATH\")"
     ]
   }
 }
