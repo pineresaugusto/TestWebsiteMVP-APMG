@@ -6,19 +6,19 @@ export default function Home() {
   return (
     <>
       {/* ----------------------------------------------------------------- */}
-      {/* Hero — editorial composition                                       */}
+      {/* Hero — photography-forward                                         */}
       {/* Left: kicker rule, serif headline, lede, CTAs, trust strip.        */}
-      {/* Right: a quiet 3-step 'how this works' card — lower emotional      */}
-      {/* temperature than a statistic, signals ease rather than efficacy.   */}
+      {/* Right: real lifestyle portrait — first impression is a person,     */}
+      {/* not an abstract card. Sage glow + grain frame the warmth.          */}
       {/* ----------------------------------------------------------------- */}
       <section className="relative overflow-hidden bg-glow-sage">
         <div
           aria-hidden
           className="absolute inset-0 bg-grain opacity-[0.35] pointer-events-none mix-blend-multiply"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-20 md:pt-28 md:pb-32">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-20 md:pt-24 md:pb-28">
           <div className="grid md:grid-cols-12 gap-10 md:gap-14 items-center">
-            <div className="md:col-span-7">
+            <div className="md:col-span-6 lg:col-span-6">
               <Reveal>
                 <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
                   GLP-1 treatment from home
@@ -27,7 +27,7 @@ export default function Home() {
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
                   A provider, a plan, and{" "}
-                  <em className="italic font-normal text-primary-dark">nothing in the way</em>...
+                  <em className="italic font-normal text-primary-dark">nothing in the way</em>.
                 </h1>
               </Reveal>
               <Reveal delay={160}>
@@ -75,64 +75,88 @@ export default function Home() {
               </Reveal>
             </div>
 
-            {/* Quiet 3-step journey card */}
-            <Reveal delay={200} className="md:col-span-5">
-              <div className="relative mx-auto max-w-sm md:max-w-none">
+            {/* Hero portrait — real photography leads the experience */}
+            <Reveal delay={200} className="md:col-span-6 lg:col-span-6">
+              <div className="relative mx-auto max-w-md md:max-w-none">
                 {/* Decorative dotted tile, back layer */}
                 <div
                   aria-hidden
-                  className="absolute -top-6 -right-4 w-40 h-40 rounded-3xl bg-dots opacity-70 hidden md:block"
+                  className="absolute -top-5 -right-5 w-32 h-32 rounded-3xl bg-dots opacity-70 hidden md:block"
                 />
-                {/* Soft sage frame */}
-                <div className="relative rounded-[2rem] bg-gradient-to-br from-primary/25 via-secondary-light to-secondary/60 p-5 shadow-xl shadow-primary/10">
-                  {/* Foreground card */}
-                  <div className="rounded-[1.5rem] bg-background/95 backdrop-blur-sm p-8 md:p-10 border border-white">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-dark">
-                      How it starts
-                    </p>
-                    <h2 className="mt-4 font-display text-[1.75rem] leading-[1.15] text-foreground">
-                      Three simple steps
-                    </h2>
-                    <ol className="mt-6 space-y-5">
-                      <JourneyStep
-                        num="01"
-                        title="A short assessment"
-                        body="About 5 minutes — no account needed to start."
-                      />
-                      <JourneyStep
-                        num="02"
-                        title="Talk with a licensed provider"
-                        body="A clinician reviews your health and answers your questions."
-                      />
-                      <JourneyStep
-                        num="03"
-                        title="Your plan, delivered"
-                        body="If prescribed, medication ships discreetly with ongoing support."
-                      />
-                    </ol>
-                    <div className="mt-7 h-px bg-foreground/10" />
-                    <p className="mt-5 text-xs text-foreground/50 leading-relaxed">
-                      Eligibility and any prescription are determined by your provider. See our{" "}
-                      <Link
-                        href="/medical-disclaimer"
-                        className="text-primary-dark underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
-                      >
-                        Medical Disclaimer
-                      </Link>
-                      .
-                    </p>
-                  </div>
+                {/* Portrait frame */}
+                <div className="relative overflow-hidden rounded-[2rem] aspect-[3/2] bg-secondary-light shadow-2xl shadow-primary/15 ring-1 ring-white/40">
+                  <Image
+                    src="/images/home-hero.jpg"
+                    alt="Person at home in a sunlit kitchen, holding a glass of water"
+                    fill
+                    sizes="(max-width: 768px) 90vw, 600px"
+                    className="object-cover object-center"
+                    priority
+                  />
+                  {/* Subtle bottom gradient for text legibility on the floating pill */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 via-black/0 to-transparent pointer-events-none"
+                  />
                 </div>
-                {/* No insurance needed — quiet reinforcement */}
+                {/* Floating "No insurance" pill */}
                 <div
                   aria-hidden
                   className="absolute -bottom-4 -left-4 rounded-full bg-white border border-primary/25 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-dark shadow-lg shadow-primary/10 hidden sm:block"
                 >
                   No insurance needed
                 </div>
+                {/* Models-shown microcopy */}
+                <p className="mt-5 text-center text-[10.5px] uppercase tracking-[0.18em] text-foreground/35">
+                  Photography is illustrative — models shown.
+                </p>
               </div>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* From-home triptych — moved up to anchor the experience right       */}
+      {/* after the hero. Three photos do the talking before any prose.      */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="bg-background py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-10 md:mb-12">
+            <Reveal>
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                From your couch
+              </p>
+            </Reveal>
+            <Reveal delay={60}>
+              <h2 className="mt-5 font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+                Care that fits inside your day.
+              </h2>
+            </Reveal>
+          </div>
+          <Reveal delay={120}>
+            <div className="grid sm:grid-cols-3 gap-3 md:gap-5 max-w-6xl mx-auto">
+              {homeBandPhotos.map((photo, i) => (
+                <figure
+                  key={photo.src}
+                  className="group relative overflow-hidden rounded-2xl aspect-[3/2] bg-secondary-light shadow-md shadow-primary/5 hover:shadow-xl hover:shadow-primary/10 transition-shadow"
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/55 via-black/15 to-transparent">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/85">
+                      {String(i + 1).padStart(2, "0")} · {photo.label}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -197,7 +221,75 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* How Nuvela works — numbered steps with vertical rule               */}
+      {/* Editorial — the every-day stuff. Side-by-side photo + copy.        */}
+      {/* `lifestyle-smoothie.jpg` (full image, no crop) on the right.       */}
+      {/* No outcome claims — frames habits as part of the broader plan.     */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="relative overflow-hidden bg-secondary-light/45 py-20 md:py-28">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-[0.18] pointer-events-none mix-blend-soft-light"
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-32 -right-20 w-96 h-96 rounded-full bg-primary/15 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+            <Reveal delay={80} className="md:col-span-7 order-2 md:order-1">
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                Beyond the prescription
+              </p>
+              <h2 className="mt-5 font-display text-[2rem] md:text-[2.75rem] leading-[1.05] text-foreground">
+                Small, daily things — done with the support of a real care team.
+              </h2>
+              <p className="mt-6 text-foreground/70 leading-relaxed text-lg">
+                Treatment is one part of a broader plan. Your provider may also discuss hydration,
+                nutrition, sleep, and movement as part of your overall care — the kind of small
+                routines that quietly do a lot of the work alongside the medication.
+              </p>
+              <ul className="mt-8 grid sm:grid-cols-2 gap-x-6 gap-y-3 text-[15px] text-foreground/70">
+                <li className="flex items-start gap-2.5">
+                  <CheckIcon />
+                  Direct messaging with your care team
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckIcon />
+                  Provider-led dose adjustments
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckIcon />
+                  Practical lifestyle guidance
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckIcon />
+                  No long-term commitment
+                </li>
+              </ul>
+            </Reveal>
+            <Reveal className="md:col-span-5 order-1 md:order-2">
+              <div className="relative mx-auto max-w-sm md:max-w-none">
+                <div
+                  aria-hidden
+                  className="absolute -top-4 -left-4 w-28 h-28 rounded-3xl bg-accent/15 hidden md:block"
+                />
+                <div className="relative overflow-hidden rounded-[2rem] aspect-[2/3] bg-secondary-light shadow-xl shadow-primary/10 ring-1 ring-white/50">
+                  <Image
+                    src="/images/lifestyle-smoothie.jpg"
+                    alt="Person walking outside in soft daylight, holding a takeaway drink"
+                    fill
+                    sizes="(max-width: 768px) 90vw, 420px"
+                    className="object-cover object-center"
+                  />
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* How Nuvela works — numbered steps with clean rhythm                */}
       {/* ----------------------------------------------------------------- */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -240,46 +332,23 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* Value props — 3-photo band above a clean typographic grid.        */}
-      {/* The three photos tell the from-home story (assessment,            */}
-      {/* consultation, delivery) before the text elaborates.               */}
+      {/* Four-feature grid — "Why this is different"                        */}
+      {/* Photo band moved up; this section is now pure typographic value.  */}
       {/* ----------------------------------------------------------------- */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-12 md:mb-14">
             <Reveal>
-              <h2 className="font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground">
-                Everything handled from home
-              </h2>
-            </Reveal>
-            <Reveal delay={80}>
-              <p className="mt-4 text-lg text-foreground/70">
-                Licensed providers, private consultations, and discreet delivery — without
-                leaving your couch.
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                Why Nuvela
               </p>
             </Reveal>
+            <Reveal delay={80}>
+              <h2 className="mt-5 font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+                Built around how care should feel.
+              </h2>
+            </Reveal>
           </div>
-
-          {/* 3-photo band — assessment · consultation · delivery */}
-          <Reveal delay={120}>
-            <div className="mb-16 md:mb-20 grid sm:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto">
-              {homeBandPhotos.map((photo) => (
-                <div
-                  key={photo.src}
-                  className="relative overflow-hidden rounded-2xl aspect-[3/2] bg-secondary-light shadow-lg shadow-primary/5"
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 33vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </Reveal>
-
           <div className="grid sm:grid-cols-2 gap-x-10 gap-y-12 lg:gap-x-14 max-w-4xl mx-auto">
             {features.map((feature, i) => (
               <Reveal key={feature.title} delay={i * 70}>
@@ -338,7 +407,7 @@ export default function Home() {
 function CheckIcon() {
   return (
     <svg
-      className="w-4 h-4 text-primary"
+      className="w-4 h-4 text-primary flex-shrink-0 mt-0.5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -365,28 +434,6 @@ function ArrowIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function JourneyStep({
-  num,
-  title,
-  body,
-}: {
-  num: string;
-  title: string;
-  body: string;
-}) {
-  return (
-    <li className="flex gap-4">
-      <span className="font-display text-sm tracking-[0.14em] text-primary-dark pt-[3px] min-w-[2rem]">
-        {num}
-      </span>
-      <div>
-        <p className="font-display text-[1.05rem] leading-snug text-foreground">{title}</p>
-        <p className="mt-1 text-sm text-foreground/60 leading-relaxed">{body}</p>
-      </div>
-    </li>
-  );
-}
-
 const steps = [
   {
     title: "Online Assessment",
@@ -410,20 +457,23 @@ const steps = [
   },
 ];
 
-// Three photos that anchor the "Everything handled from home" section.
+// Three photos that anchor the from-home story.
 // Alt text stays descriptive — no outcome, no testimonial framing.
 const homeBandPhotos = [
   {
     src: "/images/home-assessment.jpg",
     alt: "Person reading on their phone in a bright, calm bedroom",
+    label: "Assessment",
   },
   {
     src: "/images/home-consultation.jpg",
     alt: "Person on a video call with a healthcare provider from home",
+    label: "Consultation",
   },
   {
     src: "/images/home-delivery.jpg",
     alt: "A discreet package placed at the front door of a home",
+    label: "Delivery",
   },
 ];
 

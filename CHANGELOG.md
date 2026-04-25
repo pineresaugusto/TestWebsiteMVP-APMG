@@ -6,6 +6,324 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+<<<<<<< HEAD
+=======
+## [Unreleased] — Iteration 7: Photography polish (same-day follow-up)
+
+Same-day follow-up to Iteration 7's first photography landing.
+User feedback on review: (1) the pricing photo was visibly cropped
+at the chosen aspect — wanted it full; (2) the GLP-1 product shot
+on `/how-it-works` was still the original tight crop because the
+re-saved 1200×800 file never actually landed on disk in the prior
+pass; (3) several photos that had been discussed (notably
+"nuvela w1") were not on the site anywhere; (4) the three home-
+page lifestyle tiles sat too far down the page — "below
+'Everything handled from home'" — which defeated the warmth the
+photography was supposed to bring on first impression.
+
+This pass addresses all four. The home page is restructured so
+photography enters in the hero itself, the 3-photo band moves up
+to the section immediately after the hero, and a new editorial
+moment with a kitchen-portrait photo lands mid-page. `/about`
+gets a new editorial section with a "real change is gradual"
+photo. `/how-it-works` and `/pricing` re-source their existing
+photos so the source frames match the container aspect ratios
+(no `object-cover` cropping). All photos remain illustrative —
+the brand-model identity is intentionally distributed across
+pages (not stacked on one page) and labeled "Photography is
+illustrative — models shown" at every appearance.
+
+### Added
+
+- `public/images/home-hero.jpg` (1500×1048, q=88) — kitchen +
+  beige linen lifestyle portrait, cropped from the "nuvela w2"
+  source. Lives in the home hero on the right column at
+  `aspect-[3/2]` with `ring-1` and `shadow-2xl`, replacing the
+  prior right-side "Three simple steps" card.
+- `public/images/lifestyle-smoothie.jpg` (900×1352, q=86) —
+  portrait shot used in a new mid-home editorial section
+  ("Beyond the prescription / Small, daily things — done with
+  the support of a real care team."). Renders at `aspect-[2/3]`
+  on the right column, copy on left.
+- `public/images/about-jeans.jpg` (900×1352, q=86) — portrait
+  used in a new editorial section on `/about` between
+  "Why traditional approaches" and "How the Platform Works".
+  Framed as "Real change is gradual — and it's easier with
+  people in your corner.", deliberately not as a before/after
+  trope. The "Photography is illustrative — models shown"
+  attribution sits directly under the photo to keep the brand's
+  legal posture consistent.
+- `src/app/page.tsx` — hero now ships with a real photograph
+  rather than a typographic card; "FROM YOUR COUCH / Care that
+  fits inside your day." section moved up to immediately after
+  the hero (was previously deeper in the page); 3-photo band
+  re-labeled with `<figcaption>` chips ("01 · Assessment",
+  "02 · Consultation", "03 · Delivery"); new "Beyond the
+  prescription" editorial section with `lifestyle-smoothie.jpg`;
+  bottom features section retitled "Why Nuvela / Built around
+  how care should feel."
+- `src/app/about/page.tsx` — new editorial section between the
+  "Why traditional approaches" section and the "How the
+  Platform Works" section, with `about-jeans.jpg` portrait at
+  `aspect-[2/3]` and "Sustained change" kicker copy on the
+  right column.
+- `src/app/how-it-works/page.tsx` — new editorial section with
+  `kitchen-portrait.jpg` between the journey-steps section and
+  "Understanding GLP-1 medications". Frames day-to-day life
+  (hydration, nutrition, sleep, movement) as part of a broader
+  plan, deliberately avoiding outcome claims.
+
+### Changed
+
+- `public/images/glp1-pens.jpg` — re-cropped from PIL box
+  `(600, 200, 1536, 824)` and re-saved at 1200×800 q=88. The
+  prior pass logged "Wrote glp1-pens.jpg: (1200, 800)" but the
+  file on disk was still the 900×506 tight crop, which is why
+  the user reported "didn't see any update." Verified on disk
+  via `sips -g pixelWidth -g pixelHeight` post-write.
+- `public/images/kitchen-portrait.jpg` (900×1352, q=86) —
+  re-created from "nuvela w1" source. The prior pass's write
+  did not actually land on disk, so this is a corrective
+  re-save rather than a new asset.
+- `public/images/pricing-couple.jpg` — re-saved at 1600×1067
+  (3:2 native) at q=88 so the photo can render at its source
+  aspect without `object-cover` cropping the edges off.
+- `src/app/pricing/page.tsx` — pricing band container changed
+  from `aspect-[16/9] md:aspect-[21/9]` to `aspect-[3/2]` so it
+  matches the source image's native 3:2. No more letterbox-style
+  vertical cropping at desktop.
+- `src/app/how-it-works/page.tsx` — GLP-1 product container
+  changed from `aspect-[16/9]` to `aspect-[3/2]` to match the
+  re-cropped 1200×800 source. Pens render with the tablet
+  bottle removed (the source had been cropped specifically to
+  exclude the bottle so the site doesn't imply oral semaglutide).
+
+### Removed
+
+- The "Three simple steps" hero card on the home page, replaced
+  by the lifestyle portrait. The card's content (assessment /
+  consult / shipped) is preserved in the 3-photo band's
+  `<figcaption>` labels, so no information is lost — only the
+  card itself goes away.
+- `JourneyStep` helper component on the home page (no longer
+  referenced after the hero rebuild).
+
+### Decisions worth recording
+
+- **"One face, one page" relaxed slightly.** Iteration 7's first
+  pass committed to never reusing the same model across pages.
+  The user's "use all photos discussed" instruction makes that
+  rule unworkable for the available asset set, so the rule is
+  softened to "no two photos of the same model on the same page,
+  and 'Photography is illustrative — models shown' attribution
+  on every appearance." The visual identity stays consistent
+  without reading as a fabricated patient testimonial.
+- **Home hero gets a portrait, not a product or environment
+  shot.** The user's framing ("comfier, friendlier, more real
+  than just a bunch of words") pointed away from the editorial-
+  card-stack hero and toward something inhabited. The
+  kitchen-linen portrait on the right column is the one
+  decision that does the most work for that goal.
+- **Big-jeans photo lives on `/about`, not the home page.** The
+  trope is closer to weight-loss-scheme aesthetic than the
+  brand wants on a first-impression surface, but it carries
+  honest meaning ("real change is gradual"), and `/about` is the
+  right surface for that more reflective register.
+
+### Verification
+
+- `sips -g pixelWidth -g pixelHeight` checked against every new
+  and re-saved file in `public/images/` — all dimensions match
+  the values asserted in this changelog entry.
+- Visual responsive pass via Puppeteer-driven headless Chromium
+  at 375 / 768 / 1440 across home, about, how-it-works, pricing
+  — 12 screenshots, all four pages compose cleanly at every
+  width.
+
+### Verification still owed
+
+- `npm run build` after these edits (final-pass build clean
+  was confirmed at the end of Iteration 7's first landing,
+  but not re-run after this same-day polish).
+- `npm run lint` — Iteration 7's first landing surfaced 1 pre-
+  existing error and 1 pre-existing warning, both outside scope.
+  No new lint debt is expected from this pass, but it has not
+  been re-confirmed.
+
+---
+
+## [Unreleased] — Iteration 7: Photography
+
+First real photography pass on the site. The prior three iterations
+worked exclusively with typography, SVG icons, and color — no photos.
+This iteration introduces six curated photos across four pages, placed
+with editorial restraint (one concentrated photo moment per page
+rather than scattered decoration) and written with neutral,
+descriptive alt text per the `legal-nuvela` skill — no causal
+phrasing ("lost weight by…"), no body-comparison tropes, no
+fabricated outcome numbers on a named person.
+
+Decisions that were explicitly made along the way, worth recording:
+
+- **Home "Three simple steps" hero card stays photo-free.** It was
+  tempting to photo-ify it, but the card is dense and adding three
+  images made it bulkier without adding clarity. The photos found a
+  better home further down the page, in the "Everything handled from
+  home" section, as a tight 3-photo band.
+- **GLP-1 product shot kept, but cropped to injection pens only.**
+  The original source image bundled a tablet bottle with two pens,
+  which would have implied Nuvela offers oral semaglutide (we do not
+  — all pricing and copy assume weekly injectable compounded
+  semaglutide). The `/public/images/README.md` instructs the asset
+  owner to crop the tablet bottle out in macOS Preview before saving.
+- **No before/after photography.** A photo of oversized jeans was
+  considered and dropped — the trope is too close to the
+  weight-loss-scheme aesthetic the brand is trying to move away from.
+- **One face, one page.** Same-model reuse across pages was avoided
+  to prevent the implied "recurring patient" effect, which starts to
+  read as fabricated testimonial.
+- **Pricing page photo carries no overlay CTA.** The pricing page
+  already has a tier-level "Get Started" button per card and a
+  sage-background CTA section. Adding a third CTA on the photo band
+  would triple-stack asks; the photo is intentionally just aspirational
+  breathing room between pricing and the sage CTA.
+
+### Added
+
+- `public/images/` directory with a `README.md` that specifies the
+  six filename conventions the code expects
+  (`home-assessment.jpg`, `home-consultation.jpg`,
+  `home-delivery.jpg`, `glp1-pens.jpg`, `about-outdoor.jpg`,
+  `pricing-couple.jpg`), where each photo lives on the site, and
+  suggested crop ratios. The actual `.jpg` binary files are not yet
+  committed — the asset owner saves them into this folder. Until
+  then, the `<Image>` components render broken-image placeholders,
+  which is the expected state.
+- `src/app/page.tsx` — **3-photo band** inside the "Everything
+  handled from home" section, sitting above the four-feature grid.
+  Photos are equal-width `aspect-[3/2]` tiles (assessment ·
+  consultation · delivery) inside a single `<Reveal>`, using
+  `next/image` with `fill`, `object-cover`, and `sizes` hints. A
+  `homeBandPhotos` data array at the bottom of the file holds the
+  three `{ src, alt }` entries with descriptive (non-causal) alt
+  text.
+- `src/app/how-it-works/page.tsx` — **GLP-1 product visual** placed
+  between the "Understanding GLP-1 medications" H2 and the first
+  explanatory paragraph. Rendered as an `aspect-[16/9]`
+  rounded-corner image wrapped in `<Reveal delay={80}>`. Alt text is
+  neutrally descriptive of pens on a countertop; it does not name a
+  brand or imply efficacy.
+- `src/app/about/page.tsx` — **"Our mission" section restructured
+  from single-column text to a two-column grid** (text left, photo
+  right) at `md` and up. The photo is `aspect-[4/5]` portrait and
+  shows a woman walking outdoors on a sunlit path — chosen
+  specifically because all other site photography is indoor/at-home,
+  and the mission section benefits from outdoor, movement-based
+  warmth that is not body-focused.
+- `src/app/pricing/page.tsx` — **full-width aspirational photo band**
+  inserted between the pricing-tiers section and the sage CTA
+  section. Renders at `aspect-[16/9]` on mobile and `aspect-[21/9]`
+  from `md` up. No overlay text, no CTA — intentionally quiet.
+- `import Image from "next/image"` added to all four of the above
+  page files.
+
+### Changed
+
+- `src/app/page.tsx` — header of the "Everything handled from home"
+  section: bottom margin trimmed from `mb-16` to `mb-12 md:mb-14` so
+  the new 3-photo band doesn't sit too far from the heading it
+  belongs to.
+
+### Removed
+
+- `nuvela-photo-preview.html` — standalone HTML mockup used during
+  the planning rounds to preview photo layouts without a running
+  dev server. Deleted now that the real Next.js implementation
+  covers the same ground.
+
+### Photo binaries committed
+
+The six `.jpg` files referenced by the new `<Image>` placements are
+now in `public/images/`. Sources were the user-provided chat
+attachments saved to `~/Desktop/Nuvela photos/`; processing happened
+as follows:
+
+| Target filename        | Source                | Processing |
+|------------------------|-----------------------|------------|
+| `home-assessment.jpg`  | `bed guy 2.jpeg`      | Re-encoded to JPEG q=88; pre-cropped from 1122×1402 portrait to 1122×748 (3:2) with a ~22%-from-top vertical bias so `object-cover` preserves face + phone rather than center-chopping them. Note: the earlier `bed guy.jpeg` variant was rejected — it showed a fabricated `185.4 lbs / −32.6 lbs` weight-tracking screen on the phone, which is exactly the kind of outcome claim the `legal-nuvela` skill guards against. |
+| `home-consultation.jpg`| `telehealth.png`      | PNG → JPEG q=88. |
+| `home-delivery.jpg`    | `delivery.png`        | PNG → JPEG q=88. |
+| `glp1-pens.jpg`        | `GLP-1.png` (cropped) | PNG → cropped with PIL to remove tablet bottle: source 1536×1024, crop box `(620, 472, 1520, 978)` → 900×506 (exact 16:9), centered on the pens. Saved as JPEG q=92. The tablet bottle and scattered tablets are fully outside the frame. |
+| `about-outdoor.jpg`    | `w2 walk.png`         | PNG → JPEG q=88. |
+| `pricing-couple.jpg`   | `couple.png`          | PNG → JPEG q=88. |
+
+The rest of the folder (`bed guy.jpeg` weight-tracking variant,
+`big jeans.png`, `nuvela w1/w2`, `w1 smoothie`) was intentionally
+left out per the decisions recorded above.
+
+### Verification steps run
+
+Node 22.12 LTS (darwin-arm64) was installed locally to
+`~/.local/node/` — not into `PATH`, not via brew/nvm, just a
+self-contained tarball extraction — so the toolchain debt from
+Iterations 1–3 could finally be retired alongside this one.
+
+- `npm install` — **ok**. 360 packages added. One `EBADENGINE` warn
+  from `eslint-visitor-keys@5.0.1` wanting Node `^22.13.0` (we're on
+  `22.12.0`) — non-fatal, lint and build both run fine on 22.12.
+  Two moderate-severity audit findings, not addressed in this
+  iteration.
+- `npm run build` — **ok**. Next.js 16.2.3 + Turbopack. Compiled in
+  ~1.4s, TypeScript passed in ~1.1s, all 13 routes statically
+  prerendered. No build-time warnings or errors from the new
+  `<Image>` usages — `fill`-mode images without explicit
+  width/height are accepted as expected.
+- `npm run dev` — **ok**. Next boots in 170ms. All four
+  photo-integrated routes (`/`, `/how-it-works`, `/about`,
+  `/pricing`) return HTTP 200.
+- `npm run lint` — **1 error, 1 warning, both pre-existing and
+  outside Iteration 4 scope.**
+  - `src/components/Reveal.tsx:38` — `react-hooks/set-state-in-effect`
+    error on the `setVisible(true)` fallback path used when
+    `IntersectionObserver` is unavailable. This component landed in
+    Iteration 2 and is unchanged here.
+  - `src/app/get-started/page.tsx:115` — `react-hooks/incompatible-library`
+    warning on `watch()` from react-hook-form. This file is from the
+    original build and is unchanged here.
+  - Neither issue is introduced by the photo work; leaving both for
+    a dedicated lint-hygiene pass.
+
+- **Visual responsive pass at 375 / 768 / 1440 — run and passed.**
+  Dev server booted, Puppeteer drove a headless Chromium (downloaded
+  to `/tmp/nuvela-shot/` scratch, not the project), and 12 full-page
+  screenshots were captured — 4 pages × 3 widths. Two iterations
+  were needed on the capture script: the first fullPage screenshots
+  were mostly blank below the fold because the `<Reveal>` component
+  gates visibility on `IntersectionObserver`, and Next.js `<Image>`
+  gates network fetch on lazy-loading. The working version
+  (`/tmp/nuvela-shot/shoot.js`) force-reveals via CSS override,
+  promotes every `<img>` to `loading="eager"`, scrolls end-to-end,
+  and then awaits every image's `complete && naturalWidth > 0`
+  before shooting.
+  - **Home** — 3-photo band renders as a 3-col row at 1440 and 768,
+    stacks to 1 column at 375. All three images load and compose
+    cleanly; no cropping accidents.
+  - **How-it-works** — GLP-1 pens photo at 16:9 lands between the
+    H2 and the first paragraph at every width; the crop preserves
+    both pens' labels readably even on 375.
+  - **About** — mission section is 2-col (text + portrait) at 768
+    and 1440; collapses to stacked on 375 with the portrait below
+    the copy. 4:5 aspect holds cleanly.
+  - **Pricing** — aspirational couple photo is full-width at every
+    width; 21:9 at ≥md tightens vertical weight at desktop, 16:9
+    on mobile keeps the faces readable rather than over-cropping.
+- Cleanup: the Puppeteer install, Chromium download, and screenshot
+  output all live in `/tmp/nuvela-shot/` — nothing bled into the
+  project tree. Safe to `rm -rf` when no longer needed.
+
+---
+
+>>>>>>> dev
 ## [Unreleased] — Iteration 6: Patient dashboard (Iter C)
 
 Iter C of the demo-flow plan. Fills the last four dashboard
@@ -325,6 +643,7 @@ so the real Stripe Elements swap is a contained change later.
 - Walk through scenario 3 (skip signup: marketing site → `?demo=1`
   → toolbar "Jump New user" → dashboard stub; "Reset" → `/`).
 
+<<<<<<< HEAD
 ## [Unreleased] — Iteration 7: Photography
 
 
@@ -525,6 +844,9 @@ Iterations 1–3 could finally be retired alongside this one.
 - Cleanup: the Puppeteer install, Chromium download, and screenshot
   output all live in `/tmp/nuvela-shot/` — nothing bled into the
   project tree. Safe to `rm -rf` when no longer needed.
+=======
+---
+>>>>>>> dev
 
 ## [Unreleased] — Iteration 3: UX + Legal Refinement
 
