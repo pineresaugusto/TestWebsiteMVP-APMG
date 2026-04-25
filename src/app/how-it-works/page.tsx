@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import PageHero from "@/components/PageHero";
@@ -75,7 +76,21 @@ export default function HowItWorks() {
             <h2 className="font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground text-center">
               Understanding GLP-1 medications
             </h2>
-            <p className="mt-6 text-foreground/70 leading-relaxed">
+
+            {/* Product visual — injection pens, editorial framing */}
+            <Reveal delay={80}>
+              <div className="mt-10 relative overflow-hidden rounded-2xl aspect-[16/9] bg-secondary-light shadow-lg shadow-primary/5">
+                <Image
+                  src="/images/glp1-pens.jpg"
+                  alt="GLP-1 medication injection pens on a countertop"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 768px"
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
+
+            <p className="mt-8 text-foreground/70 leading-relaxed">
               GLP-1 (glucagon-like peptide-1) receptor agonists are a class of injectable
               medications that mimic a natural hormone produced in your gut. When you eat, your body
               releases GLP-1 to signal fullness and regulate blood sugar. These medications amplify

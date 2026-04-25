@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
@@ -113,6 +114,19 @@ export default function Pricing() {
           </p>
         </div>
       </section>
+
+      {/* Aspirational band — full-width photo, no overlay CTA (sage CTA follows) */}
+      <Reveal>
+        <div className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-secondary-light">
+          <Image
+            src="/images/pricing-couple.jpg"
+            alt="Couple running together outdoors at sunset"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+      </Reveal>
 
       {/* CTA */}
       <section className="relative overflow-hidden bg-primary py-20">

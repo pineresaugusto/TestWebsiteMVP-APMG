@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Reveal from "@/components/Reveal";
 
 export default function Home() {
@@ -239,11 +240,13 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* Value props — clean typographic grid, no icons, no numbering.      */}
+      {/* Value props — 3-photo band above a clean typographic grid.        */}
+      {/* The three photos tell the from-home story (assessment,            */}
+      {/* consultation, delivery) before the text elaborates.               */}
       {/* ----------------------------------------------------------------- */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-12 md:mb-14">
             <Reveal>
               <h2 className="font-display text-3xl md:text-[2.75rem] leading-[1.1] text-foreground">
                 Everything handled from home
@@ -256,6 +259,27 @@ export default function Home() {
               </p>
             </Reveal>
           </div>
+
+          {/* 3-photo band — assessment · consultation · delivery */}
+          <Reveal delay={120}>
+            <div className="mb-16 md:mb-20 grid sm:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto">
+              {homeBandPhotos.map((photo) => (
+                <div
+                  key={photo.src}
+                  className="relative overflow-hidden rounded-2xl aspect-[3/2] bg-secondary-light shadow-lg shadow-primary/5"
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
           <div className="grid sm:grid-cols-2 gap-x-10 gap-y-12 lg:gap-x-14 max-w-4xl mx-auto">
             {features.map((feature, i) => (
               <Reveal key={feature.title} delay={i * 70}>
@@ -383,6 +407,23 @@ const steps = [
     title: "Home Delivery & Support",
     description:
       "Medication ships directly to your door. Your provider is available for questions and check-ins along the way.",
+  },
+];
+
+// Three photos that anchor the "Everything handled from home" section.
+// Alt text stays descriptive — no outcome, no testimonial framing.
+const homeBandPhotos = [
+  {
+    src: "/images/home-assessment.jpg",
+    alt: "Person reading on their phone in a bright, calm bedroom",
+  },
+  {
+    src: "/images/home-consultation.jpg",
+    alt: "Person on a video call with a healthcare provider from home",
+  },
+  {
+    src: "/images/home-delivery.jpg",
+    alt: "A discreet package placed at the front door of a home",
   },
 ];
 

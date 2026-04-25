@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
@@ -18,22 +19,35 @@ export default function About() {
       {/* Mission */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
-              Our mission
-            </h2>
-            <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
-              Nuvela exists to make GLP-1 weight loss treatment accessible, affordable, and
-              genuinely supportive. We&apos;re not selling a quick fix — we&apos;re building a
-              medical platform that connects patients with licensed providers for guided,
-              evidence-based weight management.
-            </p>
-            <p className="mt-4 text-lg text-foreground/70 leading-relaxed">
-              Too many people who could benefit from these proven treatments face barriers: long wait
-              times, high costs, confusing insurance processes, or simply not knowing where to
-              start. Nuvela removes those barriers through telehealth, making expert care as simple
-              as picking up your phone.
-            </p>
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center max-w-6xl mx-auto">
+            <div>
+              <h2 className="font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+                Our mission
+              </h2>
+              <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
+                Nuvela exists to make GLP-1 weight loss treatment accessible, affordable, and
+                genuinely supportive. We&apos;re not selling a quick fix — we&apos;re building a
+                medical platform that connects patients with licensed providers for guided,
+                evidence-based weight management.
+              </p>
+              <p className="mt-4 text-lg text-foreground/70 leading-relaxed">
+                Too many people who could benefit from these proven treatments face barriers: long wait
+                times, high costs, confusing insurance processes, or simply not knowing where to
+                start. Nuvela removes those barriers through telehealth, making expert care as simple
+                as picking up your phone.
+              </p>
+            </div>
+            <Reveal delay={120}>
+              <div className="relative overflow-hidden rounded-2xl aspect-[4/5] bg-secondary-light shadow-lg shadow-primary/5">
+                <Image
+                  src="/images/about-outdoor.jpg"
+                  alt="Woman walking outdoors on a sunlit path"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

@@ -7,6 +7,27 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-24 — Mauger00
+- Iteration 4 (photography): first real photos on the site, six total
+  across four pages — 3-photo band on home ("Everything handled from
+  home"), GLP-1 pens shot on `/how-it-works`, outdoor portrait
+  alongside the mission copy on `/about`, full-width aspirational
+  band on `/pricing` between tiers and the sage CTA
+- GLP-1 product shot pre-cropped to remove the tablet bottle so the
+  site doesn't imply oral semaglutide; bed-in-bed photo's
+  weight-tracking variant rejected for legal-nuvela reasons
+- `next/image` adopted for the first time; `import Image from
+  "next/image"` added to all four edited page files
+- **Verification debt from Iterations 1–3 retired.** Installed Node
+  22.12 LTS to `~/.local/node/` (self-contained, not in PATH);
+  `npm install` / `build` / `dev` / `lint` all run. Build clean,
+  TypeScript clean, all 13 routes prerender. Lint shows 1 error +
+  1 warning, both in pre-existing files (`Reveal.tsx`,
+  `get-started/page.tsx`) outside Iteration 4 scope
+- Visual responsive pass at 375 / 768 / 1440 done via Puppeteer-driven
+  headless Chromium — 12 screenshots, all pages composed cleanly at
+  every width
+
 ### 2026-04-16 — Mauger00
 - Iteration 3 (UX + legal refinement): softer home hero — new H1
   "Real weight-loss care, made simple.", efficacy moved out of first
@@ -51,10 +72,12 @@ Format: `### YYYY-MM-DD — github-username`
 
 Priority order. Check items off or move to CHANGELOG.md when completed.
 
-- [ ] Run verification debt from Iteration 1 (npm install, dev, build, lint — see CHANGELOG.md)
+- [x] ~~Run verification debt from Iteration 1 (npm install, dev, build, lint)~~ — done in Iteration 4
+- [x] ~~Responsive polish pass: test all pages at 375px, 768px, 1440px~~ — done in Iteration 4 (photo pages only; rest of site not re-checked)
+- [ ] Address pre-existing lint findings (`Reveal.tsx` set-state-in-effect, `get-started/page.tsx` watch() incompatible-library) — both surfaced by the Iteration 4 lint run, both predate it
+- [ ] Address `npm audit` moderate-severity findings (2 outstanding)
 - [ ] Social proof decision: mock testimonials/stats/trust badges? (deferred from initial build)
 - [ ] Decide on specific US states for "available" list in quiz
-- [ ] Responsive polish pass: test all pages at 375px, 768px, 1440px
 - [ ] Scroll animations (fade-in on viewport entry)
 - [ ] OG image for social link previews
 - [ ] Reconcile known issues when business prerequisites are met (see CHANGELOG.md § Known issues)
