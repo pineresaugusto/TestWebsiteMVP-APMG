@@ -69,6 +69,49 @@ export default function HowItWorks() {
         </div>
       </section>
 
+      {/* Editorial moment — lifestyle portrait between process and product */}
+      <section className="relative bg-secondary-light/40 py-20 md:py-24 overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-[0.18] pointer-events-none mix-blend-soft-light"
+        />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+            <Reveal>
+              <div className="relative overflow-hidden rounded-[28px] aspect-[2/3] bg-secondary-light shadow-xl shadow-primary/10 max-w-md mx-auto md:mx-0">
+                <Image
+                  src="/images/kitchen-portrait.jpg"
+                  alt="Person at home holding a glass of water in a sunlit kitchen"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 480px"
+                  className="object-cover object-center"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
+              <div>
+                <p className="text-[11px] font-semibold text-primary-dark uppercase tracking-[0.2em]">
+                  Day to day
+                </p>
+                <h2 className="mt-3 font-display text-[2rem] md:text-[2.5rem] leading-[1.1] text-foreground">
+                  A care routine that fits into your life — not the other way around.
+                </h2>
+                <p className="mt-5 text-foreground/70 leading-relaxed">
+                  No clinic waiting rooms. No pharmacy lines. Once your provider sets your plan,
+                  the rhythm is simple: a weekly self-administered injection at home, the
+                  occasional check-in, and a care team a message away when you have a question.
+                </p>
+                <p className="mt-4 text-foreground/65 leading-relaxed">
+                  Treatment is one part of a broader plan. Your provider may also discuss
+                  hydration, nutrition, sleep, and movement as part of your overall care — the
+                  things that quietly do a lot of the work alongside the medication.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* About the Medication */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -77,15 +120,15 @@ export default function HowItWorks() {
               Understanding GLP-1 medications
             </h2>
 
-            {/* Product visual — injection pens, editorial framing */}
+            {/* Product visual — injection pens at native 3:2 so the full frame is shown */}
             <Reveal delay={80}>
-              <div className="mt-10 relative overflow-hidden rounded-2xl aspect-[16/9] bg-secondary-light shadow-lg shadow-primary/5">
+              <div className="mt-10 relative overflow-hidden rounded-2xl aspect-[3/2] bg-secondary-light shadow-lg shadow-primary/5">
                 <Image
                   src="/images/glp1-pens.jpg"
                   alt="GLP-1 medication injection pens on a countertop"
                   fill
                   sizes="(max-width: 1024px) 100vw, 768px"
-                  className="object-cover"
+                  className="object-cover object-center"
                 />
               </div>
             </Reveal>

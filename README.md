@@ -7,13 +7,27 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
-<<<<<<< HEAD
 ### 2026-04-24 — Mauger00
-- Iteration 4 (photography): first real photos on the site, six total
+- Iteration 7 (photography polish): fixed two cropping complaints —
+  pricing aspirational band changed from `aspect-[16/9] md:aspect-[21/9]`
+  → `aspect-[3/2]` so the full couple-running shot shows without
+  top/bottom crop; how-it-works GLP-1 pens band changed from `aspect-[16/9]`
+  → `aspect-[3/2]` and re-cropped from source with generous breathing room
+  around the pens (still excludes the tablet bottle per legal-nuvela)
+- Added `nuvela w1` portrait (`kitchen-portrait.jpg`) as a new editorial
+  side-by-side moment on `/how-it-works` between the journey steps and
+  the GLP-1 explainer — sits in a soft sage-tinted band with grain, copy
+  on the right framing the day-to-day care routine without making any
+  outcome claims
+
+### 2026-04-24 — Mauger00
+- Iteration 7 (photography): first real photos on the site, six total
   across four pages — 3-photo band on home ("Everything handled from
   home"), GLP-1 pens shot on `/how-it-works`, outdoor portrait
   alongside the mission copy on `/about`, full-width aspirational
-  band on `/pricing` between tiers and the sage CTA
+  band on `/pricing` between tiers and the sage CTA. (Originally
+  numbered Iteration 4; renumbered to 7 to avoid collision with the
+  dev branch's demo-flow Iter A/B/C work.)
 - GLP-1 product shot pre-cropped to remove the tablet bottle so the
   site doesn't imply oral semaglutide; bed-in-bed photo's
   weight-tracking variant rejected for legal-nuvela reasons
@@ -24,11 +38,11 @@ Format: `### YYYY-MM-DD — github-username`
   `npm install` / `build` / `dev` / `lint` all run. Build clean,
   TypeScript clean, all 13 routes prerender. Lint shows 1 error +
   1 warning, both in pre-existing files (`Reveal.tsx`,
-  `get-started/page.tsx`) outside Iteration 4 scope
+  `get-started/page.tsx`) outside Iteration 7 scope
 - Visual responsive pass at 375 / 768 / 1440 done via Puppeteer-driven
   headless Chromium — 12 screenshots, all pages composed cleanly at
   every width
-=======
+
 ### 2026-04-24 — adpineres-ef
 - Iter C of demo flow landed: Progress, Resources, Account, and
   a design-rebuilt Not-Eligible page. Sidebar now 6 links
@@ -113,7 +127,6 @@ Format: `### YYYY-MM-DD — github-username`
   registration still owed before hooks/mem-search activate)
 - Build clean; pre-existing `Reveal.tsx` lint error remains from
   earlier iteration verification debt
->>>>>>> e2d8c2a889132f578916b4946a7f2210a0205f24
 
 ### 2026-04-16 — Mauger00
 - Iteration 3 (UX + legal refinement): softer home hero — new H1

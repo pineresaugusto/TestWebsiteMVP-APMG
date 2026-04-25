@@ -116,15 +116,16 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* Aspirational band — full-width photo, no overlay CTA (sage CTA follows) */}
+      {/* Aspirational band — full-width photo at native 3:2 so nothing is cropped */}
       <Reveal>
-        <div className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-secondary-light">
+        <div className="relative w-full overflow-hidden aspect-[3/2] bg-secondary-light">
           <Image
             src="/images/pricing-couple.jpg"
             alt="Couple running together outdoors at sunset"
             fill
             sizes="100vw"
-            className="object-cover"
+            className="object-cover object-center"
+            priority={false}
           />
         </div>
       </Reveal>
