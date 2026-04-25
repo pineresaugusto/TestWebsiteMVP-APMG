@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvela — Orders</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .orders-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(212,197,178,0.4);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+  }
+  .orders-header-bar .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .orders-header-bar .stat .label { font-size: 12px; opacity: 0.45; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .orders-header-bar .stat .value { font-size: 15px; font-weight: 600; }
+  .orders-header-bar .divider { width: 1px; height: 36px; background: var(--secondary); }
+  .autoship-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 100px;
+    background: rgba(124,154,130,0.12); color: var(--primary-dark);
+    font-size: 12.5px; font-weight: 600;
+  }
+  .autoship-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+
+  .orders-filter {
+    display: flex; gap: 6px; margin-bottom: 16px;
+  }
+  .orders-filter button {
+    padding: 6px 16px; border-radius: 100px; border: 1.5px solid var(--secondary);
+    background: transparent; font-size: 13px; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: all var(--transition); color: var(--foreground); opacity: 0.6;
+  }
+  .orders-filter button.active { background: var(--foreground); color: var(--white); border-color: var(--foreground); opacity: 1; }
+
+  .orders-table {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(212,197,178,0.4);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .orders-table-header {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr 1fr 0.8fr 0.8fr;
+    padding: 14px 24px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.4;
+    border-bottom: 1px solid rgba(212,197,178,0.3);
+  }
+  .orders-table-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr 1fr 0.8fr 0.8fr;
+    padding: 18px 24px;
+    align-items: center;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(212,197,178,0.15);
+    transition: background var(--transition);
+  }
+  .orders-table-row:last-child { border-bottom: none; }
+  .orders-table-row:hover { background: rgba(250,248,245,0.6); }
+  .order-id { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .order-med { display: flex; flex-direction: column; gap: 1px; }
+  .order-med .dose { font-size: 12.5px; opacity: 0.45; }
+  .tracking-btn {
+    padding: 6px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--secondary);
+    background: transparent; font-size: 12.5px; font-weight: 600; font-family: inherit;
+    cursor: not-allowed; opacity: 0.4; color: var(--foreground);
+    position: relative;
+  }
+  .tracking-btn:hover .tooltip {
+    opacity: 1; transform: translateX(-50%) translateY(0);
+  }
+  .tooltip {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+    background: var(--foreground); color: white; padding: 6px 12px; border-radius: 6px;
+    font-size: 12px; white-space: nowrap; opacity: 0; pointer-events: none;
+    transition: all 200ms ease; font-weight: 500;
+  }
+  .tooltip::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--foreground);
+  }
+
+  .orders-disclaimer {
+    margin-top: 16px; font-size: 13px; opacity: 0.4; text-align: center;
+    font-style: italic;
+  }
+
+  /* Empty */
+  .orders-empty {
+    padding: 64px 24px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .orders-empty-shapes {
+    width: 120px; height: 100px; position: relative; margin-bottom: 24px;
+  }
+  .orders-empty-shapes .box {
+    width: 64px; height: 48px; border-radius: 12px;
+    border: 2px dashed var(--secondary);
+    position: absolute; top: 10px; left: 28px;
+  }
+  .orders-empty-shapes .circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(124,154,130,0.12);
+    position: absolute; bottom: 0; right: 16px;
+  }
+  .orders-empty-shapes .line {
+    width: 40px; height: 4px; border-radius: 2px;
+    background: rgba(212,197,178,0.4);
+    position: absolute; bottom: 8px; left: 12px;
+  }
+  .orders-empty h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .orders-empty p { font-size: 14px; opacity: 0.5; max-width: 320px; }
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main-content" id="main"></main>
+</div>
+<div class="demo-toggle" id="demoToggle"></div>
+<script src="shared.js"></script>
+<script>
+const seed = getCurrentSeed();
+const state = getOrSeedState(seed);
+
+function renderSidebarLocal(active, s) {
+  const unread = getUnreadCount(s);
+  const links = [
+    { id:'dashboard',label:'Dashboard',icon:'dashboard',href:'dashboard.html'},
+    { id:'messages',label:'Messages',icon:'messages',href:'messages.html',badge:unread},
+    { id:'orders',label:'Orders',icon:'orders',href:'orders.html'},
+    { id:'progress',label:'Progress',icon:'progress',href:'progress.html'},
+    { id:'resources',label:'Resources',icon:'resources',href:'resources.html'},
+  ];
+  document.getElementById('sidebar').innerHTML = `
+    <a class="sidebar-logo" href="dashboard.html"><span class="logo-dot"></span>Nuvela</a>
+    <div class="sidebar-nav">${links.map(l=>`
+      <a class="sidebar-link ${active===l.id?'active':''}" href="${l.href}">
+        <svg viewBox="0 0 24 24">${ICONS[l.icon]}</svg>${l.label}
+        ${l.badge?'<span class="sidebar-badge">'+l.badge+'</span>':''}
+      </a>`).join('')}</div>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">${s.user.firstName[0]}${s.user.lastName[0]}</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">${s.user.firstName} ${s.user.lastName}</div>
+        <div class="sidebar-user-plan">${s.plan.name} Plan</div>
+      </div>
+    </div>`;
+}
+
+let orderFilter = 'all';
+
+function renderOrders() {
+  const orders = state.orders || [];
+  const filtered = orderFilter === 'all' ? orders : orders.filter(o => o.status.toLowerCase() === orderFilter);
+
+  let html = `
+    <div class="page-header animate-in stagger-1">
+      <div class="page-greeting">Orders</div>
+      <div class="page-subtitle">Track your medication shipments</div>
+    </div>
+  `;
+
+  // Header bar
+  html += `
+    <div class="orders-header-bar animate-in stagger-2">
+      <div class="stat">
+        <span class="label">Next Refill</span>
+        <span class="value">${formatDate(state.nextRefill)}</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stat">
+        <span class="label">Auto-ship</span>
+        <span class="autoship-badge"><span class="dot"></span> Active</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stat">
+        <span class="label">Total Orders</span>
+        <span class="value">${orders.length}</span>
+      </div>
+    </div>
+  `;
+
+  if (orders.length === 0) {
+    html += `
+      <div class="orders-table animate-in stagger-3">
+        <div class="orders-empty">
+          <div class="orders-empty-shapes"><div class="box"></div><div class="circle"></div><div class="line"></div></div>
+          <h3>Your first shipment is being prepared</h3>
+          <p>Once your provider approves your treatment, your medication will be shipped to your door</p>
+        </div>
+      </div>`;
+  } else {
+    html += `
+      <div class="orders-filter animate-in stagger-3">
+        <button class="${orderFilter==='all'?'active':''}" onclick="setOrderFilter('all')">All</button>
+        <button class="${orderFilter==='shipped'?'active':''}" onclick="setOrderFilter('shipped')">Shipped</button>
+        <button class="${orderFilter==='delivered'?'active':''}" onclick="setOrderFilter('delivered')">Delivered</button>
+      </div>
+      <div class="orders-table animate-in stagger-4">
+        <div class="orders-table-header">
+          <span>Order</span><span>Medication</span><span>Date</span><span>Status</span><span>Delivery</span><span>Tracking</span>
+        </div>
+        ${filtered.map(o => `
+          <div class="orders-table-row">
+            <span class="order-id">${o.id}</span>
+            <div class="order-med"><span>${o.medication}</span><span class="dose">${o.dose}</span></div>
+            <span>${formatDate(o.date)}</span>
+            <span><span class="badge badge-${o.status.toLowerCase()}">${o.status}</span></span>
+            <span>${o.status === 'Delivered' ? formatDate(o.delivery) : 'Est. ' + formatDate(o.delivery)}</span>
+            <span><button class="tracking-btn" disabled>Track<span class="tooltip">Tracking unavailable in demo</span></button></span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="orders-disclaimer animate-in stagger-5">Tracking unavailable in demo mode</div>
+    `;
+  }
+
+  document.getElementById('main').innerHTML = html;
+}
+
+function setOrderFilter(f) { orderFilter = f; renderOrders(); }
+
+renderSidebarLocal('orders', state);
+renderOrders();
+
+document.getElementById('demoToggle').innerHTML = `
+  <button class="${seed==='newUser'?'active':''}" onclick="setCurrentSeed('newUser');location.reload()">New User</button>
+  <button class="${seed==='week4'?'active':''}" onclick="setCurrentSeed('week4');location.reload()">Week 4</button>`;
+</script>
+</body>
+</html>

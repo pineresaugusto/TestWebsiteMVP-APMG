@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvela — Progress</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .progress-hero {
+    display: flex; gap: 24px; margin-bottom: 24px;
+  }
+  .hero-stat-card {
+    flex: 1; padding: 24px; background: var(--white);
+    border-radius: var(--radius-xl); border: 1px solid rgba(212,197,178,0.4);
+    box-shadow: var(--shadow-sm); text-align: center;
+  }
+  .hero-stat-card .label { font-size: 12px; opacity: 0.45; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .hero-stat-card .value { font-size: 32px; font-weight: 700; margin-top: 6px; font-variant-numeric: tabular-nums; line-height: 1; }
+  .hero-stat-card .value.green { color: var(--primary-dark); }
+  .hero-stat-card .unit { font-size: 13px; opacity: 0.4; margin-top: 4px; }
+
+  /* Chart container */
+  .chart-card {
+    padding: 28px; background: var(--white);
+    border-radius: var(--radius-xl); border: 1px solid rgba(212,197,178,0.4);
+    box-shadow: var(--shadow-sm); margin-bottom: 24px;
+  }
+  .chart-card .card-title { margin-bottom: 20px; }
+  .chart-area { position: relative; height: 280px; }
+  .chart-svg { width: 100%; height: 100%; }
+  .chart-grid-line { stroke: rgba(212,197,178,0.25); stroke-width: 1; }
+  .chart-label { fill: var(--foreground); opacity: 0.35; font-size: 12px; font-family: 'Inter', sans-serif; }
+  .chart-line { fill: none; stroke: var(--primary); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .chart-area-fill { fill: url(#progressGrad); }
+  .chart-goal-line { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 4; opacity: 0.5; }
+  .chart-goal-label { fill: var(--accent); font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 600; opacity: 0.6; }
+  .chart-point { fill: var(--white); stroke: var(--primary); stroke-width: 2.5; cursor: pointer; transition: r 150ms ease; }
+  .chart-point:hover { r: 6; }
+  .chart-tooltip {
+    position: absolute; background: var(--foreground); color: white;
+    padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 500;
+    pointer-events: none; opacity: 0; transition: opacity 150ms;
+    transform: translate(-50%, -100%); margin-top: -12px;
+    box-shadow: var(--shadow-lg); white-space: nowrap;
+  }
+  .chart-tooltip.show { opacity: 1; }
+  .chart-tooltip::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--foreground);
+  }
+
+  /* Log form */
+  .log-section { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .log-form-card {
+    padding: 24px; background: var(--white);
+    border-radius: var(--radius-xl); border: 1px solid rgba(212,197,178,0.4);
+    box-shadow: var(--shadow-sm);
+  }
+  .log-form-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .log-input-row { display: flex; gap: 12px; align-items: flex-end; }
+  .log-input-row .form-group { flex: 1; margin-bottom: 0; }
+  .log-input-row .btn { height: 46px; }
+
+  /* Recent entries */
+  .recent-entries h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+  .entry-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(212,197,178,0.2);
+  }
+  .entry-item:last-child { border-bottom: none; }
+  .entry-date { font-size: 14px; opacity: 0.55; }
+  .entry-weight { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .entry-change { font-size: 13px; font-weight: 600; }
+  .entry-change.down { color: var(--primary-dark); }
+  .entry-change.up { color: var(--accent); }
+
+  /* Disclaimer */
+  .progress-disclaimer {
+    margin-top: 24px; font-size: 13px; opacity: 0.35; text-align: center; font-style: italic;
+  }
+
+  /* Empty chart */
+  .chart-empty {
+    height: 280px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+  }
+  .chart-empty-shapes {
+    width: 100px; height: 80px; position: relative; margin-bottom: 16px;
+  }
+  .chart-empty-shapes .wave {
+    width: 80px; height: 3px; border-radius: 2px;
+    background: rgba(124,154,130,0.2);
+    position: absolute; left: 10px;
+  }
+  .chart-empty-shapes .wave:nth-child(1) { top: 20px; width: 60px; }
+  .chart-empty-shapes .wave:nth-child(2) { top: 38px; }
+  .chart-empty-shapes .wave:nth-child(3) { top: 56px; width: 50px; left: 25px; }
+  .chart-empty-shapes .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(124,154,130,0.3);
+    position: absolute;
+  }
+  .chart-empty-shapes .dot:nth-child(4) { top: 16px; left: 70px; }
+  .chart-empty-shapes .dot:nth-child(5) { top: 34px; left: 5px; }
+  .chart-empty h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .chart-empty p { font-size: 13.5px; opacity: 0.5; }
+
+  /* Link */
+  .resources-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13.5px; font-weight: 500; color: var(--primary-dark);
+    text-decoration: none; margin-top: 16px;
+    transition: color var(--transition);
+  }
+  .resources-link:hover { color: var(--accent); }
+  .resources-link svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main-content" id="main"></main>
+</div>
+<div class="demo-toggle" id="demoToggle"></div>
+<div class="toast" id="toast"></div>
+<script src="shared.js"></script>
+<script>
+const seed = getCurrentSeed();
+const state = getOrSeedState(seed);
+
+function sb(a,s){const u=getUnreadCount(s),lk=[
+{id:'dashboard',label:'Dashboard',icon:'dashboard',href:'dashboard.html'},
+{id:'messages',label:'Messages',icon:'messages',href:'messages.html',badge:u},
+{id:'orders',label:'Orders',icon:'orders',href:'orders.html'},
+{id:'progress',label:'Progress',icon:'progress',href:'progress.html'},
+{id:'resources',label:'Resources',icon:'resources',href:'resources.html'}];
+document.getElementById('sidebar').innerHTML=`<a class="sidebar-logo" href="dashboard.html"><span class="logo-dot"></span>Nuvela</a><div class="sidebar-nav">${lk.map(l=>`<a class="sidebar-link ${a===l.id?'active':''}" href="${l.href}"><svg viewBox="0 0 24 24">${ICONS[l.icon]}</svg>${l.label}${l.badge?'<span class="sidebar-badge">'+l.badge+'</span>':''}</a>`).join('')}</div><div class="sidebar-user"><div class="sidebar-avatar">${s.user.firstName[0]}${s.user.lastName[0]}</div><div class="sidebar-user-info"><div class="sidebar-user-name">${s.user.firstName} ${s.user.lastName}</div><div class="sidebar-user-plan">${s.plan.name} Plan</div></div></div>`;}
+
+function renderChart(logs, goalWeight) {
+  if (logs.length < 2) return '';
+  const pad = { top: 20, right: 30, bottom: 36, left: 50 };
+  const W = 800, H = 280;
+  const cw = W - pad.left - pad.right;
+  const ch = H - pad.top - pad.bottom;
+  const weights = logs.map(l => l.weight);
+  let minW = Math.min(...weights) - 2;
+  let maxW = Math.max(...weights) + 2;
+  if (goalWeight) { minW = Math.min(minW, goalWeight - 2); }
+
+  const xScale = (i) => pad.left + (i / (logs.length - 1)) * cw;
+  const yScale = (w) => pad.top + ((maxW - w) / (maxW - minW)) * ch;
+
+  const points = logs.map((l, i) => `${xScale(i)},${yScale(l.weight)}`);
+  const areaPoints = points.join(' ') + ` ${xScale(logs.length-1)},${H-pad.bottom} ${pad.left},${H-pad.bottom}`;
+
+  // Y axis ticks
+  const yTicks = 5;
+  const yStep = (maxW - minW) / yTicks;
+  let yLines = '';
+  for (let i = 0; i <= yTicks; i++) {
+    const w = maxW - i * yStep;
+    const y = yScale(w);
+    yLines += `<line x1="${pad.left}" y1="${y}" x2="${W-pad.right}" y2="${y}" class="chart-grid-line"/>`;
+    yLines += `<text x="${pad.left-8}" y="${y+4}" text-anchor="end" class="chart-label">${w.toFixed(0)}</text>`;
+  }
+
+  // X axis labels
+  let xLabels = logs.map((l, i) => `<text x="${xScale(i)}" y="${H-8}" text-anchor="middle" class="chart-label">${formatDate(l.date)}</text>`).join('');
+
+  // Goal line
+  let goalLine = '';
+  if (goalWeight && goalWeight >= minW && goalWeight <= maxW) {
+    const gy = yScale(goalWeight);
+    goalLine = `<line x1="${pad.left}" y1="${gy}" x2="${W-pad.right}" y2="${gy}" class="chart-goal-line"/>
+      <text x="${W-pad.right+4}" y="${gy+4}" class="chart-goal-label">Goal</text>`;
+  }
+
+  // Points with data attrs for tooltip
+  const dots = logs.map((l, i) => `<circle cx="${xScale(i)}" cy="${yScale(l.weight)}" r="4.5" class="chart-point" data-idx="${i}"/>`).join('');
+
+  return `
+    <svg viewBox="0 0 ${W} ${H}" class="chart-svg">
+      <defs>
+        <linearGradient id="progressGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      ${yLines}
+      ${xLabels}
+      ${goalLine}
+      <polygon points="${areaPoints}" class="chart-area-fill"/>
+      <polyline points="${points.join(' ')}" class="chart-line"/>
+      ${dots}
+    </svg>
+  `;
+}
+
+function render() {
+  const logs = state.weightLogs || [];
+  const hasLogs = logs.length > 0;
+  const first = hasLogs ? logs[0].weight : null;
+  const last = hasLogs ? logs[logs.length - 1].weight : null;
+  const change = hasLogs && logs.length >= 2 ? (last - first).toFixed(1) : null;
+
+  let html = `
+    <div class="page-header animate-in stagger-1">
+      <div class="page-greeting">Progress</div>
+      <div class="page-subtitle">Track your weight loss journey</div>
+    </div>
+  `;
+
+  // Hero stats
+  if (hasLogs && logs.length >= 2) {
+    html += `
+      <div class="progress-hero animate-in stagger-2">
+        <div class="hero-stat-card"><div class="label">Starting Weight</div><div class="value">${first}</div><div class="unit">lb</div></div>
+        <div class="hero-stat-card"><div class="label">Current Weight</div><div class="value">${last}</div><div class="unit">lb</div></div>
+        <div class="hero-stat-card"><div class="label">Total Change</div><div class="value green">${change} lb</div><div class="unit">since starting</div></div>
+        ${state.goalWeight ? `<div class="hero-stat-card"><div class="label">Goal Weight</div><div class="value">${state.goalWeight}</div><div class="unit">lb</div></div>` : ''}
+      </div>`;
+  }
+
+  // Chart
+  html += `<div class="chart-card animate-in stagger-3">
+    <div class="card-title">Weight Over Time</div>
+    <div class="chart-area" id="chartArea">`;
+
+  if (logs.length >= 2) {
+    html += renderChart(logs, state.goalWeight);
+  } else if (logs.length === 1) {
+    html += `<div class="chart-empty">
+      <div class="chart-empty-shapes"><div class="wave"></div><div class="wave"></div><div class="wave"></div><div class="dot"></div><div class="dot"></div></div>
+      <h3>One data point so far</h3><p>Keep logging weekly for best trends</p></div>`;
+  } else {
+    html += `<div class="chart-empty">
+      <div class="chart-empty-shapes"><div class="wave"></div><div class="wave"></div><div class="wave"></div><div class="dot"></div><div class="dot"></div></div>
+      <h3>Log your first weight to see your progress</h3><p>We will chart your journey over time</p></div>`;
+  }
+  html += `</div><div id="chartTooltip" class="chart-tooltip"></div></div>`;
+
+  // Log form + recent entries
+  html += `<div class="log-section animate-in stagger-4">
+    <div class="log-form-card">
+      <h3>Log today's weight</h3>
+      <div class="log-input-row">
+        <div class="form-group">
+          <label class="form-label">Weight (lb)</label>
+          <input type="number" step="0.1" class="form-input" id="weightInput" placeholder="e.g. 182.0" min="50" max="500">
+        </div>
+        <button class="btn btn-primary" onclick="logWeight()" id="logBtn">Save</button>
+      </div>
+      <a href="resources.html" class="resources-link">
+        Learn about weight plateaus
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS.chevronRight}</svg>
+      </a>
+    </div>
+    <div class="log-form-card recent-entries">
+      <h3>Recent Entries</h3>`;
+
+  if (logs.length > 0) {
+    const recent = [...logs].reverse().slice(0, 5);
+    html += recent.map((l, i) => {
+      const prev = i < recent.length - 1 ? recent[i + 1].weight : null;
+      const diff = prev ? (l.weight - prev).toFixed(1) : null;
+      return `<div class="entry-item">
+        <span class="entry-date">${formatDate(l.date)}</span>
+        <span class="entry-weight">${l.weight} lb</span>
+        ${diff ? `<span class="entry-change ${parseFloat(diff) <= 0 ? 'down' : 'up'}">${parseFloat(diff) <= 0 ? '' : '+'}${diff}</span>` : '<span class="entry-change">--</span>'}
+      </div>`;
+    }).join('');
+  } else {
+    html += `<div style="padding:24px 0;text-align:center;opacity:0.4;font-size:14px;">No entries yet</div>`;
+  }
+
+  html += `</div></div>`;
+  html += `<div class="progress-disclaimer animate-in stagger-5">Results vary. Individual results not typical.</div>`;
+
+  document.getElementById('main').innerHTML = html;
+
+  // Tooltip listeners
+  document.querySelectorAll('.chart-point').forEach(dot => {
+    dot.addEventListener('mouseenter', (e) => {
+      const idx = parseInt(dot.dataset.idx);
+      const log = logs[idx];
+      const tt = document.getElementById('chartTooltip');
+      tt.innerHTML = `${formatDate(log.date)} &mdash; ${log.weight} lb`;
+      tt.classList.add('show');
+      const rect = dot.getBoundingClientRect();
+      const area = document.getElementById('chartArea').getBoundingClientRect();
+      tt.style.left = (rect.left - area.left + rect.width/2) + 'px';
+      tt.style.top = (rect.top - area.top - 4) + 'px';
+    });
+    dot.addEventListener('mouseleave', () => {
+      document.getElementById('chartTooltip').classList.remove('show');
+    });
+  });
+}
+
+function logWeight() {
+  const input = document.getElementById('weightInput');
+  const val = parseFloat(input.value);
+  if (!val || val < 50 || val > 500) return;
+  state.weightLogs.push({ date: new Date().toISOString(), weight: val });
+  setState(state);
+  render();
+  const t = document.getElementById('toast');
+  t.textContent = 'Weight logged!';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+sb('progress', state);
+render();
+document.getElementById('demoToggle').innerHTML=`
+  <button class="${seed==='newUser'?'active':''}" onclick="setCurrentSeed('newUser');location.reload()">New User</button>
+  <button class="${seed==='week4'?'active':''}" onclick="setCurrentSeed('week4');location.reload()">Week 4</button>`;
+</script>
+</body>
+</html>

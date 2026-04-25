@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { GatedFooter, GatedNavbar } from "@/components/ChromeGate";
+import DemoToolbar from "@/components/DemoToolbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,9 +44,10 @@ export default function RootLayout({
       className={`${inter.variable} ${lora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Navbar />
+        <GatedNavbar />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <GatedFooter />
+        <DemoToolbar />
       </body>
     </html>
   );

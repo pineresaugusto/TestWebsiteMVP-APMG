@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvela — Checkout</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .checkout-layout {
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px;
+    max-width: 960px; margin: 0 auto; padding: 48px 32px 64px;
+  }
+  .checkout-form h1 {
+    font-family: 'Fraunces', Georgia, serif; font-size: 26px;
+    font-weight: 500; letter-spacing: -0.02em; margin-bottom: 28px;
+  }
+  .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* Card number with brand icon */
+  .card-number-wrapper { position: relative; }
+  .card-number-wrapper input { padding-right: 52px; }
+  .card-brand {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 13px; font-weight: 700; opacity: 0.3; letter-spacing: 0.02em;
+  }
+  .card-brand.detected { opacity: 0.7; }
+  .card-brand.visa { color: #1A1F71; }
+  .card-brand.mc { color: #EB001B; }
+  .card-brand.amex { color: #006FCF; }
+
+  .save-card { display: flex; align-items: center; gap: 10px; margin: 20px 0; }
+  .save-card input[type="checkbox"] {
+    width: 18px; height: 18px; accent-color: var(--primary);
+  }
+  .save-card label { font-size: 14px; }
+
+  .pay-btn {
+    width: 100%; padding: 16px; font-size: 16px; font-weight: 600;
+    border-radius: var(--radius-lg); border: none; cursor: pointer;
+    background: var(--accent); color: white; font-family: inherit;
+    transition: all var(--transition); position: relative;
+  }
+  .pay-btn:hover { background: var(--accent-dark); }
+  .pay-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+  .pay-btn .spinner-icon {
+    display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite;
+    vertical-align: middle; margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .encrypt-note {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; font-size: 12.5px; opacity: 0.35; margin-top: 16px;
+  }
+  .encrypt-note svg { width: 14px; height: 14px; }
+
+  /* Order summary */
+  .order-summary {
+    background: var(--white); border-radius: var(--radius-xl);
+    border: 1px solid rgba(212,197,178,0.4); box-shadow: var(--shadow-sm);
+    padding: 28px; position: sticky; top: 100px; align-self: start;
+  }
+  .order-summary h2 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+  .summary-plan {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 20px; border-bottom: 1px solid rgba(212,197,178,0.3);
+    margin-bottom: 16px;
+  }
+  .summary-plan-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-md);
+    background: rgba(124,154,130,0.1); color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .summary-plan-name { font-size: 15px; font-weight: 600; }
+  .summary-plan-tag { font-size: 13px; opacity: 0.45; }
+
+  .summary-line {
+    display: flex; justify-content: space-between;
+    font-size: 14.5px; padding: 6px 0;
+  }
+  .summary-line .label { opacity: 0.55; }
+  .summary-line .value { font-weight: 600; }
+  .summary-line.total { font-size: 16px; padding-top: 16px; border-top: 1px solid rgba(212,197,178,0.3); margin-top: 8px; }
+
+  .summary-features {
+    margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(212,197,178,0.2);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .summary-features li {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13.5px; list-style: none;
+  }
+  .summary-features li svg { width: 15px; height: 15px; color: var(--primary); flex-shrink: 0; }
+
+  .summary-fine-print {
+    font-size: 12px; opacity: 0.35; margin-top: 20px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="funnel-header">
+  <a class="logo" href="dashboard.html"><span class="logo-dot"></span>Nuvela</a>
+  <span class="step-indicator">Step 3 of 4</span>
+  <button class="funnel-signout" onclick="window.location.href='signup.html'">Sign out</button>
+</div>
+
+<div class="checkout-layout">
+  <div class="checkout-form animate-in stagger-1">
+    <h1>Payment details</h1>
+    <form id="checkoutForm" onsubmit="return handlePay(event)">
+      <div class="card-row">
+        <div class="form-group">
+          <label class="form-label">Billing name</label>
+          <input type="text" class="form-input" id="billingName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Billing email</label>
+          <input type="email" class="form-input" id="billingEmail" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Card number</label>
+        <div class="card-number-wrapper">
+          <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required oninput="formatCard(this)">
+          <span class="card-brand" id="cardBrand"></span>
+        </div>
+        <span class="form-error" id="cardError"></span>
+      </div>
+      <div class="card-row">
+        <div class="form-group">
+          <label class="form-label">Expiration</label>
+          <input type="text" class="form-input" id="expiry" placeholder="MM / YY" maxlength="7" required oninput="formatExpiry(this)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">CVC</label>
+          <input type="text" class="form-input" id="cvc" placeholder="123" maxlength="4" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Postal code</label>
+        <input type="text" class="form-input" id="zip" placeholder="12345" maxlength="10" required>
+      </div>
+      <div class="save-card">
+        <input type="checkbox" id="saveCard" checked>
+        <label for="saveCard">Save card for future payments</label>
+      </div>
+      <button type="submit" class="pay-btn" id="payBtn">Pay $<span id="payAmount">299</span>/mo</button>
+      <div class="encrypt-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS.lock}</svg>
+        Payments are encrypted and secure
+      </div>
+    </form>
+  </div>
+
+  <div class="animate-in stagger-2">
+    <div class="order-summary" id="orderSummary"></div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const state = getState() || {};
+const plan = state.plan || { name: 'Accelerate', price: 299, tagline: 'Steady, sustained progress' };
+const user = state.user || {};
+
+// Pre-fill
+if (user.firstName) document.getElementById('billingName').value = user.firstName + ' ' + (user.lastName || '');
+if (user.email) document.getElementById('billingEmail').value = user.email;
+document.getElementById('payAmount').textContent = plan.price;
+
+// Order summary
+const PLAN_FEATURES = {
+  Start: ["Licensed provider consultation", "Monthly medication supply", "Messaging support"],
+  Accelerate: ["Priority provider messaging", "Dose escalation protocol", "Weight tracking tools"],
+  Transform: ["Dedicated care coordinator", "Video check-ins", "Personalized meal plans"]
+};
+document.getElementById('orderSummary').innerHTML = `
+  <h2>Order summary</h2>
+  <div class="summary-plan">
+    <div class="summary-plan-icon">${icon('pill', 20)}</div>
+    <div><div class="summary-plan-name">${plan.name} Plan</div><div class="summary-plan-tag">${plan.tagline}</div></div>
+  </div>
+  <div class="summary-line"><span class="label">Today's charge</span><span class="value">$${plan.price}</span></div>
+  <div class="summary-line"><span class="label">Billed monthly</span><span class="value">Cancel anytime</span></div>
+  <ul class="summary-features">
+    ${(PLAN_FEATURES[plan.name] || PLAN_FEATURES.Accelerate).map(f => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${ICONS.check}</svg>${f}</li>`).join('')}
+  </ul>
+  <div class="summary-fine-print">By confirming, you authorize Nuvela to charge your card monthly until cancelled.</div>
+`;
+
+function formatCard(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 16);
+  el.value = v.replace(/(.{4})/g, '$1 ').trim();
+  detectBrand(v);
+}
+
+function detectBrand(num) {
+  const brand = document.getElementById('cardBrand');
+  if (num.startsWith('4')) { brand.textContent = 'VISA'; brand.className = 'card-brand detected visa'; }
+  else if (num.startsWith('5')) { brand.textContent = 'MC'; brand.className = 'card-brand detected mc'; }
+  else if (num.startsWith('3')) { brand.textContent = 'AMEX'; brand.className = 'card-brand detected amex'; }
+  else { brand.textContent = ''; brand.className = 'card-brand'; }
+}
+
+function formatExpiry(el) {
+  let v = el.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+  el.value = v;
+}
+
+let processing = false;
+function handlePay(e) {
+  e.preventDefault();
+  if (processing) return false;
+
+  // Basic validation
+  const cardNum = document.getElementById('cardNumber').value.replace(/\s/g, '');
+  if (cardNum.length < 15) {
+    document.getElementById('cardError').textContent = 'Please enter a valid card number';
+    document.getElementById('cardNumber').classList.add('error');
+    return false;
+  }
+  document.getElementById('cardError').textContent = '';
+  document.getElementById('cardNumber').classList.remove('error');
+
+  // Processing state
+  processing = true;
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-icon"></span>Processing payment...';
+  document.querySelectorAll('.form-input').forEach(el => el.disabled = true);
+
+  setTimeout(() => {
+    window.location.href = 'welcome.html';
+  }, 1800);
+
+  return false;
+}
+</script>
+</body>
+</html>

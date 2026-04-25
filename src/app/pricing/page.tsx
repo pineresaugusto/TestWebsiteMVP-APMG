@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import { PLAN_LIST } from "@/lib/plans";
 
 export default function Pricing() {
   return (
@@ -20,8 +21,8 @@ export default function Pricing() {
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-            {tiers.map((tier, i) => (
-              <Reveal key={tier.name} delay={i * 100}>
+            {PLAN_LIST.map((tier, i) => (
+              <Reveal key={tier.id} delay={i * 100}>
                 <div
                   className={`relative h-full rounded-2xl border p-8 flex flex-col transition-all hover:-translate-y-[2px] ${
                     tier.popular
@@ -156,60 +157,6 @@ export default function Pricing() {
     </>
   );
 }
-
-const tiers = [
-  {
-    name: "Start",
-    tagline: "Begin your journey with guided support",
-    price: 199,
-    dose: "Semaglutide 0.25 – 0.5 mg/week",
-    popular: false,
-    features: [
-      "Compounded semaglutide medication",
-      "Initial provider consultation",
-      "Monthly provider check-in",
-      "Injection supplies included",
-      "Free standard shipping",
-      "Direct messaging with care team",
-      "Cancel anytime",
-    ],
-  },
-  {
-    name: "Accelerate",
-    tagline: "More frequent support as your plan builds",
-    price: 299,
-    dose: "Semaglutide 1.0 – 1.7 mg/week",
-    popular: true,
-    features: [
-      "Compounded semaglutide medication",
-      "Initial provider consultation",
-      "Bi-weekly provider check-ins",
-      "Injection supplies included",
-      "Free standard shipping",
-      "Personalized nutrition guide",
-      "Direct messaging with care team",
-      "Cancel anytime",
-    ],
-  },
-  {
-    name: "Transform",
-    tagline: "Our most hands-on plan, for long-term care",
-    price: 399,
-    dose: "Semaglutide 2.0 – 2.4 mg/week",
-    popular: false,
-    features: [
-      "Compounded semaglutide medication",
-      "Initial provider consultation",
-      "Weekly provider access",
-      "Injection supplies included",
-      "Priority shipping",
-      "Personalized nutrition & fitness plan",
-      "Direct messaging with care team",
-      "Progress tracking dashboard",
-      "Cancel anytime",
-    ],
-  },
-];
 
 const allIncluded = [
   "Prescription medication",

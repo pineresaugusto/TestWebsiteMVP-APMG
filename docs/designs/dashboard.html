@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvela — Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .dashboard-grid .card-wide { grid-column: 1 / -1; }
+
+  /* Plan badge in header */
+  .plan-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .plan-badge-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: var(--secondary-light);
+    border: 1px solid var(--secondary);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  .plan-badge-large .price {
+    color: var(--primary-dark);
+    font-weight: 500;
+  }
+
+  /* Injection card */
+  .injection-card {
+    background: linear-gradient(135deg, var(--white) 0%, rgba(124,154,130,0.06) 100%);
+  }
+  .injection-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 16px;
+  }
+  .injection-stat { display: flex; flex-direction: column; gap: 2px; }
+  .injection-stat .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.45;
+    font-weight: 600;
+  }
+  .injection-stat .value {
+    font-size: 20px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .injection-stat .value.countdown {
+    color: var(--primary-dark);
+  }
+  .injection-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .injection-link:hover { color: var(--accent); }
+  .injection-link svg { width: 16px; height: 16px; }
+
+  /* Message preview */
+  .msg-preview-list { display: flex; flex-direction: column; gap: 12px; }
+  .msg-preview-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    transition: background var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+  .msg-preview-item:hover { background: rgba(212,197,178,0.15); }
+  .msg-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .msg-avatar.support { background: var(--secondary); color: var(--foreground); }
+  .msg-content { flex: 1; min-width: 0; }
+  .msg-sender {
+    font-size: 13.5px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .msg-time { font-size: 12px; opacity: 0.4; font-weight: 400; margin-left: auto; }
+  .msg-text { font-size: 13.5px; opacity: 0.55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+  /* Orders preview */
+  .order-preview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+  }
+  .order-preview + .order-preview { border-top: 1px solid rgba(212,197,178,0.3); }
+  .order-icon {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-md);
+    background: rgba(124,154,130,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+  }
+  .order-info { flex: 1; }
+  .order-name { font-size: 14px; font-weight: 600; }
+  .order-detail { font-size: 13px; opacity: 0.45; margin-top: 1px; }
+
+  /* Progress mini */
+  .progress-mini {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .progress-stats {
+    display: flex;
+    gap: 24px;
+  }
+  .progress-stat-item { text-align: center; }
+  .progress-stat-item .num {
+    font-size: 24px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+    line-height: 1.1;
+  }
+  .progress-stat-item .num.green { color: var(--primary-dark); }
+  .progress-stat-item .unit {
+    font-size: 12px;
+    opacity: 0.45;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .mini-chart {
+    flex: 1;
+    height: 80px;
+    position: relative;
+  }
+  .mini-chart svg { width: 100%; height: 100%; }
+
+  /* Empty weight CTA */
+  .weight-cta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 4px 0;
+  }
+  .weight-cta-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(124,154,130,0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary);
+  }
+  .weight-cta-text h4 { font-size: 14px; font-weight: 600; }
+  .weight-cta-text p { font-size: 13px; opacity: 0.5; margin-top: 2px; }
+
+  /* CTA bar */
+  .cta-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(224,122,95,0.08) 0%, rgba(224,122,95,0.03) 100%);
+    border: 1px solid rgba(224,122,95,0.15);
+  }
+  .cta-bar-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cta-bar-text { flex: 1; }
+  .cta-bar-text strong { font-size: 14px; font-weight: 600; }
+  .cta-bar-text p { font-size: 13px; opacity: 0.5; }
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <!-- Main -->
+  <main class="main-content" id="main"></main>
+</div>
+
+<!-- Demo State Toggle -->
+<div class="demo-toggle" id="demoToggle"></div>
+
+<script src="shared.js"></script>
+<script>
+// ─── Sidebar renderer ───
+function renderSidebar(activePage, state) {
+  const unread = getUnreadCount(state);
+  const links = [
+    { id: 'dashboard', label: 'Dashboard', icon: 'dashboard', href: 'dashboard.html' },
+    { id: 'messages', label: 'Messages', icon: 'messages', href: 'messages.html', badge: unread },
+    { id: 'orders', label: 'Orders', icon: 'orders', href: 'orders.html' },
+    { id: 'progress', label: 'Progress', icon: 'progress', href: 'progress.html' },
+    { id: 'resources', label: 'Resources', icon: 'resources', href: 'resources.html' },
+  ];
+
+  document.getElementById('sidebar').innerHTML = `
+    <a class="sidebar-logo" href="dashboard.html">
+      <span class="logo-dot"></span>Nuvela
+    </a>
+    <div class="sidebar-nav">
+      ${links.map(l => `
+        <a class="sidebar-link ${activePage === l.id ? 'active' : ''}" href="${l.href}">
+          <svg viewBox="0 0 24 24">${ICONS[l.icon]}</svg>
+          ${l.label}
+          ${l.badge ? `<span class="sidebar-badge">${l.badge}</span>` : ''}
+        </a>
+      `).join('')}
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">${state.user.firstName[0]}${state.user.lastName[0]}</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">${state.user.firstName} ${state.user.lastName}</div>
+        <div class="sidebar-user-plan">${state.plan.name} Plan</div>
+      </div>
+    </div>
+  `;
+}
+
+// ─── Demo toggle ───
+function renderDemoToggle(currentSeed) {
+  document.getElementById('demoToggle').innerHTML = `
+    <button class="${currentSeed === 'newUser' ? 'active' : ''}" onclick="switchSeed('newUser')">New User</button>
+    <button class="${currentSeed === 'week4' ? 'active' : ''}" onclick="switchSeed('week4')">Week 4</button>
+  `;
+}
+
+function switchSeed(name) {
+  setCurrentSeed(name);
+  location.reload();
+}
+
+// ─── Mini chart SVG ───
+function renderMiniChart(logs) {
+  if (logs.length < 2) return '';
+  const weights = logs.map(l => l.weight);
+  const min = Math.min(...weights) - 1;
+  const max = Math.max(...weights) + 1;
+  const h = 80, w = 300, pad = 8;
+  const points = logs.map((l, i) => {
+    const x = pad + (i / (logs.length - 1)) * (w - pad * 2);
+    const y = pad + ((max - l.weight) / (max - min)) * (h - pad * 2);
+    return `${x},${y}`;
+  });
+  const gradientId = 'chartGrad';
+  const areaPoints = points.join(' ') + ` ${pad + (w - pad * 2)},${h - pad} ${pad},${h - pad}`;
+  return `
+    <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <polygon points="${areaPoints}" fill="url(#${gradientId})"/>
+      <polyline points="${points.join(' ')}" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      ${logs.map((l, i) => {
+        const x = pad + (i / (logs.length - 1)) * (w - pad * 2);
+        const y = pad + ((max - l.weight) / (max - min)) * (h - pad * 2);
+        return `<circle cx="${x}" cy="${y}" r="3.5" fill="var(--white)" stroke="var(--primary)" stroke-width="2"/>`;
+      }).join('')}
+    </svg>
+  `;
+}
+
+// ─── Dashboard render ───
+function renderDashboard(state) {
+  const unread = getUnreadCount(state);
+  const hasLogs = state.weightLogs.length >= 2;
+  const hasOrders = state.orders.length > 0;
+  const daysToInjection = daysUntil(state.nextInjection.date);
+
+  const latestMessages = [...state.messages].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 2);
+
+  // Weight change
+  let weightChange = null;
+  if (state.weightLogs.length >= 2) {
+    const first = state.weightLogs[0].weight;
+    const last = state.weightLogs[state.weightLogs.length - 1].weight;
+    weightChange = (last - first).toFixed(1);
+  }
+
+  let main = `
+    <div class="page-header animate-in stagger-1">
+      <div class="page-greeting">${getGreeting()}, ${state.user.firstName}</div>
+      <div class="plan-header">
+        <span class="plan-badge-large">
+          ${state.plan.name} Plan
+          <span class="price">$${state.plan.price}/mo</span>
+        </span>
+      </div>
+    </div>
+  `;
+
+  // CTA bar if unread
+  if (unread > 0) {
+    main += `
+      <a href="messages.html" class="cta-bar animate-in stagger-2" style="margin-bottom:20px;text-decoration:none;color:inherit;">
+        <div class="cta-bar-icon">${icon('messages', 18)}</div>
+        <div class="cta-bar-text">
+          <strong>You have ${unread} new message${unread > 1 ? 's' : ''}</strong>
+          <p>From your care team</p>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS.chevronRight}</svg>
+      </a>
+    `;
+  }
+
+  main += `<div class="dashboard-grid">`;
+
+  // Next injection card
+  main += `
+    <div class="card injection-card animate-in stagger-${unread > 0 ? 3 : 2}">
+      <div class="card-title">Next Injection</div>
+      <div class="injection-meta">
+        <div class="injection-stat">
+          <span class="label">Date</span>
+          <span class="value">${formatDate(state.nextInjection.date)}</span>
+        </div>
+        <div class="injection-stat">
+          <span class="label">In</span>
+          <span class="value countdown">${daysToInjection} day${daysToInjection !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="injection-stat">
+          <span class="label">Dose</span>
+          <span class="value">${state.nextInjection.dose}</span>
+        </div>
+        <div class="injection-stat">
+          <span class="label">Week</span>
+          <span class="value">${state.nextInjection.week}</span>
+        </div>
+      </div>
+      <a href="#" class="injection-link">
+        View injection instructions
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS.chevronRight}</svg>
+      </a>
+    </div>
+  `;
+
+  // Messages preview
+  main += `
+    <div class="card animate-in stagger-${unread > 0 ? 4 : 3}">
+      <div class="card-title">
+        Messages
+        <a href="messages.html" class="view-all">View all</a>
+      </div>
+      <div class="msg-preview-list">
+        ${latestMessages.map(m => `
+          <a href="messages.html" class="msg-preview-item">
+            <div class="msg-avatar ${m.role === 'Support' ? 'support' : ''}">${m.sender.split(' ').map(w => w[0]).filter((_, i) => i < 2).join('')}</div>
+            <div class="msg-content">
+              <div class="msg-sender">
+                ${m.sender.split(',')[0]}
+                ${m.unread ? '<span class="unread-dot"></span>' : ''}
+                <span class="msg-time">${formatRelative(m.timestamp)}</span>
+              </div>
+              <div class="msg-text">${m.preview}</div>
+            </div>
+          </a>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  // Orders preview
+  main += `
+    <div class="card animate-in stagger-${unread > 0 ? 5 : 4}">
+      <div class="card-title">
+        Orders
+        <a href="orders.html" class="view-all">View all</a>
+      </div>
+  `;
+  if (hasOrders) {
+    const latestOrders = [...state.orders].reverse().slice(0, 2);
+    main += latestOrders.map(o => `
+      <div class="order-preview">
+        <div class="order-icon">${icon('pill', 20)}</div>
+        <div class="order-info">
+          <div class="order-name">${o.medication} ${o.dose}</div>
+          <div class="order-detail">${o.id} · ${formatDate(o.date)}</div>
+        </div>
+        <span class="badge badge-${o.status.toLowerCase()}">${o.status}</span>
+      </div>
+    `).join('');
+    main += `<div style="font-size:13px;opacity:0.45;margin-top:12px;">Next refill: ${formatDate(state.nextRefill)}</div>`;
+  } else {
+    main += `
+      <div class="weight-cta">
+        <div class="weight-cta-icon">${icon('truck', 22)}</div>
+        <div class="weight-cta-text">
+          <h4>Your first shipment is being prepared</h4>
+          <p>We'll notify you when it ships</p>
+        </div>
+      </div>
+    `;
+  }
+  main += `</div>`;
+
+  // Progress / weight card
+  main += `
+    <div class="card animate-in stagger-${unread > 0 ? 6 : 5}">
+      <div class="card-title">
+        Progress
+        <a href="progress.html" class="view-all">View all</a>
+      </div>
+  `;
+  if (hasLogs) {
+    main += `
+      <div class="progress-mini">
+        <div class="progress-stats">
+          <div class="progress-stat-item">
+            <div class="num">${state.weightLogs[0].weight}</div>
+            <div class="unit">Start (lb)</div>
+          </div>
+          <div class="progress-stat-item">
+            <div class="num">${state.weightLogs[state.weightLogs.length - 1].weight}</div>
+            <div class="unit">Current (lb)</div>
+          </div>
+          <div class="progress-stat-item">
+            <div class="num green">${weightChange}</div>
+            <div class="unit">Change (lb)</div>
+          </div>
+        </div>
+      </div>
+      <div class="mini-chart" style="margin-top:16px">
+        ${renderMiniChart(state.weightLogs)}
+      </div>
+    `;
+  } else {
+    main += `
+      <a href="progress.html" class="weight-cta" style="text-decoration:none;color:inherit;">
+        <div class="weight-cta-icon">${icon('progress', 22)}</div>
+        <div class="weight-cta-text">
+          <h4>Add your first weight log</h4>
+          <p>Track your progress over time</p>
+        </div>
+      </a>
+    `;
+  }
+  main += `</div>`;
+
+  main += `</div>`; // close grid
+
+  document.getElementById('main').innerHTML = main;
+}
+
+// ─── Init ───
+const seed = getCurrentSeed();
+const state = getOrSeedState(seed);
+renderSidebar('dashboard', state);
+renderDashboard(state);
+renderDemoToggle(seed);
+</script>
+</body>
+</html>

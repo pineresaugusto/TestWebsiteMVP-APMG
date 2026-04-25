@@ -6,6 +6,7 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+<<<<<<< HEAD
 ## [Unreleased] — Iteration 4: Photography
 
 First real photography pass on the site. The prior three iterations
@@ -174,6 +175,326 @@ Iterations 1–3 could finally be retired alongside this one.
 - Cleanup: the Puppeteer install, Chromium download, and screenshot
   output all live in `/tmp/nuvela-shot/` — nothing bled into the
   project tree. Safe to `rm -rf` when no longer needed.
+=======
+## [Unreleased] — Iteration 6: Patient dashboard (Iter C)
+
+Iter C of the demo-flow plan. Fills the last four dashboard
+surfaces — Progress, Resources, Account, and a redesigned
+Not-Eligible funnel screen — and expands the sidebar from 5 to
+6 links. Designs under `docs/designs/` were the visual
+authority for Progress, Resources, and Not-Eligible. Account
+has no design file; built design-language-consistent per
+user direction to keep a 6-link sidebar (Option 3).
+
+### Added
+
+- `src/app/app/dashboard/progress/page.tsx` — full Progress
+  surface: 4 hero stat cards (Starting / Current / Total Change
+  / Goal Weight) when `weightLogs.length >= 2`, pure-SVG line
+  chart with polyline + area gradient + dashed goal line +
+  hover tooltips, "Log today's weight" form (number input
+  50–500 lb, Enter-to-submit, flash confirmation), recent 5
+  entries with per-entry signed delta (green down / coral up),
+  and two empty states (0-log and 1-log) per design.
+- `src/app/app/dashboard/resources/page.tsx` — 6-card
+  educational grid with per-card pastel gradient + inline SVG
+  illustrations + category pill + preview + read-time. Click
+  opens a modal dialog with full article body, scroll-locked
+  background, ESC-to-close, and outside-click-to-close. All 6
+  articles' content imported verbatim from the design file
+  (Getting Started / Side Effects / Nutrition / Mindset /
+  Plateaus / Community).
+- `src/app/app/dashboard/account/page.tsx` — profile header
+  (avatar + name + email + member-since), editable-look field
+  grid (read-only, "coming in future release" caveat), current
+  plan card pulled from `state.plan.tier` via `PLANS[...]`,
+  billing card showing masked card + last 4, notification
+  preferences list with 4 toggle rows (display-only), and a
+  soft-accented sign-out "danger zone" card.
+- `src/app/app/not-eligible/page.tsx` — replaced stub per
+  design. Empathy heart icon, H1 + empathetic body quoting
+  `state.quiz.contraindicationReason` (with fallback copy when
+  state is unseeded), mid-page call-to-action border band,
+  "What to tell your doctor" bullet card, Return-to-home
+  primary CTA, and medical-disclaimer subtle link.
+
+### Changed
+
+- `src/components/app/Sidebar.tsx` — expanded from 5 to 6
+  links: added `Resources` between Progress and Account.
+  Included new `IconResources` (book/clipboard glyph).
+  `activeKey()` now also matches `/app/dashboard/resources`.
+  `NavKey` union extended accordingly.
+- `src/lib/demoState.ts` —
+  - `DemoState.dashboard` gains optional `goalWeight?: number`.
+  - New exported helper `logWeight(weightLbs)` mirrors
+    `sendMessage`: range-validates (50–500), ISO-date-stamps,
+    appends to `dashboard.weightLogs`, writes + notifies.
+  - Week 4 seed now includes `goalWeight: 185` so the Progress
+    hero shows a 4th card and the chart draws its dashed goal
+    line immediately.
+  - `STORAGE_KEY` unchanged (`nuvela_demo_v2`) — the new
+    `goalWeight` field is optional, so existing Iter B
+    localStorage snapshots stay forward-compatible.
+
+### Deltas from design
+
+- **Account page has no design file.** Built under design
+  language (white cards, sage/coral accents, Fraunces display
+  font, tabular pricing) but layout choices (notification
+  toggles, soft-accent sign-out card) are mine — flagged per
+  convention. User opted for Option 3 (build Account anyway)
+  rather than dropping it.
+- **`weightLbs` field name retained.** Designs consistently
+  reference `.weight`; we kept `weightLbs` per Iter B
+  convention to avoid a storage migration. Internally-only
+  visible; all UI still renders "lb" as the unit.
+- **Not-eligible disclaimer link.** Design links to `#`; wired
+  to `/medical-disclaimer` (the real page).
+
+### Deferred
+
+- Profile editing, notification-toggle persistence, and
+  payment-method update remain display-only. Documented
+  inline ("available in a future release").
+- Article content in Resources is hard-coded; no CMS
+  integration — appropriate for a pitch demo.
+
+### Verification
+
+- `npm run build` — ✓ clean (all 24 routes pre-rendered,
+  including new `/app/dashboard/progress`, `/resources`,
+  `/account`).
+- `npm run lint` — ✓ no new errors introduced. Two pre-existing
+  errors remain and are explicitly out of scope per Iter B
+  handover:
+  - `src/app/app/dashboard/messages/page.tsx:75` —
+    set-state-in-effect (Iter B debt).
+  - `src/components/Reveal.tsx:38` — set-state-in-effect
+    (pre-Iter-A debt).
+- Preview-verified at 1440×900: seeded Week 4 → Progress
+  (4 stat cards + chart + goal line + dated entries with
+  deltas), Resources (6-card grid + modal open/ESC close),
+  Account (all four sections rendered with Sarah Mitchell's
+  seeded data). Seeded Not Eligible → not-eligible page
+  shows the seeded contraindication reason inline. Seeded
+  New User → Progress empty state + logWeight flow:
+  submitting 195.5 transitioned the chart to the "one data
+  point so far" state and the entry appeared in Recent
+  Entries immediately.
+
+## [Unreleased] — Iteration 5: Patient dashboard
+
+Iter B of the demo-flow plan. Adds the logged-in patient
+dashboard behind `/app/dashboard/*` with a persistent sidebar,
+four dashboard widgets, and two new full-page surfaces
+(Messages and Orders). Designs under `docs/designs/` were the
+visual authority; the plan/scope was followed for structure.
+Marketing site unchanged; funnel (Iter A) unchanged.
+
+### Added
+
+- `src/components/app/Sidebar.tsx` — fixed 260px left rail.
+  Links: Dashboard, Messages, Orders, Progress, Account. Active
+  state via pathname prefix; coral accent strip on active link.
+  Unread badge on Messages when `getUnreadCount(state) > 0`.
+  Bottom user block: initials avatar, firstName + lastName,
+  `${planName} Plan`, sign-out button (calls `reset()` then
+  routes to `/`).
+- `src/app/app/dashboard/layout.tsx` — sub-layout composing
+  Sidebar + content. No separate `AppHeader`; greeting and plan
+  badge live in `page.tsx`.
+- `src/components/app/widgets/NextInjectionCard.tsx` — gradient
+  card showing date / "In N days" / current dose / "Week N"
+  derived from `payment.subscribedAt`.
+- `src/components/app/widgets/InboxPreview.tsx` — latest 2
+  threads sorted by `lastTimestamp`, provider initials, unread
+  dot, short preview. Links to `/app/dashboard/messages`.
+- `src/components/app/widgets/OrdersCard.tsx` — latest 2
+  orders + status pills. Empty state when `orders.length === 0`.
+  Computes next refill as a 28-day cycle from `subscribedAt`.
+- `src/components/app/widgets/ProgressMiniCard.tsx` — pure-SVG
+  sparkline with polyline + area gradient when
+  `weightLogs.length >= 2`. Single centered dot when
+  `length === 1`. Empty-state CTA otherwise. Start weight,
+  current weight, delta rendered alongside.
+- `src/app/app/dashboard/messages/page.tsx` — two-pane view:
+  thread list (with `All` / `Unread` filter) + active thread
+  pane. Auto-selects most recent thread, auto-marks it read on
+  select. Textarea auto-grows, Enter-to-send, Shift+Enter for
+  newline. Scroll-pins to bottom when thread changes.
+- `src/app/app/dashboard/orders/page.tsx` — header bar
+  (Next Refill / Auto-ship Active / Total Orders), filter pills
+  (All / Shipped / Delivered), 6-column grid table with status
+  pills, disabled "Track" buttons, and a "Tracking unavailable
+  in demo mode" note.
+- Unread-messages CTA bar on the dashboard page when
+  `getUnreadCount(state) > 0` (design-sourced, not in plan
+  scope — flagged and approved).
+
+### Changed
+
+- `src/app/app/dashboard/page.tsx` — replaced the Iter A stub
+  with a real dashboard: greeting by time-of-day, plan badge
+  pill, optional unread CTA bar, 2-col widget grid.
+- `src/lib/demoState.ts` — messaging reshape from a flat
+  `Message[]` to a threaded model:
+  ```ts
+  type ThreadMessage = { from: "provider" | "user"; text: string; timestamp: string; };
+  type Thread = { id: string; sender: string; unread: boolean;
+                  lastTimestamp: string; preview: string;
+                  messages: ThreadMessage[]; };
+  ```
+  New helpers: `sendMessage(threadId, text)`,
+  `markThreadRead(threadId)`, `getUnreadCount(state)`.
+  `seed("newUser")` now seeds a single unread welcome thread
+  from Dr. Sarah Chen, NP. `seed("week4")` now seeds three
+  threads including an unread dose-adjustment message.
+- Bumped `STORAGE_KEY` from `nuvela_demo_v1` → `nuvela_demo_v2`
+  so stale Iter A state (flat messages shape) is discarded on
+  first load. No migration path — demo data only.
+- `src/app/app/welcome/page.tsx` — `goToDashboard` now seeds
+  the dashboard slice using the new `Thread` shape.
+
+### Deferred to Iter C
+
+- `/app/dashboard/progress` and `/app/dashboard/account` are
+  linked from the sidebar but not yet built — they currently
+  404. Intentional Iter C scope.
+
+### Verification
+
+- Full preview walkthrough at 1440×900:
+  - Dashboard (week4 seed): greeting, plan badge, unread CTA,
+    all 4 widgets populated correctly.
+  - Messages: 3 threads, auto-select of latest, send input
+    persists through `sendMessage` to localStorage.
+  - Orders: table + filters + header bar; empty state verified
+    separately via New User seed.
+- No runtime errors after `STORAGE_KEY` bump.
+- Lint / typecheck / build not re-run this session — carry
+  forward the existing verification debt from prior iterations.
+
+## [Unreleased] — Iteration 4: Demo flow foundation
+
+This iteration adds the logged-in demo funnel behind `/app/*`:
+signup → select-plan → checkout → welcome, plus stub destinations
+for `/app/dashboard` (next iteration) and `/app/not-eligible`
+(Iteration C). The marketing site remains unchanged visually; it
+now hands off to the funnel via the assessment result.
+
+Brief on scope: this is "Iteration A" of the demo-flow plan
+(`.claude/plans/whimsical-puzzling-chipmunk.md`). It wires the
+four-step sign-up funnel end-to-end against a local-storage
+demo state with no network calls. Payment is a stubbed visual
+form with a 1.5s processing delay and a `TODO(stripe)` marker
+so the real Stripe Elements swap is a contained change later.
+
+### Added
+
+- `src/lib/plans.ts` — single source of truth for plan catalog
+  (`PLANS` record + `PLAN_LIST`). `PlanTier = "start" | "accelerate"
+  | "transform"`. Copy preserved verbatim from the existing pricing
+  page so the refactor is zero-visual-change.
+- `src/lib/demoState.ts` — versioned `localStorage` helpers
+  (`get` / `set` / `reset`) keyed on `nuvela_demo_v1`, plus a
+  `seed("newUser" | "week4" | "notEligible")` helper used by the
+  demo toolbar and the welcome screen. SSR-safe: all writes guard
+  on `typeof window`. Schema covers quiz, plan, payment, and
+  dashboard state (messages / orders / weight logs) so later
+  iterations can consume the same store.
+- `src/components/DemoToolbar.tsx` — a fixed bottom-right toolbar
+  visible only when the URL has `?demo=1` or
+  `sessionStorage.nuvela_demo_mode === "1"`. Buttons: Reset, Jump
+  "New user", Jump "Week 4", Jump "Not eligible", Hide. Rich-er than
+  the designer's `.demo-toggle` because it has to drive the pitch.
+- `src/components/ChromeGate.tsx` — `GatedNavbar` /
+  `GatedFooter` wrappers that hide the marketing chrome on any
+  `/app/*` route. Client-side only, one `usePathname()` read each.
+  Added instead of a route group so the existing marketing chrome
+  keeps rendering unchanged.
+- `src/app/app/layout.tsx` — funnel shell: cream background,
+  sticky `FunnelHeader`, no footer.
+- `src/app/app/_components/FunnelHeader.tsx` — sticky header with
+  Nuvela wordmark, `Step N of 4` indicator derived from
+  `usePathname`, and a sign-out that calls `reset()` then routes
+  to `/`. Sign-out is hidden on `/app/signup` (nothing yet to
+  abandon).
+- `src/app/app/signup/page.tsx` — email / password stub form with
+  `?from=quiz` pre-fill, "Continue as guest →" link to
+  `/app/select-plan`, two-column panel with the Nuvela quote and
+  three trust points.
+- `src/app/app/select-plan/page.tsx` — three-card plan picker.
+  Pre-selects from `demoState.quiz.recommendedPlan`, shows a
+  "Recommended for you" ribbon on the quiz-recommended card only
+  when coming from a completed quiz, and routes to checkout on
+  confirm.
+- `src/app/app/checkout/page.tsx` — stubbed Stripe-style form with
+  card-brand detection (VISA / MC / AMEX), formatted card / expiry
+  inputs, sticky order summary, 1.5 s processing spinner, and a
+  `TODO(stripe)` comment marking where real Stripe Elements will
+  drop in.
+- `src/app/app/welcome/page.tsx` — success state with a three-step
+  timeline (provider review → pharmacy ships → day 5–7 check-in).
+  "Go to your dashboard" calls `seed("newUser")` so the dashboard
+  lands in a realistic first-day state.
+- `src/app/app/dashboard/page.tsx` — stub page ("Dashboard coming
+  in next iteration"). Keeps the welcome → dashboard hand-off from
+  erroring and gives the demo toolbar's "New user" / "Week 4"
+  buttons a landing target.
+- `src/app/app/not-eligible/page.tsx` — stub parallel to the
+  dashboard stub. Inline not-eligible on `/get-started` stays the
+  canonical disqualification surface for Iteration A; the funnel
+  version lands in Iteration C.
+- `--primary-light: #a3bda8` in `src/app/globals.css` plus
+  `--color-primary-light` in `@theme inline`. Used nowhere yet —
+  added so the dashboard iteration has a warmer primary tint ready.
+
+### Changed
+
+- `src/app/pricing/page.tsx` now imports `PLAN_LIST` from
+  `src/lib/plans.ts` instead of declaring an inline `tiers` array.
+  Zero visual change; the copy is identical (it was the source the
+  new constant was seeded from).
+- `src/app/get-started/page.tsx` — on submit, writes the quiz
+  result to `demoState.quiz` and branches: eligible redirects to
+  `/app/signup?from=quiz` (the funnel picks up the recommended
+  plan); not-eligible stays on the existing inline disqualification
+  screen and also records the disqualifying condition. Added a
+  "Skip the assessment →" link on Step 1 that jumps to
+  `/app/signup?skipped=quiz`. Removed the inline "You're a good
+  match so far" recommended-plan card — it is now unreachable
+  (eligible users redirect before they can see it) and was the
+  precursor to what the funnel now does properly.
+- `src/app/layout.tsx` — swaps `Navbar` / `Footer` for
+  `GatedNavbar` / `GatedFooter` and mounts `<DemoToolbar />` at
+  the body root so `?demo=1` works from any route.
+
+### Known issues (deferred)
+
+- Checkout is a visual stub — swap for real Stripe Elements when
+  a `pk_test_` key is available. The `TODO(stripe)` marker in
+  `src/app/app/checkout/page.tsx` flags the exact swap point, and
+  the `payment` shape in `demoState` already records what the real
+  integration will persist (`cardLast4`, `subscribedAt`).
+- `/app/dashboard` and `/app/not-eligible` are intentional stubs.
+  Dashboard lands in Iteration B; the funnel-version not-eligible
+  surface lands in Iteration C.
+- Pre-existing `Reveal.tsx` lint error (setState in effect) is
+  untouched.
+
+### Verification steps owed
+
+- `npm run lint` (only the pre-existing Reveal error is acceptable).
+- `npm run build`.
+- Walk through scenario 1 (full flow: `/get-started` →
+  `/app/signup?from=quiz` → select-plan → checkout → welcome →
+  dashboard stub).
+- Walk through scenario 2 (skip quiz: `/app/signup?skipped=quiz`
+  → select-plan without ribbon → checkout → welcome).
+- Walk through scenario 3 (skip signup: marketing site → `?demo=1`
+  → toolbar "Jump New user" → dashboard stub; "Reset" → `/`).
+>>>>>>> e2d8c2a889132f578916b4946a7f2210a0205f24
 
 ## [Unreleased] — Iteration 3: UX + Legal Refinement
 

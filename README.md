@@ -7,6 +7,7 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+<<<<<<< HEAD
 ### 2026-04-24 — Mauger00
 - Iteration 4 (photography): first real photos on the site, six total
   across four pages — 3-photo band on home ("Everything handled from
@@ -27,6 +28,92 @@ Format: `### YYYY-MM-DD — github-username`
 - Visual responsive pass at 375 / 768 / 1440 done via Puppeteer-driven
   headless Chromium — 12 screenshots, all pages composed cleanly at
   every width
+=======
+### 2026-04-24 — adpineres-ef
+- Iter C of demo flow landed: Progress, Resources, Account, and
+  a design-rebuilt Not-Eligible page. Sidebar now 6 links
+  (Resources added between Progress and Account) per user
+  Option 3 — designs only had Resources in that slot, but user
+  opted to keep Account too.
+- `/app/dashboard/progress`: 4 hero stat cards, pure-SVG line
+  chart (polyline + area gradient + dashed goal line + hover
+  tooltip), log-today's-weight form (range-validated,
+  Enter-to-submit), recent-5 entries with signed delta, 0-log
+  and 1-log empty states.
+- `/app/dashboard/resources`: 6-card educational grid with
+  inline SVG illustrations, category pills, modal dialog for
+  article body (ESC + outside-click + scroll-lock). Content
+  imported verbatim from `docs/designs/resources.html`.
+- `/app/dashboard/account`: profile header + field grid, plan
+  card, masked billing, notifications toggles (display-only),
+  soft-accent sign-out section. No design file existed —
+  built under design language; flagged as delta.
+- `/app/not-eligible`: rebuilt per design (empathy icon, H1,
+  reason interpolated from `state.quiz.contraindicationReason`
+  with fallback, bullet card, CTA + disclaimer link).
+- `src/lib/demoState.ts`: added optional `dashboard.goalWeight`,
+  exported `logWeight(weightLbs)` helper, seeded Week 4 with
+  `goalWeight: 185`. `STORAGE_KEY` unchanged — field is
+  optional, Iter B snapshots stay forward-compatible.
+- Verified at 1440×900 across populated / empty / one-log
+  states, modal open/close, and not-eligible reason
+  interpolation. `npm run build` clean; lint has no new
+  errors (2 pre-existing Iter B + Reveal debt remain).
+
+### 2026-04-24 — adpineres-ef
+- Iter B of demo flow landed: logged-in patient dashboard behind
+  `/app/dashboard/*` with persistent `Sidebar` (Dashboard /
+  Messages / Orders / Progress / Account + user block with
+  sign-out), `dashboard/layout.tsx` sub-layout, and four widgets
+  (NextInjection, InboxPreview, Orders, ProgressMini with
+  pure-SVG sparkline)
+- New full-page surfaces: `/app/dashboard/messages` (thread
+  list + pane with auto-select, auto-mark-read, send input
+  wired through `sendMessage`) and `/app/dashboard/orders`
+  (filter pills, grid table, status pills, empty state)
+- Reshaped `src/lib/demoState.ts` messages from flat
+  `Message[]` to `Thread[]` with `ThreadMessage[]` nested;
+  added `sendMessage`, `markThreadRead`, `getUnreadCount`;
+  bumped `STORAGE_KEY` v1 → v2 so stale Iter A state is
+  discarded on load
+- Designs treated as visual authority per instructions; added
+  design-sourced unread-messages CTA bar on the dashboard (not
+  in plan scope); confirmed with user before commit
+- `/app/dashboard/progress` + `/app/dashboard/account`
+  intentionally 404 — Iter C scope
+- Verified end-to-end via preview at 1440×900 (dashboard,
+  messages, orders, empty states); lint/build not re-run,
+  carrying forward existing verification debt
+
+### 2026-04-23 — adpineres-ef
+- Iter A of demo flow landed: `/app/*` funnel (signup → select-plan
+  → checkout → welcome) backed by localStorage `demoState` and a
+  versioned schema covering quiz/plan/payment/dashboard
+- Added `?demo=1` `DemoToolbar` for pitch walkthroughs
+  (Reset / New user / Week 4 / Not eligible / Hide) and a
+  `ChromeGate` that hides marketing nav + footer on funnel routes
+  without a route group
+- Shared `src/lib/plans.ts` now consumed by pricing page + quiz
+  recommendation + funnel — marketing site unchanged visually
+- Wrap-up fixes before Iter B: removed nested `<main>` in app
+  layout, welcome screen now preserves the funnel-captured user
+  instead of seeding "Demo Patient", FunnelHeader hides on
+  `/app/dashboard` so Iter B's sidebar won't double up
+- Verified via preview: full funnel + skip-quiz + toolbar paths
+  all green; build clean, no new lint errors
+
+### 2026-04-22 — adpineres-ef
+- Kicked off demo-flow plan (signup → plan → payment → dashboard) for
+  pitching medical-group partners; plan file lives at
+  `.claude/plans/whimsical-puzzling-chipmunk.md`
+- Phase 0 delivered: wrote `docs/DESIGN_BRIEF_APP.md` — spec for
+  designer-Claude covering all 10 `/app/*` screens
+- Investigated `claude-mem` plugin install; parked after Windows PATH
+  blocker (plugin package on disk, but `/plugin install` in-app
+  registration still owed before hooks/mem-search activate)
+- Build clean; pre-existing `Reveal.tsx` lint error remains from
+  earlier iteration verification debt
+>>>>>>> e2d8c2a889132f578916b4946a7f2210a0205f24
 
 ### 2026-04-16 — Mauger00
 - Iteration 3 (UX + legal refinement): softer home hero — new H1

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuvela — Welcome</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .welcome-page {
+    max-width: 640px; margin: 0 auto; padding: 56px 32px 80px;
+    text-align: center;
+  }
+  .welcome-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 20px; border-radius: 100px;
+    background: rgba(124,154,130,0.1); border: 1px solid rgba(124,154,130,0.2);
+    font-size: 13px; font-weight: 600; color: var(--primary-dark);
+    margin-bottom: 32px;
+  }
+  .welcome-chip svg { width: 15px; height: 15px; }
+
+  .welcome-check {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    animation: scaleIn 500ms ease forwards;
+  }
+  .welcome-check svg { width: 32px; height: 32px; }
+  @keyframes scaleIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .welcome-page h1 {
+    font-family: 'Fraunces', Georgia, serif; font-size: 32px;
+    font-weight: 500; letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .welcome-page .subtitle {
+    font-size: 16px; opacity: 0.55; margin-bottom: 48px;
+  }
+
+  /* Timeline */
+  .timeline { text-align: left; position: relative; margin-bottom: 48px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 23px; top: 40px; bottom: 40px;
+    width: 2px; background: rgba(212,197,178,0.4);
+  }
+  .timeline-step {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 20px 0; position: relative;
+  }
+  .timeline-step:first-child { padding-top: 0; }
+  .timeline-step:last-child { padding-bottom: 0; }
+  .timeline-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--white); border: 2px solid var(--secondary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; z-index: 1; color: var(--primary-dark);
+    transition: all 400ms ease;
+  }
+  .timeline-step.done .timeline-icon {
+    background: var(--primary); border-color: var(--primary); color: white;
+  }
+  .timeline-icon svg { width: 20px; height: 20px; }
+  .timeline-content { padding-top: 10px; }
+  .timeline-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;
+    opacity: 0.4; font-weight: 600; margin-bottom: 4px;
+  }
+  .timeline-heading { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .timeline-desc { font-size: 14px; opacity: 0.55; line-height: 1.5; }
+
+  /* Actions */
+  .welcome-actions {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .welcome-secondary {
+    font-size: 14px; color: var(--primary-dark); text-decoration: none;
+    font-weight: 500; transition: color var(--transition);
+  }
+  .welcome-secondary:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="funnel-header">
+  <a class="logo" href="dashboard.html"><span class="logo-dot"></span>Nuvela</a>
+  <span class="step-indicator">Step 4 of 4</span>
+  <span></span>
+</div>
+
+<div class="welcome-page">
+  <div class="welcome-chip animate-in stagger-1" id="planChip"></div>
+  <div class="welcome-check animate-in stagger-2">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  </div>
+  <h1 class="animate-in stagger-2" id="welcomeHeading">Welcome to Nuvela</h1>
+  <p class="subtitle animate-in stagger-3">Your care team has been notified. Here is what happens next.</p>
+
+  <div class="timeline animate-in stagger-4">
+    <div class="timeline-step">
+      <div class="timeline-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS.search}</svg>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-label">Within 24 hours</div>
+        <div class="timeline-heading">Your provider reviews your intake</div>
+        <div class="timeline-desc">A licensed clinician will review your health assessment and confirm your treatment plan.</div>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS.truck}</svg>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-label">2 - 3 days</div>
+        <div class="timeline-heading">Your medication ships from our partner pharmacy</div>
+        <div class="timeline-desc">Discreet packaging, delivered straight to your door with everything you need to get started.</div>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS.heart}</svg>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-label">Day 5 - 7</div>
+        <div class="timeline-heading">Your first injection + your provider checks in</div>
+        <div class="timeline-desc">Your care team will message you to see how your first week is going and answer any questions.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="welcome-actions animate-in stagger-5">
+    <button class="btn btn-primary btn-lg" onclick="goToDashboard()" style="min-width:280px;">
+      Go to your dashboard &rarr;
+    </button>
+    <a href="messages.html" class="welcome-secondary">Questions? Message your care team</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const state = getState() || {};
+const plan = state.plan || { name: 'Accelerate', price: 299 };
+const user = state.user || { firstName: 'there' };
+
+document.getElementById('welcomeHeading').textContent = 'Welcome to Nuvela, ' + user.firstName;
+document.getElementById('planChip').innerHTML = `
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px">${ICONS.check}</svg>
+  Plan: ${plan.name} &mdash; $${plan.price}/mo, billed monthly
+`;
+
+function goToDashboard() {
+  seedState('newUser');
+  setCurrentSeed('newUser');
+  window.location.href = 'dashboard.html';
+}
+</script>
+</body>
+</html>

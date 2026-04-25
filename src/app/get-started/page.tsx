@@ -3,6 +3,9 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { set } from "@/lib/demoState";
+import type { PlanTier } from "@/lib/plans";
 
 const TOTAL_STEPS = 7;
 
@@ -93,13 +96,14 @@ function getEligibility(data: FormData, bmi: number | null): "eligible" | "not_e
   return "eligible";
 }
 
-function getRecommendedTier(bmi: number | null): { name: string; price: number } {
-  if (bmi !== null && bmi >= 40) return { name: "Transform", price: 399 };
-  if (bmi !== null && bmi >= 35) return { name: "Accelerate", price: 299 };
-  return { name: "Start", price: 199 };
+function getRecommendedTier(bmi: number | null): { id: PlanTier; name: string; price: number } {
+  if (bmi !== null && bmi >= 40) return { id: "transform", name: "Transform", price: 399 };
+  if (bmi !== null && bmi >= 35) return { id: "accelerate", name: "Accelerate", price: 299 };
+  return { id: "start", name: "Start", price: 199 };
 }
 
 export default function GetStarted() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const { register, watch, handleSubmit, setValue, getValues } = useForm<FormData>({
@@ -116,6 +120,30 @@ export default function GetStarted() {
   const bmi = calculateBMI(watchAll.weightLbs, watchAll.heightFt, watchAll.heightIn);
 
   const onSubmit = () => {
+    const eligibility = getEligibility(watchAll, bmi);
+    if (eligibility === "eligible") {
+      const tier = getRecommendedTier(bmi);
+      set({
+        quiz: {
+          completed: true,
+          eligible: true,
+          recommendedPlan: tier.id,
+        },
+      });
+      router.push("/app/signup?from=quiz");
+      return;
+    }
+    const disqualifying = watchAll.medicalConditions?.find((c) =>
+      DISQUALIFYING_CONDITIONS.includes(c),
+    );
+    set({
+      quiz: {
+        completed: true,
+        eligible: false,
+        recommendedPlan: null,
+        contraindicationReason: disqualifying,
+      },
+    });
     setSubmitted(true);
   };
 
@@ -133,126 +161,41 @@ export default function GetStarted() {
   };
 
   if (submitted) {
-    const eligibility = getEligibility(watchAll, bmi);
-    const tier = getRecommendedTier(bmi);
-
-    if (eligibility === "not_eligible") {
-      return (
-        <div className="min-h-[70vh] flex items-center justify-center py-16">
-          <div className="mx-auto max-w-lg px-4 text-center">
-            <div className="w-16 h-16 mx-auto rounded-full bg-secondary-light flex items-center justify-center mb-6">
-              <svg className="w-8 h-8 text-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-              </svg>
-            </div>
-            <h1 className="font-display text-[1.75rem] md:text-3xl leading-tight text-foreground">
-              This path may not be the right fit for you right now
-            </h1>
-            <p className="mt-5 text-foreground/70 leading-relaxed">
-              Based on what you shared, GLP-1 treatment through Nuvela may not be the best option
-              at the moment. That&apos;s not a judgment — just a careful first pass. A conversation
-              with your primary care provider is a great next step, and they can help you find
-              the right direction.
-            </p>
-            <p className="mt-4 text-sm text-foreground/50">
-              This assessment is not a medical diagnosis, and things can change over time. You&apos;re
-              welcome to come back.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/how-it-works"
-                className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-white hover:bg-primary-dark transition-colors"
-              >
-                Learn more about GLP-1s
-              </Link>
-              <button
-                onClick={() => { setSubmitted(false); setStep(1); }}
-                className="rounded-full border-2 border-secondary px-8 py-3 text-sm font-semibold text-foreground/70 hover:bg-secondary-light transition-colors"
-              >
-                Retake assessment
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="min-h-[70vh] py-16">
-        <div className="mx-auto max-w-2xl px-4">
-          <div className="text-center">
-            <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-6">
-              <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h1 className="font-display text-3xl md:text-[2.25rem] leading-tight text-foreground">
-              You&apos;re a good match so far
-            </h1>
-            <p className="mt-5 text-foreground/70 max-w-lg mx-auto leading-relaxed">
-              Choose a plan to get started. Everything is included — your provider consultation,
-              medication, supplies, shipping, and ongoing support. One subscription, nothing
-              extra.
-            </p>
+      <div className="min-h-[70vh] flex items-center justify-center py-16">
+        <div className="mx-auto max-w-lg px-4 text-center">
+          <div className="w-16 h-16 mx-auto rounded-full bg-secondary-light flex items-center justify-center mb-6">
+            <svg className="w-8 h-8 text-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+            </svg>
           </div>
-
-          {/* Recommended Plan */}
-          <div className="mt-12 rounded-2xl border-2 border-accent bg-white p-8 shadow-lg shadow-accent/10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-accent uppercase tracking-wide">
-                  Recommended for you
-                </p>
-                <h3 className="mt-1 font-display text-2xl text-foreground">{tier.name}</h3>
-              </div>
-              <div className="text-right">
-                <span className="font-display text-3xl text-foreground">${tier.price}</span>
-                <span className="text-foreground/50">/mo</span>
-              </div>
-            </div>
-            <div className="mt-6 grid sm:grid-cols-2 gap-3">
-              {[
-                "Provider consultation",
-                "Compounded semaglutide",
-                "Injection supplies included",
-                "Discreet home delivery",
-                "Ongoing provider support",
-                "Cancel anytime",
-              ].map((f) => (
-                <div key={f} className="flex items-center gap-2 text-sm text-foreground/70">
-                  <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                  {f}
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 text-center">
-              <button className="rounded-full bg-accent px-10 py-3.5 text-base font-semibold text-white shadow-md shadow-accent/25 hover:bg-accent-dark hover:shadow-lg hover:-translate-y-[1px] transition-all">
-                Choose this plan
-              </button>
-              <p className="mt-4 text-xs text-foreground/45 max-w-sm mx-auto leading-relaxed">
-                Your provider will review everything during your consultation. Prescription
-                and medication depend on their clinical assessment.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-8 text-center">
+          <h1 className="font-display text-[1.75rem] md:text-3xl leading-tight text-foreground">
+            This path may not be the right fit for you right now
+          </h1>
+          <p className="mt-5 text-foreground/70 leading-relaxed">
+            Based on what you shared, GLP-1 treatment through Nuvela may not be the best option
+            at the moment. That&apos;s not a judgment — just a careful first pass. A conversation
+            with your primary care provider is a great next step, and they can help you find
+            the right direction.
+          </p>
+          <p className="mt-4 text-sm text-foreground/50">
+            This assessment is not a medical diagnosis, and things can change over time. You&apos;re
+            welcome to come back.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/pricing"
-              className="text-sm font-medium text-primary-dark hover:text-primary transition-colors"
+              href="/how-it-works"
+              className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-white hover:bg-primary-dark transition-colors"
             >
-              Compare all plans &rarr;
+              Learn more about GLP-1s
             </Link>
+            <button
+              onClick={() => { setSubmitted(false); setStep(1); }}
+              className="rounded-full border-2 border-secondary px-8 py-3 text-sm font-semibold text-foreground/70 hover:bg-secondary-light transition-colors"
+            >
+              Retake assessment
+            </button>
           </div>
-
-          {bmi && (
-            <p className="mt-6 text-center text-xs text-foreground/40">
-              Your estimated BMI: {bmi.toFixed(1)} — Recommendation is based on your BMI and
-              reported health profile.
-            </p>
-          )}
         </div>
       </div>
     );
@@ -279,6 +222,14 @@ export default function GetStarted() {
           {/* Step 1: Basics */}
           {step === 1 && (
             <StepWrapper title="Let's start with the basics" subtitle="About 5 minutes, in plain language. Nothing is submitted until the final step — you can go back or stop at any point.">
+              <div className="mb-6 text-right">
+                <Link
+                  href="/app/signup?skipped=quiz"
+                  className="text-xs font-medium text-primary-dark underline-offset-4 hover:underline"
+                >
+                  Skip the assessment →
+                </Link>
+              </div>
               <div className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1.5">Age</label>
