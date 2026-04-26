@@ -83,13 +83,13 @@ export default function Home() {
                   aria-hidden
                   className="absolute -top-5 -right-5 w-32 h-32 rounded-3xl bg-dots opacity-70 hidden md:block"
                 />
-                {/* Portrait frame */}
-                <div className="relative overflow-hidden rounded-[2rem] aspect-[3/2] bg-secondary-light shadow-2xl shadow-primary/15 ring-1 ring-white/40">
+                {/* Portrait frame — native ~4:5 aspect, no crop */}
+                <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] bg-secondary-light shadow-2xl shadow-primary/15 ring-1 ring-white/40">
                   <Image
-                    src="/images/home-hero.jpg"
-                    alt="Person at home in a sunlit kitchen, holding a glass of water"
+                    src="/images/home-bedroom.jpg"
+                    alt="Person relaxing in bed, smiling at their phone with morning light coming through the window"
                     fill
-                    sizes="(max-width: 768px) 90vw, 600px"
+                    sizes="(max-width: 768px) 90vw, 520px"
                     className="object-cover object-center"
                     priority
                   />
@@ -117,25 +117,28 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
-      {/* From-home triptych — moved up to anchor the experience right       */}
-      {/* after the hero. Three photos do the talking before any prose.      */}
+      {/* From-home pair — anchors the experience right after the hero.     */}
+      {/* Two larger landscape photos: a real consultation, a real delivery. */}
+      {/* Source frames are 4:3 (consultation) and 3:2 (delivery) — both    */}
+      {/* tiles render at aspect-[3/2] with object-contain-friendly padding  */}
+      {/* via a sage backdrop so nothing important is cropped at the edges.  */}
       {/* ----------------------------------------------------------------- */}
       <section className="bg-background py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-10 md:mb-12">
             <Reveal>
               <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
-                From your couch
+                Without leaving home
               </p>
             </Reveal>
             <Reveal delay={60}>
               <h2 className="mt-5 font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
-                Care that fits inside your day.
+                A consultation, then your medication. That&rsquo;s it.
               </h2>
             </Reveal>
           </div>
           <Reveal delay={120}>
-            <div className="grid sm:grid-cols-3 gap-3 md:gap-5 max-w-6xl mx-auto">
+            <div className="grid sm:grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto">
               {homeBandPhotos.map((photo, i) => (
                 <figure
                   key={photo.src}
@@ -145,17 +148,20 @@ export default function Home() {
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 640px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   />
-                  <figcaption className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/55 via-black/15 to-transparent">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/85">
+                  <figcaption className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/55 via-black/15 to-transparent">
+                    <span className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-white/90">
                       {String(i + 1).padStart(2, "0")} · {photo.label}
                     </span>
                   </figcaption>
                 </figure>
               ))}
             </div>
+            <p className="mt-6 text-center text-[10.5px] uppercase tracking-[0.18em] text-foreground/35">
+              Photography is illustrative — models shown.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -222,7 +228,7 @@ export default function Home() {
 
       {/* ----------------------------------------------------------------- */}
       {/* Editorial — the every-day stuff. Side-by-side photo + copy.        */}
-      {/* `lifestyle-smoothie.jpg` (full image, no crop) on the right.       */}
+      {/* `kitchen-portrait.jpg` on the right (native ~2:3, no crop).        */}
       {/* No outcome claims — frames habits as part of the broader plan.     */}
       {/* ----------------------------------------------------------------- */}
       <section className="relative overflow-hidden bg-secondary-light/45 py-20 md:py-28">
@@ -275,13 +281,16 @@ export default function Home() {
                 />
                 <div className="relative overflow-hidden rounded-[2rem] aspect-[2/3] bg-secondary-light shadow-xl shadow-primary/10 ring-1 ring-white/50">
                   <Image
-                    src="/images/lifestyle-smoothie.jpg"
-                    alt="Person walking outside in soft daylight, holding a takeaway drink"
+                    src="/images/kitchen-portrait.jpg"
+                    alt="Person at a sunlit kitchen counter, holding a glass of water with a small bowl of berries nearby"
                     fill
                     sizes="(max-width: 768px) 90vw, 420px"
                     className="object-cover object-center"
                   />
                 </div>
+                <p className="mt-4 text-center text-[10.5px] uppercase tracking-[0.18em] text-foreground/35 md:hidden">
+                  Photography is illustrative — models shown.
+                </p>
               </div>
             </Reveal>
           </div>
@@ -457,22 +466,17 @@ const steps = [
   },
 ];
 
-// Three photos that anchor the from-home story.
+// Two photos that anchor the from-home story.
 // Alt text stays descriptive — no outcome, no testimonial framing.
 const homeBandPhotos = [
   {
-    src: "/images/home-assessment.jpg",
-    alt: "Person reading on their phone in a bright, calm bedroom",
-    label: "Assessment",
-  },
-  {
     src: "/images/home-consultation.jpg",
-    alt: "Person on a video call with a healthcare provider from home",
+    alt: "Person on a video call with a healthcare provider from a sofa at home",
     label: "Consultation",
   },
   {
     src: "/images/home-delivery.jpg",
-    alt: "A discreet package placed at the front door of a home",
+    alt: "A discreet package placed at the front step of a home",
     label: "Delivery",
   },
 ];

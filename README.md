@@ -7,20 +7,47 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-25 — Mauger00
+- Iteration 8 (photography curation): user clarified the agreed
+  photo set was a SUBSET of what had been used previously, not the
+  full library. Removed five photos that weren't in the agreed
+  set (`about-jeans.jpg`, `lifestyle-smoothie.jpg`, `home-hero.jpg`
+  (W2 indoors), `home-assessment.jpg`, `about-outdoor.jpg`); kept
+  the 7 that were agreed
+- Two-women rule honored: outdoor model (W2 with the ocean in the
+  background) goes on `/about` mission section as a landscape
+  3:2; indoor model (W1 in a kitchen with a glass of water + bowl
+  of berries) goes on the home-page mid-page editorial as a 2:3
+  portrait. Each woman appears on exactly one page
+- New hero on home page: `home-bedroom.jpg` (man relaxing in bed
+  smiling at his phone) at native 4:5 portrait — replaces the
+  previous W2 indoor silk-shirt hero. Reads more "telehealth from
+  your couch" on first impression
+- Home photo band reduced from 3 tiles to 2 (consultation +
+  delivery), kicker reworded to "Without leaving home / A
+  consultation, then your medication. That's it." Bigger tiles
+  with more breathing room than the prior 3-up arrangement
+- GLP-1 photo on `/how-it-works` swapped to the full uncropped
+  source (`glp1-medications.jpg`) showing the tablet bottle,
+  loose tablets, AND the two injection pens. Added a small
+  "For illustration only. Nuvela providers prescribe weekly
+  injectable compounded semaglutide" attribution under the photo
+  to keep the brand's actual offering unambiguous
+- Kitchen-portrait editorial section removed from `/how-it-works`
+  (W1 photo now lives on home page; can't repeat the model)
+- Big-jeans editorial section removed from `/about` (photo not
+  in agreed set)
+- All 7 agreed photos placed at their NATIVE source aspect
+  ratios — zero `object-cover` cropping at any breakpoint.
+  Re-sourced the existing `pricing-couple.jpg`,
+  `home-consultation.jpg`, `home-delivery.jpg` from the same
+  source files at higher quality for consistency
+- `npm run build` clean, all 22 routes prerender. Visual
+  responsive pass at 375 / 768 / 1440 across home / about /
+  how-it-works / pricing — 12 screenshots, all four pages
+  compose cleanly with full-frame photos at every width
+
 ### 2026-04-24 — Mauger00
-<<<<<<< HEAD
-- Iteration 7 (photography polish): fixed two cropping complaints —
-  pricing aspirational band changed from `aspect-[16/9] md:aspect-[21/9]`
-  → `aspect-[3/2]` so the full couple-running shot shows without
-  top/bottom crop; how-it-works GLP-1 pens band changed from `aspect-[16/9]`
-  → `aspect-[3/2]` and re-cropped from source with generous breathing room
-  around the pens (still excludes the tablet bottle per legal-nuvela)
-- Added `nuvela w1` portrait (`kitchen-portrait.jpg`) as a new editorial
-  side-by-side moment on `/how-it-works` between the journey steps and
-  the GLP-1 explainer — sits in a soft sage-tinted band with grain, copy
-  on the right framing the day-to-day care routine without making any
-  outcome claims
-=======
 - Iteration 7 polish (same-day follow-up to the photography landing):
   user reported on review that the pricing photo was visibly
   cropped, the GLP-1 product shot was still the original tight
@@ -52,7 +79,6 @@ Format: `### YYYY-MM-DD — github-username`
 - Visual responsive pass at 375 / 768 / 1440 via Puppeteer-driven
   headless Chromium — 12 screenshots, all four pages compose
   cleanly at every width
->>>>>>> dev
 
 ### 2026-04-24 — Mauger00
 - Iteration 7 (photography): first real photos on the site, six total
@@ -77,10 +103,7 @@ Format: `### YYYY-MM-DD — github-username`
   headless Chromium — 12 screenshots, all pages composed cleanly at
   every width
 
-<<<<<<< HEAD
-=======
 
->>>>>>> dev
 ### 2026-04-24 — adpineres-ef
 - Iter C of demo flow landed: Progress, Resources, Account, and
   a design-rebuilt Not-Eligible page. Sidebar now 6 links

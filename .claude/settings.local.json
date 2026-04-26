@@ -57,7 +57,19 @@
       "Bash(rm -f out/*.png)",
       "Bash(node shoot.js)",
       "Bash(ls /tmp/nuvela-shot/extracts/*.png)",
-      "Bash(export PATH=\"$HOME/.local/node/bin:$PATH\")"
+      "Bash(export PATH=\"$HOME/.local/node/bin:$PATH\")",
+      "Read(//private/tmp/**)",
+      "Bash(ls -la /tmp/nuvela-attachments/)",
+      "Bash(curl -s http://localhost:3000/ -o /tmp/home.html)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /dev/null -w \"home %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"about %{http_code}\\\\n\" http://localhost:3000/about)",
+      "Bash(curl -s -o /dev/null -w \"how-it-works %{http_code}\\\\n\" http://localhost:3000/how-it-works)",
+      "Bash(curl -sI http://localhost:3000/images/kitchen-portrait.jpg)",
+      "Bash(curl -sI http://localhost:3000/images/home-bedroom.jpg)",
+      "Bash(curl -sI http://localhost:3000/images/about-coastal.jpg)",
+      "Bash(curl -sI http://localhost:3000/images/glp1-medications.jpg)",
+      "Bash(python3 -c ':*)"
     ]
   }
 }

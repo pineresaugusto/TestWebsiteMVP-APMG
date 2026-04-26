@@ -6,8 +6,158 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
-<<<<<<< HEAD
-=======
+## [Unreleased] — Iteration 8: Photography curation
+
+User clarified that the previously-agreed photo set was a SUBSET of
+the photos the site had been carrying, not the full library. This
+iteration removes five photos that weren't in the agreed set,
+re-sources two photos (`home-bedroom.jpg`, `about-coastal.jpg`)
+that hadn't been on the site before, swaps the GLP-1 product shot
+to its full uncropped frame, and rewrites the home page so the
+single hero portrait matches the agreed photo and the photo band
+drops to two tiles instead of three.
+
+The hard rule for this pass: **no photo gets cropped at any
+breakpoint.** Each container's aspect ratio matches the source
+frame, so `object-cover` doesn't slice anything off. Resizing for
+web is fine (and was done) — pixel cropping is not.
+
+The other rule was **no model repeats**: of the two female-model
+photos chosen (one outdoor, one indoor), each woman appears on
+exactly one page. W2 outdoors with the ocean lives on `/about`
+(mission section); W1 indoors at the kitchen lives on the home
+page (mid-page editorial).
+
+### Added
+
+- `public/images/home-bedroom.jpg` (841×1051, native ~4:5
+  portrait, q=88) — man relaxing in bed smiling at his phone.
+  Lives in the home-page hero on the right column. Replaces the
+  previous W2 indoor silk-shirt hero photo. Reads more "telehealth
+  from your couch" on first impression and broadens the implied
+  audience beyond a single demographic.
+- `public/images/about-coastal.jpg` (1125×785, native ~3:2
+  landscape, q=88) — woman walking on a tree-lined path with the
+  ocean visible in the distance. Lives in the `/about` mission
+  section on the right column at native 3:2 (replaces the prior
+  `about-outdoor.jpg` portrait). User explicitly preferred this
+  framing over the indoor W2 silk-shirt.
+- `public/images/glp1-medications.jpg` (1536×1024, native ~3:2,
+  q=90) — full uncropped GLP-1 product shot showing the tablet
+  bottle, loose tablets, AND both injection pens on the same
+  countertop. Replaces the cropped pens-only `glp1-pens.jpg`.
+- Tiny attribution line directly under the GLP-1 photo on
+  `/how-it-works`: "For illustration only. Nuvela providers
+  prescribe weekly injectable compounded semaglutide." This keeps
+  the brand's actual offering unambiguous given the photo now
+  shows multiple medication forms.
+
+### Changed
+
+- `src/app/page.tsx` — hero portrait `<Image>` now points at
+  `/images/home-bedroom.jpg`; container aspect changed from
+  `aspect-[3/2]` to `aspect-[4/5]` to match the source. Home
+  photo band reduced from 3 tiles (assessment / consultation /
+  delivery) to 2 tiles (consultation / delivery), `grid-cols-3`
+  → `grid-cols-2` on `sm` and up. Section kicker reworded
+  from "From your couch" to "Without leaving home", H2 from
+  "Care that fits inside your day." to "A consultation, then
+  your medication. That's it." Mid-page editorial photo swapped
+  from `lifestyle-smoothie.jpg` to `kitchen-portrait.jpg`
+  (W1 indoors), alt text rewritten to describe the new image.
+  `homeBandPhotos` data array shortened from 3 entries to 2.
+- `src/app/about/page.tsx` — mission-section photo swapped from
+  `about-outdoor.jpg` (portrait `aspect-[4/5]`) to
+  `about-coastal.jpg` (landscape `aspect-[3/2]`) so the source
+  frame plays at native ratio. Decorative coral block + ring
+  treatment added to match the home hero's framing language.
+  "Photography is illustrative — models shown" attribution sits
+  directly under the photo.
+- `src/app/how-it-works/page.tsx` — GLP-1 photo `<Image>` src
+  changed from `/images/glp1-pens.jpg` to
+  `/images/glp1-medications.jpg`; alt text rewritten to describe
+  what's actually visible (tablet bottle, loose tablets, two
+  injection pens). Container aspect kept at `aspect-[3/2]` since
+  the new source is also 3:2. Comment block updated.
+
+### Removed
+
+- `public/images/about-jeans.jpg` (Iter 7 polish addition).
+  Photo not in the agreed set — the trope is too close to the
+  weight-loss-scheme aesthetic the brand wants to avoid, even
+  with the "Photography is illustrative" attribution.
+- `public/images/lifestyle-smoothie.jpg` (Iter 7 polish addition).
+  W1 outdoors photo with the "GOOD FOOD GOOD MOOD" sandwich
+  board behind her — a touch on-the-nose, and the no-repeat-
+  woman rule means W1 can only appear once anyway.
+- `public/images/home-hero.jpg` (Iter 7 polish addition,
+  W2 indoors silk-shirt). Removed because we chose W2 outdoors
+  for `/about`, and the no-repeat-woman rule means W2 can't
+  appear in two places.
+- `public/images/home-assessment.jpg` (original Iter 7 photo,
+  used as the third home-band tile). Not in the agreed set, and
+  the home band is now just two tiles anyway.
+- `public/images/about-outdoor.jpg` (original Iter 7 photo,
+  prior `/about` mission portrait). Replaced by the agreed
+  `about-coastal.jpg`.
+- `public/images/glp1-pens.jpg` (cropped pens-only frame).
+  Replaced by the full uncropped `glp1-medications.jpg`.
+- The "Beyond the prescription" big-jeans editorial section on
+  `/about` (was the entire JSX block between "Why traditional
+  approaches" and "How the Platform Works") — the photo is gone,
+  so the section goes with it. The platform-works section now
+  follows the stats grid directly.
+- The "Day to day" kitchen-portrait editorial section on
+  `/how-it-works` (between the journey-steps and the GLP-1
+  explainer). The kitchen-portrait photo moved to the home page,
+  and the no-repeat-woman rule means it can't appear here too.
+
+### Decisions worth recording
+
+- **Bedroom photo wins the hero over kitchen-portrait W1.** Both
+  are strong, but bedroom is more demographically broad (male,
+  reads as "anyone could be doing this"), more specifically
+  "telehealth from home" (he's literally using his phone in
+  bed), and the kitchen-portrait then has a perfect home in the
+  mid-page editorial where it pairs with "Beyond the
+  prescription / Small, daily things" copy.
+- **Photo band reduced to 2 tiles, not 3.** With assessment
+  removed (not in agreed set), forcing a 3rd tile would have
+  meant either repeating a model or pulling something semi-
+  appropriate. Two larger tiles (consultation + delivery) read
+  better visually anyway and tell the same story more directly.
+- **GLP-1 photo carries an attribution line, not a cropped
+  bottle.** The user's "no cropping" rule is firm. The risk —
+  showing a tablet bottle when Nuvela only offers injectables —
+  is mitigated with a one-line attribution directly beneath the
+  photo, not by editing the source pixels.
+- **W2 outdoors with the ocean on `/about`, not on the home
+  page.** `/about` is the right place for an aspirational,
+  brand-mission photograph (the mission section frames
+  values, not features). The coastal background also gives the
+  about page an outdoor, breathing-room moment that the rest of
+  the site doesn't have.
+
+### Verification
+
+- `npm run build` — clean, all 22 routes prerender (the dev
+  branch's demo-flow `/app/*` routes plus the marketing pages).
+- Puppeteer-driven headless Chromium, force-revealed
+  IntersectionObserver, scroll-through pass for lazy-loaded
+  images, then `await img.complete` on every `<img>` before
+  screenshotting. 12 screenshots at 375 / 768 / 1440 across
+  home / about / how-it-works / pricing — all four pages render
+  full-frame photos at every breakpoint with no edge cropping.
+
+### Verification still owed
+
+- `npm run lint` — last full run was end of Iteration 7 polish,
+  showed 2 errors / 15 warnings, all in pre-existing files
+  outside the photography scope. Not re-run after this pass; no
+  new lint debt is expected.
+
+---
+
 ## [Unreleased] — Iteration 7: Photography polish (same-day follow-up)
 
 Same-day follow-up to Iteration 7's first photography landing.
@@ -323,7 +473,6 @@ Iterations 1–3 could finally be retired alongside this one.
 
 ---
 
->>>>>>> dev
 ## [Unreleased] — Iteration 6: Patient dashboard (Iter C)
 
 Iter C of the demo-flow plan. Fills the last four dashboard
@@ -643,7 +792,6 @@ so the real Stripe Elements swap is a contained change later.
 - Walk through scenario 3 (skip signup: marketing site → `?demo=1`
   → toolbar "Jump New user" → dashboard stub; "Reset" → `/`).
 
-<<<<<<< HEAD
 ## [Unreleased] — Iteration 7: Photography
 
 
@@ -844,9 +992,8 @@ Iterations 1–3 could finally be retired alongside this one.
 - Cleanup: the Puppeteer install, Chromium download, and screenshot
   output all live in `/tmp/nuvela-shot/` — nothing bled into the
   project tree. Safe to `rm -rf` when no longer needed.
-=======
+
 ---
->>>>>>> dev
 
 ## [Unreleased] — Iteration 3: UX + Legal Refinement
 
