@@ -7,6 +7,48 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-27 — Mauger00
+- Iteration 9 (SEO foundations): first technical-SEO pass on the
+  site. Foundations: `metadataBase`, title-template (`%s | Nuvela`),
+  full Open Graph + Twitter card, robots defaults
+  (`max-image-preview: large`), `themeColor`/`colorScheme`
+  viewport export. New `src/lib/seo.ts` centralizes the canonical
+  URL with env override (`NEXT_PUBLIC_SITE_URL`)
+- Crawlability: new `src/app/robots.ts` (allow `/`, disallow
+  `/app/*`) and `src/app/sitemap.ts` (10 URLs, priorities tuned
+  for commercial intent). `/app/layout.tsx` now exports
+  `robots: { index:false, follow:false, nocache:true }` as
+  belt-and-suspenders so the demo funnel + dashboard never
+  pollute the index
+- Per-page metadata: every marketing route has its own title +
+  description + canonical + OG. Server components edit in place;
+  client components (`/how-it-works`, `/get-started`,
+  `/providers`) gained colocated `layout.tsx` files that own the
+  metadata + JSON-LD without forcing a refactor. Titles lead
+  with primary keyword for the page's intent
+- Structured data: site-wide `Organization` (root layout),
+  `WebSite + Service + AggregateOffer` on home, three plan-bound
+  `Service + Offer` blocks on `/pricing` (rendered straight from
+  `PLAN_LIST` so prices can't drift), `BreadcrumbList` on four
+  interior pages, full `FAQPage` on `/faq` with all 18 Q&A
+  (parallel plain-text mirror sits beside the rich React
+  `SECTIONS` so drift is visible during edits)
+- Light on-page polish: home hero kicker "Without leaving home"
+  → "Online GLP-1 weight loss treatment" (keyword in eyebrow,
+  warm H1 below untouched). Footer "Clinically-proven" →
+  "Clinically-studied" to match the rest of the site —
+  legal-nuvela consistency caught during the same pass
+- MedicalBusiness schema deliberately not used. Nuvela's
+  positioning across `/faq` and `/about` is platform-not-clinic;
+  schema that contradicts on-page copy is worse than no schema.
+  Stuck with `Organization` + `Service`, both of which fit
+- Verification: `npm run build` clean (24 routes vs 22 in
+  Iter 8 — `/robots.txt` + `/sitemap.xml` are now in the
+  build). Runtime smoke test via `curl` confirmed title + desc +
+  canonical + OG title + robots directive + JSON-LD `@types` per
+  marketing route, plus `noindex, nofollow, nocache` on
+  `/app/signup`, `/app/dashboard`, `/app/checkout`
+
 ### 2026-04-25 — Mauger00
 - Iteration 8 (photography curation): user clarified the agreed
   photo set was a SUBSET of what had been used previously, not the

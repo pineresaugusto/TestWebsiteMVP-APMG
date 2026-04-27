@@ -1,6 +1,76 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+// Home page is the most-targeted commercial-intent landing for the
+// queries that bring people in: "GLP-1 weight loss", "online GLP-1
+// treatment", "compounded semaglutide telehealth". Title leads with
+// the primary keyword, leaves room for the brand suffix template.
+// Description is sub-160 chars and reads like marketing copy, not
+// like a list of keywords.
+export const metadata: Metadata = {
+  title: "GLP-1 Weight Loss Treatment Online — Licensed Providers",
+  description:
+    "Start your GLP-1 weight loss journey with Nuvela. Online consultation with licensed providers, clinically-studied treatment, and home delivery — from $199/month.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: SITE_URL,
+    title: "GLP-1 Weight Loss Treatment Online — Licensed Providers | Nuvela",
+    description:
+      "Online consultation with licensed providers, clinically-studied GLP-1 treatment, home delivery. From $199/month — no insurance required.",
+  },
+};
+
+// JSON-LD: a WebSite + service-style description so search engines can
+// connect this URL to the brand and to its primary offering. Kept
+// careful to describe Nuvela as a platform connecting patients with
+// providers (matches /faq + /about wording exactly), not as a medical
+// practice or pharmacy.
+const homeJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    inLanguage: "en-US",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/faq?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "GLP-1 Weight Loss Treatment",
+    serviceType: "Telehealth weight loss treatment",
+    provider: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "United States",
+    },
+    description:
+      "Online weight-loss program connecting patients with licensed providers for evaluation, prescription of compounded semaglutide when clinically appropriate, and home delivery as part of an all-inclusive monthly plan.",
+    audience: {
+      "@type": "PeopleAudience",
+      suggestedMinAge: 18,
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "USD",
+      lowPrice: "199",
+      highPrice: "399",
+      offerCount: 3,
+      url: `${SITE_URL}/pricing`,
+    },
+  },
+];
 
 export default function Home() {
   return (
@@ -128,7 +198,7 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center mb-10 md:mb-12">
             <Reveal>
               <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
-                Without leaving home
+                Online GLP-1 weight loss treatment
               </p>
             </Reveal>
             <Reveal delay={60}>
@@ -409,6 +479,14 @@ export default function Home() {
           </Link>
         </Reveal>
       </section>
+
+      {/* JSON-LD: WebSite + Service. Both are server-rendered (no
+          useEffect), so they appear in the initial HTML where crawlers
+          can pick them up without executing JS. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
+      />
     </>
   );
 }

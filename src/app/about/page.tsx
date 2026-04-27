@@ -1,7 +1,30 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import { breadcrumbJsonLd, SITE_NAME } from "@/lib/seo";
+
+// /about ranks for branded "about Nuvela" + intent queries like
+// "what is Nuvela GLP-1" + "Nuvela telehealth weight loss". Title
+// keeps "About" up front but reinforces what Nuvela actually is.
+export const metadata: Metadata = {
+  title: "About Nuvela — Online GLP-1 Weight Loss Care",
+  description:
+    "Nuvela is a telehealth platform connecting patients with licensed providers for clinically-studied GLP-1 weight loss treatment. Learn our mission and how the platform works.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    url: "/about",
+    title: `About ${SITE_NAME} — Online GLP-1 Weight Loss Care`,
+    description:
+      "Our mission: make GLP-1 weight loss care accessible, affordable, and genuinely supportive — through licensed providers and a simple monthly plan.",
+  },
+};
+
+const aboutBreadcrumb = breadcrumbJsonLd([
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+]);
 
 export default function About() {
   return (
@@ -179,6 +202,11 @@ export default function About() {
           </Link>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutBreadcrumb) }}
+      />
     </>
   );
 }

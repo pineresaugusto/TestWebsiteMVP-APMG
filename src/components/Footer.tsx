@@ -14,7 +14,7 @@ export default function Footer() {
               Nuvela
             </Link>
             <p className="mt-3 text-sm leading-6 text-white/60">
-              Clinically-proven GLP-1 weight loss treatment, guided by licensed providers.
+              Clinically-studied GLP-1 weight loss treatment, guided by licensed providers.
             </p>
           </div>
 

@@ -69,7 +69,8 @@
       "Bash(curl -sI http://localhost:3000/images/home-bedroom.jpg)",
       "Bash(curl -sI http://localhost:3000/images/about-coastal.jpg)",
       "Bash(curl -sI http://localhost:3000/images/glp1-medications.jpg)",
-      "Bash(python3 -c ':*)"
+      "Bash(python3 -c ':*)",
+      "Bash(cat /Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/next.config.*)"
     ]
   }
 }

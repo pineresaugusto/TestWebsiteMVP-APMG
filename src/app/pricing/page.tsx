@@ -1,8 +1,64 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { PLAN_LIST } from "@/lib/plans";
+import { absoluteUrl, breadcrumbJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+// Pricing is a high-intent page — searchers know the category and
+// want to compare cost. Title and description lead with price + the
+// "all-inclusive" differentiator. The plan-bound Service offers below
+// give Google enough to potentially surface a price snippet.
+export const metadata: Metadata = {
+  title: "GLP-1 Weight Loss Pricing — Plans from $199/Month",
+  description:
+    "Simple, all-inclusive GLP-1 weight loss pricing. Three monthly plans from $199 — covers medication, provider visits, supplies, and shipping. No insurance, cancel anytime.",
+  alternates: { canonical: "/pricing" },
+  openGraph: {
+    url: "/pricing",
+    title: `GLP-1 Weight Loss Pricing — Plans from $199/mo | ${SITE_NAME}`,
+    description:
+      "Three transparent monthly plans, all-inclusive of medication, consultations, supplies, and shipping. No insurance required.",
+  },
+};
+
+// Per-tier Service + Offer entries. Mirrors PLAN_LIST so prices in
+// JSON-LD never drift from prices on screen. AggregateOffer is also
+// included for the cards-as-a-whole.
+const pricingJsonLd = [
+  breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Pricing", path: "/pricing" },
+  ]),
+  ...PLAN_LIST.map((tier) => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `Nuvela ${tier.name} — GLP-1 Weight Loss Plan`,
+    serviceType: "Telehealth weight loss treatment",
+    description: tier.tagline,
+    provider: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    areaServed: { "@type": "Country", name: "United States" },
+    offers: {
+      "@type": "Offer",
+      price: String(tier.price),
+      priceCurrency: "USD",
+      url: absoluteUrl("/pricing"),
+      availability: "https://schema.org/InStock",
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: String(tier.price),
+        priceCurrency: "USD",
+        billingIncrement: 1,
+        unitCode: "MON",
+      },
+    },
+  })),
+];
 
 export default function Pricing() {
   return (
@@ -155,6 +211,11 @@ export default function Pricing() {
           </Link>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
+      />
     </>
   );
 }

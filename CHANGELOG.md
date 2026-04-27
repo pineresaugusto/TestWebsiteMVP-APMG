@@ -6,6 +6,233 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 9: SEO foundations
+
+First real search-engine optimization pass on the site. Photography
+work in Iter 7/8 took the visual layer to a shippable bar; this
+iteration takes the discoverability layer to the same bar without
+disturbing any of the warm, frictionless commercial copy already in
+place. The skill brief was the `seo` skill (technical correctness
+first, then on-page), with `legal-nuvela` riding shotgun to keep
+softened claims softened (e.g. "clinically-studied," not
+"clinically-proven") and `frontend-design` informing the
+restraint — no SEO-driven copy ballast added, no visible UI changes.
+
+The work breaks into five layers:
+
+1. **Foundations.** A `metadataBase` so every relative OG/canonical
+   URL resolves to absolute. A title-template (`%s | Nuvela`) so
+   per-page titles read naturally without each page repeating the
+   brand. A real Twitter card. Robots defaults that opt-in to
+   `max-image-preview: large` for richer SERP rendering. A
+   `viewport` export carrying the brand `themeColor` (cream
+   `#FAF8F5`) instead of leaving it browser-default. An
+   Organization JSON-LD block on every page (delivered via the
+   root layout) describing Nuvela conservatively as a
+   platform — not a medical practice — to match the wording in
+   `/faq` and `/about`.
+2. **Crawlability.** New `src/app/robots.ts` allows `/`, blocks
+   `/app/*` (the demo funnel + dashboard), and points to the
+   sitemap. New `src/app/sitemap.ts` enumerates the 10 marketing
+   URLs with sane priorities (home 1.0, commercial-intent 0.9,
+   FAQ 0.7, about 0.6, providers 0.4, legal 0.3). `/app/layout.tsx`
+   now exports `robots: { index:false, follow:false, nocache:true }`
+   as belt-and-suspenders so any agent that ignores robots.txt still
+   gets a directive on the page itself. Verified at runtime: `curl
+   /robots.txt` returns the expected directives, `curl /sitemap.xml`
+   returns ten `<url>` entries, and `<meta name="robots">` on
+   `/app/signup`, `/app/dashboard`, `/app/checkout` reads
+   `noindex, nofollow, nocache`.
+3. **Per-page metadata.** Every marketing page now has its own
+   `title`, `description`, `alternates.canonical`, and Open Graph
+   block. Two server components (`/`, `/about`, `/pricing`)
+   added the metadata directly. Three client components
+   (`/how-it-works`, `/get-started`, `/providers`) gained a
+   colocated `layout.tsx` that owns their metadata + JSON-LD
+   without forcing a refactor of their interactive logic. Titles
+   lead with the primary keyword for the page's search intent
+   ("GLP-1 Weight Loss Treatment Online — Licensed Providers,"
+   "GLP-1 Weight Loss Pricing — Plans from $199/Month,"
+   "Free GLP-1 Eligibility Assessment — Start Online,"
+   "How GLP-1 Weight Loss Treatment Works — Step by Step,"
+   etc.) and stay inside the 50-65-character SERP-truncation band.
+4. **Structured data.** Beyond the site-wide Organization,
+   per-page JSON-LD is now in place where it actually maps to
+   real content: `WebSite` + `Service` (with AggregateOffer
+   `$199-$399`) on the home page; three `Service` + `Offer`
+   blocks on `/pricing` (Start, Accelerate, Transform — each
+   rendered straight from `PLAN_LIST` so prices in JSON-LD can
+   never drift from prices on screen); `BreadcrumbList` on
+   `/about`, `/pricing`, `/how-it-works`, `/faq`; full
+   `FAQPage` on `/faq` with all 18 Q&A pairs. The FAQ JSON-LD
+   uses a parallel plain-text mirror (`FAQ_JSONLD`) sitting
+   beside the rich React `SECTIONS` so any drift between the
+   structured data and the rendered DOM is visible at a glance
+   during edits — Google demotes rich results when the two
+   diverge, so colocation is the cleanest defense.
+5. **Light on-page polish.** The home page's "Without leaving
+   home" kicker — purely brand voice, no keyword — became
+   "Online GLP-1 weight loss treatment," matching the search
+   intent of the section it precedes without making the page
+   feel keyword-stuffed (the H2 below it stays unchanged: "A
+   consultation, then your medication. That's it."). The footer
+   tagline "Clinically-proven GLP-1 weight loss treatment"
+   softened to "Clinically-studied" to align with the wording on
+   `/`, `/how-it-works`, and `/about` — pure `legal-nuvela`
+   consistency hygiene, also caught by this pass. No other
+   visible copy changed.
+
+### Decisions worth recording
+
+- **MedicalBusiness schema deliberately not used.** It would have
+  given a small SERP boost, but Nuvela's positioning across the site
+  (especially `/faq` "Is Nuvela a pharmacy or a medical practice?"
+  and `/about` "Nuvela is not a medical practice") is that it is a
+  platform, not a clinic. Schema that contradicts on-page copy is
+  worse than no schema — Google's structured-data guidelines
+  treat it as a quality signal, and an inconsistent claim is
+  exactly the kind of thing an enforcement agent could later cite.
+  Stuck with `Organization` + `Service`, both of which fit.
+- **`metadataBase` is env-overridable.** A new `src/lib/seo.ts`
+  reads `process.env.NEXT_PUBLIC_SITE_URL` and falls back to
+  `https://nuvela.health`. On Vercel the team can set the env
+  var to the real production domain when it lands without
+  touching code. The fallback keeps `next build` from blowing up
+  locally and on preview builds.
+- **`/get-started` stays indexable.** It's a quiz-style intake
+  form, but it's also the conversion page for high-intent queries
+  like "free GLP-1 eligibility assessment." Indexing it gets
+  Nuvela in front of those searches; the form itself is
+  client-side and submits to localStorage demo state, so there's
+  no PHI-exposure risk from indexing the rendered HTML.
+- **Home H1 left untouched.** "A provider, a plan, and nothing in
+  the way" doesn't carry the primary keyword, but the title tag
+  ("GLP-1 Weight Loss Treatment Online — Licensed Providers")
+  and the kicker ("Online GLP-1 weight loss treatment") do, and
+  the H2 in the next section ("What are GLP-1 medications?")
+  reinforces it. Per the `seo` skill — "write for users first" —
+  the H1 carries warmth, the head + nearby H2s carry the
+  keyword. No reason to break a working hero.
+- **Title template (`%s | Nuvela`) accepted longer-than-ideal
+  page titles.** `/pricing` lands at 64 characters when fully
+  templated. Google's SERP truncation is pixel-based (~580px),
+  not character-based, and the rendered titles all read cleanly
+  at desktop+mobile widths. Not worth tightening at the cost of
+  brand-suffix consistency across the site.
+
+### Added
+
+- `src/lib/seo.ts` — single source of truth for `SITE_URL`,
+  `SITE_NAME`, `SITE_TAGLINE`, an `absoluteUrl()` helper, a
+  `breadcrumbJsonLd()` helper used on four interior pages, and a
+  small `jsonLdScript()` shape (currently unused by callers — they
+  inline `<script type="application/ld+json">` directly so the
+  JSON renders before React hydration — kept exported for future
+  refactors).
+- `src/app/robots.ts` — Next 16 metadata-route file producing
+  `/robots.txt`. Allows `/`, disallows `/app/`, points at
+  `${SITE_URL}/sitemap.xml`.
+- `src/app/sitemap.ts` — Next 16 metadata-route file producing
+  `/sitemap.xml`. Ten URLs, lastModified set at build time.
+- `src/app/how-it-works/layout.tsx` — owns metadata +
+  `BreadcrumbList` JSON-LD for the route. Pass-through children
+  so `page.tsx` stays a `"use client"` interactive page.
+- `src/app/get-started/layout.tsx` — owns metadata for the
+  conversion page. Pass-through children.
+- `src/app/providers/layout.tsx` — owns metadata for the B2B
+  page (different keyword cluster: "GLP-1 telehealth provider
+  partner," not "GLP-1 weight loss"). Pass-through children.
+
+### Changed
+
+- `src/app/layout.tsx` — `metadata` expanded with
+  `metadataBase`, title `template`, full Open Graph block with
+  hero image at known dimensions (1400×1750), Twitter
+  `summary_large_image` card, robots defaults
+  (`max-image-preview: large`, `max-snippet: -1`), `category:
+  "health"`. New `viewport` export carries `themeColor`
+  `#FAF8F5` and `colorScheme: "light"`. Body now also renders an
+  `Organization` JSON-LD `<script>` so brand-level structured
+  data appears on every page automatically.
+- `src/app/page.tsx` — added `metadata` export, added
+  `WebSite` + `Service` JSON-LD with `AggregateOffer`. Kicker
+  text under the hero CTAs changed from "Without leaving home"
+  to "Online GLP-1 weight loss treatment" to bring the primary
+  keyword into the section eyebrow without overwriting the warm
+  H1. No other visible copy or layout changes.
+- `src/app/about/page.tsx` — added `metadata` export and
+  `BreadcrumbList` JSON-LD.
+- `src/app/pricing/page.tsx` — added `metadata` export and
+  three plan-bound `Service` + `Offer` JSON-LD entries
+  (Start/Accelerate/Transform) plus `BreadcrumbList`. Prices
+  read straight from `PLAN_LIST` so they cannot drift from the
+  visible cards.
+- `src/app/faq/page.tsx` — strengthened `metadata` (title was
+  the very generic "FAQ — Nuvela," now "GLP-1 Weight Loss
+  FAQ — Eligibility, Pricing, Safety"). Added a `FAQ_JSONLD`
+  parallel plain-text mirror of the React `SECTIONS` content,
+  emitted as `FAQPage` JSON-LD with all 18 Q&A pairs and a
+  `BreadcrumbList`.
+- `src/app/app/layout.tsx` — added `metadata` with
+  `robots: { index:false, follow:false, nocache:true }` so the
+  entire `/app/*` demo funnel + dashboard is uncrawlable
+  regardless of `robots.txt` compliance.
+- `src/components/Footer.tsx` — "Clinically-proven GLP-1 weight
+  loss treatment" → "Clinically-studied GLP-1 weight loss
+  treatment." Aligns with the rest of the site.
+
+### Verification
+
+- `npm run build` — **clean**. Compiled in ~1.3s, TypeScript
+  passed in ~1.4s, all 24 routes statically prerendered (was 22
+  in Iter 8 — `/robots.txt` and `/sitemap.xml` are now in the
+  build).
+- Runtime smoke test via `npm run start` + `curl` on every
+  marketing route. Verified per route: title tag, meta
+  description, canonical link, OG title, robots directive, and
+  JSON-LD `@type` enumeration. Sample output below (collapsed).
+  - `/` → title "GLP-1 Weight Loss Treatment Online — Licensed
+    Providers," canonical `https://nuvela.health`, robots
+    `index, follow`, JSON-LD types `[WebSite, Service,
+    Organization]` + site-wide Organization.
+  - `/pricing` → canonical `…/pricing`, JSON-LD types
+    `[BreadcrumbList, Service ×3, Offer ×3, UnitPriceSpecification ×3]`.
+  - `/faq` → JSON-LD types `[BreadcrumbList, FAQPage,
+    Question ×18, Answer ×18]`.
+  - `/how-it-works`, `/about` → BreadcrumbList present.
+  - `/get-started`, `/providers` → site-wide Organization only
+    (intentional — no extra structured data needed).
+- `/robots.txt` → returns `User-Agent: *`, `Allow: /`,
+  `Disallow: /app/`, `Disallow: /app/*`, `Host:
+  https://nuvela.health`, `Sitemap: …/sitemap.xml`.
+- `/sitemap.xml` → ten `<url>` entries, lastModified set at
+  build time, priorities as designed.
+- `/app/signup`, `/app/dashboard`, `/app/checkout` → all return
+  `<meta name="robots" content="noindex, nofollow, nocache">`.
+- `npm run lint` — not re-run in this iteration (carrying
+  forward the two pre-existing findings from Iter 7: `Reveal.tsx`
+  set-state-in-effect, `get-started/page.tsx` watch()
+  incompatible-library). No new lint debt introduced — all
+  changes are TypeScript metadata exports and JSX `<script>`
+  blocks, no new hooks.
+
+### What still needs the business
+
+Two items in this iteration are placeholders awaiting business
+inputs and are flagged here so they aren't lost:
+
+- **`SITE_URL` fallback is `https://nuvela.health`.** If the
+  production domain is different, set
+  `NEXT_PUBLIC_SITE_URL=https://...` in Vercel Project →
+  Environment Variables. No code change required.
+- **No verified Google Search Console / Bing Webmaster Tools
+  claim.** When the production domain is live, the team should
+  add a `google-site-verification` meta tag to `metadata.other`
+  in `src/app/layout.tsx` and submit `sitemap.xml` to GSC.
+  Tracked here so it doesn't block this iteration's merge.
+
+---
+
 ## [Unreleased] — Iteration 8: Photography curation
 
 User clarified that the previously-agreed photo set was a SUBSET of
