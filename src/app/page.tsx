@@ -411,6 +411,66 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------------------- */}
+      {/* Proof strip — Combo D (Iter 7, scope 2): stats + trust badges.     */}
+      {/* No testimonials. Stats trace to STEP 1 (Wilding et al., NEJM       */}
+      {/* 2021) and to platform-true claims. Badges describe operational    */}
+      {/* posture without overclaiming (no 503B language — that's a known   */}
+      {/* deferred issue per CHANGELOG until pharmacy partnership lands).    */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="bg-background py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <p className="rule-kicker text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+              Numbers worth knowing
+            </p>
+          </Reveal>
+          <Reveal delay={80}>
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-2xl border border-secondary/40 bg-white px-6 py-7 text-center shadow-sm"
+                >
+                  <div className="font-display text-[2.5rem] leading-none text-primary-dark sm:text-[3rem]">
+                    {stat.value}
+                  </div>
+                  <div className="mt-2 text-[13px] font-semibold uppercase tracking-[0.14em] text-foreground/55">
+                    {stat.label}
+                  </div>
+                  <p className="mt-3 text-[13.5px] leading-relaxed text-foreground/60">
+                    {stat.note}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="mt-4 text-center text-[11.5px] text-foreground/45">
+              Trial figure: Wilding et al., STEP 1, NEJM 2021. Individual results vary.
+            </p>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+              {badges.map((badge) => (
+                <li
+                  key={badge.label}
+                  className="flex items-center gap-3 rounded-xl border border-secondary/40 bg-white px-4 py-3.5"
+                >
+                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary-dark">
+                    {badge.icon}
+                  </span>
+                  <span className="text-[13px] font-semibold leading-tight text-foreground">
+                    {badge.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
       {/* Four-feature grid — "Why this is different"                        */}
       {/* Photo band moved up; this section is now pure typographic value.  */}
       {/* ----------------------------------------------------------------- */}
@@ -556,6 +616,73 @@ const homeBandPhotos = [
     src: "/images/home-delivery.jpg",
     alt: "A discreet package placed at the front step of a home",
     label: "Delivery",
+  },
+];
+
+// Stats — kept to three to read like a deliberate set, not a wall of
+// numbers. Each value links to a defensible source: the trial citation
+// for efficacy; the assessment-time and response-time numbers describe
+// platform behavior we control.
+const stats = [
+  {
+    value: "~14.9%",
+    label: "Average weight reduction",
+    note: "Adults with obesity on semaglutide 2.4 mg weekly over 68 weeks (STEP 1).",
+  },
+  {
+    value: "~5 min",
+    label: "Online assessment",
+    note: "A short health questionnaire reviewed before any provider visit.",
+  },
+  {
+    value: "1 day",
+    label: "Typical message reply",
+    note: "Care-team messages are answered within one business day, on average.",
+  },
+];
+
+// Trust badges — operational posture statements. Phrased to be true
+// regardless of pharmacy/state-list status (those remain CHANGELOG
+// "known issues"). No medical-board or accreditation logos used.
+const badges: Array<{ label: string; icon: React.ReactNode }> = [
+  {
+    label: "Board-certified providers",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+        <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    label: "HIPAA-compliant platform",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+        <rect x="4" y="10" width="16" height="11" rx="2" />
+        <path d="M8 10V7a4 4 0 018 0v3" />
+      </svg>
+    ),
+  },
+  {
+    label: "Discreet home delivery",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+        <path d="M3 7l9-4 9 4-9 4-9-4z" />
+        <path d="M3 7v10l9 4 9-4V7" />
+        <path d="M12 11v10" />
+      </svg>
+    ),
+  },
+  {
+    label: "Cancel anytime",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden>
+        <path d="M3 12a9 9 0 0015.5 6.4L21 21" />
+        <path d="M21 12A9 9 0 005.5 5.6L3 3" />
+        <path d="M21 3v6h-6" />
+        <path d="M3 21v-6h6" />
+      </svg>
+    ),
   },
 ];
 
