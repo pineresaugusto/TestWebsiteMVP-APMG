@@ -7,6 +7,34 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-04-27 — adpineres-ef
+- Iter 10 (renumbered from branch `iter-7-polish-social` after
+  main's iter 8/9 SEO work merged in): pitch-readiness polish +
+  social proof
+- Lint debt cleared: 2 inherited errors gone (Reveal IO fallback
+  kept with eslint-disable + explanatory comment; messages
+  auto-select effect replaced with derived render-time selectedId;
+  Sidebar route-change effect rewritten as render-phase compare).
+  `npm run lint` now 0 errors; 11 remaining warnings are
+  pre-existing/unactionable (designs/shared.js + react-hook-form
+  incompatible-library)
+- Responsive coverage at 375 / 768 / 1440: Sidebar rewritten as
+  off-canvas drawer on mobile (hamburger topbar, backdrop, body-
+  scroll lock, ESC + route-change close), pinned at md+. Messages
+  2-pane gets a mobile list/thread tab switcher with back chevron.
+  Orders 6-col table collapses to card rows below md. Dashboard
+  layout padding made responsive
+- Scroll-reveal animations now applied to /faq, /privacy, /terms,
+  /medical-disclaimer (the four pages that didn't have them)
+- Scope 2: Combo D shipped on home — 3 stats (STEP 1 14.9%,
+  5-min assessment, 1-day reply) + 4 trust badges (board-certified,
+  HIPAA, discreet delivery, cancel anytime). No fake testimonials.
+  Stats/badges deliberately avoid the deferred 503B + state-list
+  known issues. Illustrative OG alternative produced as
+  `docs/designs/og-illustrative.svg` for team comparison against
+  the existing `home-bedroom.jpg` photographic OG; no swap performed
+- `npm run lint` and `npm run build` both clean
+
 ### 2026-04-27 — Mauger00
 - Iteration 9 (SEO foundations): first technical-SEO pass on the
   site. Foundations: `metadataBase`, title-template (`%s | Nuvela`),

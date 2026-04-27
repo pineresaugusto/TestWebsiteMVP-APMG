@@ -6,6 +6,95 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 10: pitch-readiness polish + social proof
+
+Branched as `claude/iter-7-polish-social` before merging the SEO
+work; renumbered to 10 to follow the iter-9 SEO pass already in
+this section. Two scopes, landed in order: (1) pitch-readiness
+polish — kill the inherited lint debt, ship responsive coverage at
+375 / 768 / 1440, wire scroll-reveal animations on the legal +
+informational pages where the rest of the site already had them;
+(2) social proof — Combo D (stats + trust badges, no fake
+testimonials), and an illustrative OG alternative for the team to
+compare against the existing photographic OG.
+
+### Added
+- `src/app/page.tsx`: new "Numbers worth knowing" proof strip
+  between the four-step path and the four-feature grid. Three
+  stats — `~14.9%` (STEP 1 trial), `~5 min` (assessment),
+  `1 day` (typical message reply) — with the trial citation
+  reprinted under the row, and four operational-posture badges
+  (board-certified providers, HIPAA-compliant platform, discreet
+  home delivery, cancel anytime). Stats and badges chosen to
+  avoid the deferred 503B-pharmacy and state-list claims tracked
+  in "Known issues."
+- `docs/designs/og-illustrative.svg`: alternative OG card for
+  team review. Editorial wordmark + serif headline + trust strip
+  + "from $199 / month" pill, in brand palette. Compare against
+  the existing `public/images/home-bedroom.jpg` photographic OG;
+  no swap performed — this is a deliverable for the comparison.
+- `src/components/app/Sidebar.tsx`: off-canvas drawer pattern on
+  mobile (hamburger top bar, backdrop, body-scroll lock, ESC to
+  close, route-change auto-close), pinned at md+ unchanged.
+
+### Changed
+- `src/components/Reveal.tsx`: kept the legacy IntersectionObserver-
+  undefined fallback (so old browsers don't see hidden content
+  forever) and silenced the new `react-hooks/set-state-in-effect`
+  rule with a one-line disable + comment explaining why a
+  one-shot mount-time setState is intentional.
+- `src/app/app/dashboard/messages/page.tsx`: replaced the
+  auto-select effect with a derived selectedId computed during
+  render (user pick + fallback to most-recent thread); memoized
+  threads array; added a mobile list/thread tab switcher with a
+  back chevron in the thread header so the 2-pane layout works
+  at 375. Hides the "typical response within 1 business day"
+  caption below `lg` to give the header room.
+- `src/app/app/dashboard/orders/page.tsx`: 6-column table now
+  collapses to a card layout below `md` (order id + status pill
+  share a top row, then medication / dose, ordered date, est.
+  delivery, disabled track button). Memoized orders array.
+- `src/app/app/dashboard/layout.tsx`: responsive padding —
+  `pt-20` on mobile to clear the new sidebar top-bar,
+  `md:ml-[260px]` and `md:pt-9` to restore the desktop layout.
+- `src/app/faq/page.tsx`, `/privacy/page.tsx`, `/terms/page.tsx`,
+  `/medical-disclaimer/page.tsx`: section primitives now wrap
+  content in `<Reveal>` so the same fade-in-on-scroll behavior
+  the rest of the site uses now applies here too. Iter 9's
+  FAQPage / BreadcrumbList JSON-LD additions preserved verbatim.
+- `eslint.config.mjs`: globalIgnores now covers `**/.next/**`
+  and `.claude/worktrees/**` so sibling worktrees don't pollute
+  lint output.
+
+### Removed
+- The auto-select `useEffect` in messages — replaced by render-
+  phase derivation.
+- The route-change `useEffect` in Sidebar that called
+  `setOpen(false)` — replaced by the React-docs render-phase
+  pattern (track `lastPath`, compare, update). Same behavior,
+  no lint rule violation.
+
+### Verification
+- `npm run lint`: 0 errors. 11 warnings remain, all pre-existing
+  and unactionable: 10 in `docs/designs/shared.js` (mock helpers
+  shipped alongside the HTML designs, not imported by the app);
+  1 in `src/app/get-started/page.tsx` (`react-hook-form`
+  `watch()` flagged by `react-hooks/incompatible-library` —
+  upstream limitation, no remediation available).
+- `npm run build`: clean. All 24 routes prerendered as static.
+- Manual responsive sweep at 375 / 768 / 1440 across marketing
+  and `/app/*`. Sidebar drawer, messages list/thread switcher,
+  orders card layout all verified at 375.
+
+### Known issues (unchanged)
+The deferred items from earlier iterations remain in place:
+fabricated state list in `/get-started`, illustrative pricing
+on `/pricing`, provider-recruitment page, dead "Schedule
+Consultation" CTA, and the 503B-pharmacy claim in the footer.
+Iter 10 deliberately avoided overlap with these — the new stats
+and badges were chosen to be defensible without touching any
+of them.
+
 ## [Unreleased] — Iteration 9: SEO foundations
 
 First real search-engine optimization pass on the site. Photography
