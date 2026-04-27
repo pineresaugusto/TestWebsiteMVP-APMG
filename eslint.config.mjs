@@ -9,9 +9,12 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    "**/.next/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Ignore sibling git worktrees that share this repo's eslint config.
+    ".claude/worktrees/**",
   ]),
 ]);
 

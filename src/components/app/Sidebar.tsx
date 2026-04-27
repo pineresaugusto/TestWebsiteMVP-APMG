@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { getUnreadCount, reset, useDemoState } from "@/lib/demoState";
 
 type NavKey = "dashboard" | "messages" | "orders" | "progress" | "resources" | "account";
@@ -30,6 +31,32 @@ export default function Sidebar() {
   const state = useDemoState();
   const unread = getUnreadCount(state);
   const active = activeKey(pathname);
+  const [open, setOpen] = useState(false);
+
+  // Close drawer on route change.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while drawer is open.
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  // Close on Escape.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   const firstName = state.user?.firstName ?? "Demo";
   const lastName = state.user?.lastName ?? "Patient";
@@ -44,63 +71,22 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-secondary bg-gradient-to-b from-[#F5F0EA] to-background px-4 pb-5 pt-7">
-      <Link
-        href="/app/dashboard"
-        className="mb-8 flex items-center gap-2.5 px-3 font-display text-[22px] font-semibold tracking-tight text-foreground"
-      >
-        <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
-        Nuvela
-      </Link>
-
-      <nav className="flex flex-1 flex-col gap-0.5">
-        {NAV.map((item) => {
-          const isActive = active === item.key;
-          const showBadge = item.key === "messages" && unread > 0;
-          return (
-            <Link
-              key={item.key}
-              href={item.href}
-              className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-white text-foreground shadow-sm"
-                  : "text-foreground hover:bg-secondary/30"
-              }`}
-            >
-              {isActive && (
-                <span
-                  className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r bg-accent"
-                  aria-hidden
-                />
-              )}
-              <span className="h-5 w-5 flex-shrink-0">{item.icon}</span>
-              {item.label}
-              {showBadge && (
-                <span className="ml-auto inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-accent px-1.5 text-[11px] font-semibold text-white">
-                  {unread}
-                </span>
-              )}
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="mt-2 flex items-center gap-3 border-t border-secondary pt-3">
-        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-[13px] font-semibold text-white">
-          {initials}
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="truncate text-[13.5px] font-semibold text-foreground">
-            {firstName} {lastName}
-          </div>
-          <div className="truncate text-xs text-foreground/55">{planName} Plan</div>
-        </div>
+    <>
+      {/* Mobile top bar — visible only below md */}
+      <div className="fixed inset-x-0 top-0 z-30 flex items-center justify-between border-b border-secondary bg-background/95 px-4 py-3 backdrop-blur md:hidden">
+        <Link
+          href="/app/dashboard"
+          className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight text-foreground"
+        >
+          <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
+          Nuvela
+        </Link>
         <button
           type="button"
-          onClick={onSignOut}
-          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-foreground/45 transition-colors hover:bg-secondary/30 hover:text-foreground"
-          aria-label="Sign out"
-          title="Sign out"
+          onClick={() => setOpen(true)}
+          aria-label="Open navigation"
+          aria-expanded={open}
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground/70 transition-colors hover:bg-secondary/30"
         >
           <svg
             viewBox="0 0 24 24"
@@ -109,16 +95,132 @@ export default function Sidebar() {
             strokeWidth={1.8}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-4 w-4"
+            className="h-5 w-5"
             aria-hidden
           >
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
           </svg>
+          {unread > 0 && (
+            <span className="ml-1 h-2 w-2 rounded-full bg-accent" aria-hidden />
+          )}
         </button>
       </div>
-    </aside>
+
+      {/* Backdrop (mobile only, when open) */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-foreground/40 md:hidden"
+          onClick={() => setOpen(false)}
+          aria-hidden
+        />
+      )}
+
+      {/* Sidebar — fixed on desktop, slide-in drawer on mobile */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex w-[260px] flex-col border-r border-secondary bg-gradient-to-b from-[#F5F0EA] to-background px-4 pb-5 pt-7 transition-transform duration-200 ease-out md:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="mb-8 flex items-center justify-between px-3">
+          <Link
+            href="/app/dashboard"
+            className="flex items-center gap-2.5 font-display text-[22px] font-semibold tracking-tight text-foreground"
+          >
+            <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
+            Nuvela
+          </Link>
+          {/* Close button (mobile only) */}
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Close navigation"
+            className="flex h-8 w-8 items-center justify-center rounded-md text-foreground/55 transition-colors hover:bg-secondary/30 hover:text-foreground md:hidden"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+              aria-hidden
+            >
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="6" y1="18" x2="18" y2="6" />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="flex flex-1 flex-col gap-0.5">
+          {NAV.map((item) => {
+            const isActive = active === item.key;
+            const showBadge = item.key === "messages" && unread > 0;
+            return (
+              <Link
+                key={item.key}
+                href={item.href}
+                className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-white text-foreground shadow-sm"
+                    : "text-foreground hover:bg-secondary/30"
+                }`}
+              >
+                {isActive && (
+                  <span
+                    className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r bg-accent"
+                    aria-hidden
+                  />
+                )}
+                <span className="h-5 w-5 flex-shrink-0">{item.icon}</span>
+                {item.label}
+                {showBadge && (
+                  <span className="ml-auto inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-accent px-1.5 text-[11px] font-semibold text-white">
+                    {unread}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="mt-2 flex items-center gap-3 border-t border-secondary pt-3">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-[13px] font-semibold text-white">
+            {initials}
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[13.5px] font-semibold text-foreground">
+              {firstName} {lastName}
+            </div>
+            <div className="truncate text-xs text-foreground/55">{planName} Plan</div>
+          </div>
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-foreground/45 transition-colors hover:bg-secondary/30 hover:text-foreground"
+            aria-label="Sign out"
+            title="Sign out"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+              aria-hidden
+            >
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
 

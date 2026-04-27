@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FAQItem from "@/components/FAQItem";
 import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 import { breadcrumbJsonLd, SITE_NAME } from "@/lib/seo";
 
 // FAQ has the highest organic-keyword density on the site — every
@@ -363,8 +364,8 @@ export default function FAQ() {
       {/* Sections */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-14">
-          {SECTIONS.map((section) => (
-            <div key={section.title}>
+          {SECTIONS.map((section, sIdx) => (
+            <Reveal key={section.title} delay={sIdx * 60}>
               <h2 className="font-display text-2xl md:text-3xl text-foreground mb-6">
                 {section.title}
               </h2>
@@ -375,11 +376,11 @@ export default function FAQ() {
                   </FAQItem>
                 ))}
               </div>
-            </div>
+            </Reveal>
           ))}
 
           {/* Bottom disclaimer */}
-          <div className="rounded-2xl border border-secondary/40 bg-white p-6">
+          <Reveal as="div" className="rounded-2xl border border-secondary/40 bg-white p-6">
             <p className="text-sm text-foreground/60 leading-relaxed">
               The information on this page is for educational purposes only and is not medical
               advice. Individual results vary. Compounded semaglutide is not an FDA-approved
@@ -392,9 +393,9 @@ export default function FAQ() {
               </Link>{" "}
               for additional information.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="text-center">
+          <Reveal as="div" className="text-center">
             <p className="text-sm text-foreground/60">Still have a question?</p>
             <Link
               href="/get-started"
@@ -402,7 +403,7 @@ export default function FAQ() {
             >
               Start the Assessment
             </Link>
-          </div>
+          </Reveal>
         </div>
       </section>
 

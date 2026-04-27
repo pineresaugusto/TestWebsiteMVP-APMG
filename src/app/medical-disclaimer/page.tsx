@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Medical Disclaimer — Nuvela",
@@ -124,17 +125,17 @@ export default function MedicalDisclaimer() {
 
 function Callout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-accent/40 bg-accent/5 p-6 md:p-8">
+    <Reveal as="div" className="rounded-2xl border border-accent/40 bg-accent/5 p-6 md:p-8">
       <p className="text-sm md:text-base text-foreground/80 leading-relaxed">{children}</p>
-    </div>
+    </Reveal>
   );
 }
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-secondary/40 bg-white p-6 md:p-8">
+    <Reveal as="div" className="rounded-2xl border border-secondary/40 bg-white p-6 md:p-8">
       <h2 className="font-display text-xl md:text-2xl text-foreground">{title}</h2>
       <div className="mt-3 space-y-3 text-sm text-foreground/70 leading-relaxed">{children}</div>
-    </div>
+    </Reveal>
   );
 }

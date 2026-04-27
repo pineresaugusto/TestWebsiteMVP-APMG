@@ -47,9 +47,19 @@ function initials(name: string): string {
 
 export default function MessagesPage() {
   const state = useDemoState();
-  const threads = state.dashboard?.messages ?? [];
+  const threads = useMemo<Thread[]>(
+    () => state.dashboard?.messages ?? [],
+    [state.dashboard?.messages],
+  );
   const [filter, setFilter] = useState<"all" | "unread">("all");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Tracks the user's explicit selection. We derive the *effective* selected
+  // id during render (falling back to the most-recent thread) so we don't
+  // need a setState-in-effect to auto-select.
+  const [userSelectedId, setUserSelectedId] = useState<string | null>(null);
+  // On mobile, only one pane is visible at a time. Default to the inbox list;
+  // tapping a thread switches to "thread"; the back button switches to "list".
+  // Ignored on md+ (both panes always shown).
+  const [mobileTab, setMobileTab] = useState<"list" | "thread">("list");
   const [draft, setDraft] = useState("");
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -69,12 +79,12 @@ export default function MessagesPage() {
     [sortedThreads, filter],
   );
 
-  // Auto-select the most recent thread if nothing is selected.
-  useEffect(() => {
-    if (!selectedId && sortedThreads.length > 0) {
-      setSelectedId(sortedThreads[0].id);
-    }
-  }, [selectedId, sortedThreads]);
+  // Effective selection: user's explicit pick (if it still exists), otherwise
+  // the most-recent thread. Computed during render — no effect needed.
+  const selectedId =
+    (userSelectedId && threads.some((t) => t.id === userSelectedId)
+      ? userSelectedId
+      : sortedThreads[0]?.id) ?? null;
 
   // Mark as read when selected.
   useEffect(() => {
@@ -114,33 +124,44 @@ export default function MessagesPage() {
       </div>
 
       <div
-        className="grid grid-cols-[340px_1fr] overflow-hidden rounded-2xl border border-secondary/40 bg-white shadow-sm"
-        style={{ height: "calc(100vh - 180px)" }}
+        className="flex h-[calc(100vh-160px)] min-h-[480px] overflow-hidden rounded-2xl border border-secondary/40 bg-white shadow-sm md:grid md:h-[calc(100vh-180px)] md:grid-cols-[340px_1fr]"
       >
         {threads.length === 0 ? (
           <InboxEmpty />
         ) : (
           <>
-            <ThreadList
-              threads={filteredThreads}
-              filter={filter}
-              onFilterChange={setFilter}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-            />
-            {selected ? (
-              <ThreadView
-                thread={selected}
-                bodyRef={bodyRef}
-                textareaRef={textareaRef}
-                draft={draft}
-                onDraft={setDraft}
-                onSend={handleSend}
-                userInitial={firstInitial}
+            <div
+              className={`${mobileTab === "list" ? "flex" : "hidden"} w-full md:flex`}
+            >
+              <ThreadList
+                threads={filteredThreads}
+                filter={filter}
+                onFilterChange={setFilter}
+                selectedId={selectedId}
+                onSelect={(id) => {
+                  setUserSelectedId(id);
+                  setMobileTab("thread");
+                }}
               />
-            ) : (
-              <ThreadEmpty />
-            )}
+            </div>
+            <div
+              className={`${mobileTab === "thread" ? "flex" : "hidden"} w-full md:flex`}
+            >
+              {selected ? (
+                <ThreadView
+                  thread={selected}
+                  bodyRef={bodyRef}
+                  textareaRef={textareaRef}
+                  draft={draft}
+                  onDraft={setDraft}
+                  onSend={handleSend}
+                  userInitial={firstInitial}
+                  onBack={() => setMobileTab("list")}
+                />
+              ) : (
+                <ThreadEmpty />
+              )}
+            </div>
           </>
         )}
       </div>
@@ -162,7 +183,7 @@ function ThreadList({
   onSelect: (id: string) => void;
 }) {
   return (
-    <div className="flex flex-col border-r border-secondary/40 bg-background/60">
+    <div className="flex w-full flex-col border-r border-secondary/40 bg-background/60">
       <div className="flex items-center justify-between border-b border-secondary/30 px-5 pb-4 pt-5">
         <h2 className="text-base font-bold text-foreground">Inbox</h2>
       </div>
@@ -258,6 +279,7 @@ function ThreadView({
   onDraft,
   onSend,
   userInitial,
+  onBack,
 }: {
   thread: Thread;
   bodyRef: React.RefObject<HTMLDivElement | null>;
@@ -266,12 +288,32 @@ function ThreadView({
   onDraft: (v: string) => void;
   onSend: () => void;
   userInitial: string;
+  onBack?: () => void;
 }) {
-  const senderShort = thread.sender.split(",")[0];
-
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 border-b border-secondary/30 px-6 py-4">
+    <div className="flex h-full w-full flex-col">
+      <div className="flex items-center gap-3 border-b border-secondary/30 px-4 py-4 md:px-6">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label="Back to threads"
+            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-foreground/55 transition-colors hover:bg-secondary/30 hover:text-foreground md:hidden"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+              aria-hidden
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+        )}
         <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-[13px] font-semibold text-white">
           {initials(thread.sender)}
         </span>
@@ -281,7 +323,7 @@ function ThreadView({
           </div>
           <div className="text-[13px] text-foreground/45">Care team</div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 text-xs text-primary-dark/80">
+        <div className="ml-auto hidden items-center gap-1.5 text-xs text-primary-dark/80 lg:flex">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -301,7 +343,7 @@ function ThreadView({
 
       <div
         ref={bodyRef}
-        className="flex flex-1 flex-col gap-4 overflow-y-auto px-6 py-5"
+        className="flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-5 md:px-6"
       >
         {thread.messages.map((m, i) => {
           const prev = thread.messages[i - 1];
@@ -327,7 +369,7 @@ function ThreadView({
         })}
       </div>
 
-      <div className="flex items-end gap-3 border-t border-secondary/30 px-6 py-4">
+      <div className="flex items-end gap-3 border-t border-secondary/30 px-4 py-4 md:px-6">
         <textarea
           ref={textareaRef}
           rows={1}

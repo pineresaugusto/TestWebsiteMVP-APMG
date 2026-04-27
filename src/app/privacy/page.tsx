@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
+import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Nuvela",
@@ -221,11 +222,11 @@ function Prose({ children }: { children: React.ReactNode }) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div>
+    <Reveal>
       <h2 className="font-display text-xl md:text-2xl text-foreground">{title}</h2>
       <div className="mt-3 space-y-3 text-sm leading-relaxed [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:mt-3 [&_strong]:text-foreground">
         {children}
       </div>
-    </div>
+    </Reveal>
   );
 }

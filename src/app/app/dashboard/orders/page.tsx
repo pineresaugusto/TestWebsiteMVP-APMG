@@ -32,7 +32,10 @@ type Filter = "all" | "shipped" | "delivered";
 
 export default function OrdersPage() {
   const state = useDemoState();
-  const orders = state.dashboard?.orders ?? [];
+  const orders = useMemo<Order[]>(
+    () => state.dashboard?.orders ?? [],
+    [state.dashboard?.orders],
+  );
   const [filter, setFilter] = useState<Filter>("all");
 
   const filtered = useMemo(

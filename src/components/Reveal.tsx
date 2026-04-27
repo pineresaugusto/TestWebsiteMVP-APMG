@@ -33,8 +33,11 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    // If IntersectionObserver is unavailable, show immediately.
+    // If IntersectionObserver is unavailable (very old browsers), show
+    // immediately so content isn't hidden forever. This is a one-shot
+    // mount-time setState, not a cascading update.
     if (typeof IntersectionObserver === "undefined") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(true);
       return;
     }
