@@ -90,7 +90,7 @@ export default function OrdersPage() {
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-secondary/40 bg-white shadow-sm">
-            <div className="grid grid-cols-[1fr_1.2fr_1fr_1fr_1fr_0.8fr] border-b border-secondary/30 px-6 py-3.5 text-[12px] font-semibold uppercase tracking-wider text-foreground/40">
+            <div className="hidden grid-cols-[1fr_1.2fr_1fr_1fr_1fr_0.8fr] border-b border-secondary/30 px-6 py-3.5 text-[12px] font-semibold uppercase tracking-wider text-foreground/40 md:grid">
               <span>Order</span>
               <span>Medication</span>
               <span>Date</span>
@@ -101,22 +101,35 @@ export default function OrdersPage() {
             {filtered.map((o) => (
               <div
                 key={o.id}
-                className="grid grid-cols-[1fr_1.2fr_1fr_1fr_1fr_0.8fr] items-center border-b border-secondary/15 px-6 py-4 text-sm transition-colors last:border-b-0 hover:bg-background/50"
+                className="flex flex-col gap-2 border-b border-secondary/15 px-4 py-4 text-sm transition-colors last:border-b-0 hover:bg-background/50 md:grid md:grid-cols-[1fr_1.2fr_1fr_1fr_1fr_0.8fr] md:items-center md:gap-0 md:px-6"
               >
-                <span className="font-semibold tabular-nums">{o.id}</span>
+                {/* Mobile: top row with order id + status */}
+                <div className="flex items-center justify-between md:contents">
+                  <span className="font-semibold tabular-nums">{o.id}</span>
+                  <span className="md:hidden">
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1 text-[12.5px] font-semibold ${STATUS_STYLES[o.status]}`}
+                    >
+                      {STATUS_LABEL[o.status]}
+                    </span>
+                  </span>
+                </div>
                 <div className="flex flex-col">
                   <span>{o.medication}</span>
                   <span className="text-[12.5px] text-foreground/45">{o.dose}</span>
                 </div>
-                <span>{formatShortDate(o.orderDate)}</span>
-                <span>
+                <span className="text-[13px] text-foreground/55 md:text-sm md:text-foreground">
+                  <span className="md:hidden">Ordered: </span>
+                  {formatShortDate(o.orderDate)}
+                </span>
+                <span className="hidden md:inline">
                   <span
                     className={`inline-flex items-center rounded-full px-3 py-1 text-[12.5px] font-semibold ${STATUS_STYLES[o.status]}`}
                   >
                     {STATUS_LABEL[o.status]}
                   </span>
                 </span>
-                <span>
+                <span className="text-[13px] text-foreground/55 md:text-sm md:text-foreground">
                   {o.status === "delivered"
                     ? formatShortDate(o.estimatedDelivery)
                     : `Est. ${formatShortDate(o.estimatedDelivery)}`}
