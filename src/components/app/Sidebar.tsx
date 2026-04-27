@@ -33,10 +33,15 @@ export default function Sidebar() {
   const active = activeKey(pathname);
   const [open, setOpen] = useState(false);
 
-  // Close drawer on route change.
-  useEffect(() => {
+  // Close drawer when the route changes. Render-phase comparison
+  // instead of an effect: this is the React docs pattern for
+  // "adjust state on prop/derived change" and avoids the
+  // react-hooks/set-state-in-effect lint rule.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   // Lock body scroll while drawer is open.
   useEffect(() => {
