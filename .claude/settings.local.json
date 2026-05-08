@@ -74,7 +74,27 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(git commit *)",
-      "Bash(git ls-files *)"
+      "Bash(git ls-files *)",
+      "Bash(ls -d node_modules/puppeteer* node_modules/playwright*)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -s http://localhost:3000/how-it-works)",
+      "Bash(curl -s http://localhost:3000/app/checkout)",
+      "Bash(grep -oE 'Per month[^<]*|Billed every \\\\d+[^<]*|Pay \\\\$[0-9]+[^<]*')",
+      "Bash(curl -s http://localhost:3000/faq)",
+      "Bash(grep -c 'walks you through the technique' .next/server/chunks/ssr/*.js)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000__TRACKED_VAR__)",
+      "Bash(curl -s http://localhost:3000/pricing)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(grep -oE 'Care that begins with a[\\\\\\\\\\\\\"]*\\\\s*[\\\\\\\\\\\\\"]*[^<]{0,100}')",
+      "Bash(pkill -f \"next start\")",
+      "Bash(pkill -f \"node.*next\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(export PATH=\"/Users/mauriciogerlein/.local/node/node-v22.12.0-darwin-arm64/bin:$PATH\")",
+      "Bash(npm ls:*)",
+      "Bash(export PUPPETEER_SKIP_DOWNLOAD=true)",
+      "Bash(node /tmp/sweep.mjs)",
+      "Bash(mv /tmp/sweep.mjs \"/Users/mauriciogerlein/Documents/GitHub/TestWebsiteMVP-APMG/.sweep.mjs\")",
+      "Bash(node .sweep.mjs)"
     ]
   }
 }

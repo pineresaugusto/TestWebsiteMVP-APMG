@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "nuvela-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/Users/mauriciogerlein/.local/node/node-v22.12.0-darwin-arm64/bin/node",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
       "port": 3000
     }
   ]

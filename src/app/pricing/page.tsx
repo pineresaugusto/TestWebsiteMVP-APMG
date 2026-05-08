@@ -2,30 +2,32 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
+import PricingCard from "@/components/PricingCard";
 import Reveal from "@/components/Reveal";
 import { PLAN_LIST } from "@/lib/plans";
 import { absoluteUrl, breadcrumbJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 // Pricing is a high-intent page — searchers know the category and
-// want to compare cost. Title and description lead with price + the
-// "all-inclusive" differentiator. The plan-bound Service offers below
-// give Google enough to potentially surface a price snippet.
+// want to compare cost. Title and description lead with starting price
+// + the "all-inclusive" differentiator. The plan-bound Service offers
+// below give Google enough to potentially surface a price snippet.
 export const metadata: Metadata = {
-  title: "GLP-1 Weight Loss Pricing — Plans from $199/Month",
+  title: "GLP-1 Weight Loss Pricing — Plans from $159/Month",
   description:
-    "Simple, all-inclusive GLP-1 weight loss pricing. Three monthly plans from $199 — covers medication, provider visits, supplies, and shipping. No insurance, cancel anytime.",
+    "Simple, all-inclusive GLP-1 weight loss pricing. Three monthly plans from $159 — covers medication, provider visits, supplies, and shipping. No insurance, cancel anytime.",
   alternates: { canonical: "/pricing" },
   openGraph: {
     url: "/pricing",
-    title: `GLP-1 Weight Loss Pricing — Plans from $199/mo | ${SITE_NAME}`,
+    title: `GLP-1 Weight Loss Pricing — Plans from $159/mo | ${SITE_NAME}`,
     description:
       "Three transparent monthly plans, all-inclusive of medication, consultations, supplies, and shipping. No insurance required.",
   },
 };
 
 // Per-tier Service + Offer entries. Mirrors PLAN_LIST so prices in
-// JSON-LD never drift from prices on screen. AggregateOffer is also
-// included for the cards-as-a-whole.
+// JSON-LD never drift from prices on screen. The monthly price is the
+// canonical price; bundle cadences are a billing convenience, not a
+// distinct product, so we don't enumerate them here.
 const pricingJsonLd = [
   breadcrumbJsonLd([
     { name: "Home", path: "/" },
@@ -76,74 +78,30 @@ export default function Pricing() {
       {/* Pricing Tiers */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Friction-reducer above the cards. Spelled out plainly so a
+              hesitant visitor doesn't have to commit to a tier just to
+              keep moving. */}
+          <p className="mx-auto mb-10 max-w-2xl text-center text-sm text-foreground/55">
+            Not sure which plan to choose? Just pick the most affordable one —
+            you can always change plans later.
+          </p>
+
           <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
             {PLAN_LIST.map((tier, i) => (
               <Reveal key={tier.id} delay={i * 100}>
-                <div
-                  className={`relative h-full rounded-2xl border p-8 flex flex-col transition-all hover:-translate-y-[2px] ${
-                    tier.popular
-                      ? "border-accent bg-white shadow-xl shadow-accent/15 ring-1 ring-accent"
-                      : "border-secondary/40 bg-white hover:shadow-lg hover:border-primary/30"
-                  }`}
-                >
-                  {tier.popular && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-white shadow-md shadow-accent/30">
-                      Most popular
-                    </div>
-                  )}
-                  <div>
-                    <h3 className="font-display text-2xl text-foreground">{tier.name}</h3>
-                    <p className="mt-1 text-sm text-foreground/60">{tier.tagline}</p>
-                    <div className="mt-6 flex items-baseline gap-1">
-                      <span className="font-display text-5xl text-foreground">${tier.price}</span>
-                      <span className="text-foreground/50">/mo</span>
-                    </div>
-                    <p className="mt-1 text-xs text-foreground/40">{tier.dose}</p>
-                  </div>
-
-                  <ul className="mt-8 space-y-3 flex-1">
-                    {tier.features.map((feature) => (
-                      <li
-                        key={feature}
-                        className="flex items-start gap-2.5 text-sm text-foreground/70"
-                      >
-                        <svg
-                          className="w-5 h-5 text-primary flex-shrink-0"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          aria-hidden
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5"
-                          />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Link
-                    href="/get-started"
-                    className={`mt-8 block rounded-full py-3 text-center text-sm font-semibold transition-colors ${
-                      tier.popular
-                        ? "bg-accent text-white hover:bg-accent-dark shadow-md shadow-accent/25"
-                        : "bg-primary/10 text-primary-dark hover:bg-primary/20"
-                    }`}
-                  >
-                    Get Started
-                  </Link>
-                </div>
+                <PricingCard plan={tier} />
               </Reveal>
             ))}
           </div>
 
-          {/* What's included */}
+          {/* All-inclusive callout — leans on the "no hidden fees" promise
+              the hero just made. Same pattern as before but tightened. */}
           <div className="mt-20 max-w-3xl mx-auto text-center">
             <h3 className="font-display text-2xl text-foreground">Every plan includes</h3>
+            <p className="mt-2 text-sm text-foreground/55">
+              Medication, visits, and supplies are identical across tiers.
+              The differences are in the software and AI guidance you get between visits.
+            </p>
             <div className="mt-6 grid sm:grid-cols-2 md:grid-cols-4 gap-4">
               {allIncluded.map((item) => (
                 <div key={item} className="flex items-center gap-2 justify-center text-sm text-foreground/60">
@@ -154,6 +112,10 @@ export default function Pricing() {
                 </div>
               ))}
             </div>
+            <p className="mt-6 text-xs text-foreground/45">
+              All-inclusive: prescription medication, provider visits, supplies,
+              and shipping. No copays, no insurance, no hidden fees.
+            </p>
           </div>
 
           {/* Fine print */}

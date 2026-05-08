@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import type { PlanTier } from "./plans";
+import type { BundleCadence, PlanTier } from "./plans";
 
 export type ThreadMessage = {
   from: "provider" | "user";
@@ -38,7 +38,7 @@ export type DemoState = {
     recommendedPlan: PlanTier | null;
     contraindicationReason?: string;
   };
-  plan: { tier: PlanTier } | null;
+  plan: { tier: PlanTier; cadence?: BundleCadence } | null;
   payment: {
     completed: boolean;
     cardLast4: string;

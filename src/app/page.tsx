@@ -13,13 +13,13 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "GLP-1 Weight Loss Treatment Online — Licensed Providers",
   description:
-    "Start your GLP-1 weight loss journey with Nuvela. Online consultation with licensed providers, clinically-studied treatment, and home delivery — from $199/month.",
+    "Start your GLP-1 weight loss journey with Nuvela. Online consultation with licensed providers, clinically-studied treatment, and home delivery — from $159/month.",
   alternates: { canonical: "/" },
   openGraph: {
     url: SITE_URL,
     title: "GLP-1 Weight Loss Treatment Online — Licensed Providers | Nuvela",
     description:
-      "Online consultation with licensed providers, clinically-studied GLP-1 treatment, home delivery. From $199/month — no insurance required.",
+      "Online consultation with licensed providers, clinically-studied GLP-1 treatment, home delivery. From $159/month — no insurance required.",
   },
 };
 
@@ -64,8 +64,8 @@ const homeJsonLd = [
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "USD",
-      lowPrice: "199",
-      highPrice: "399",
+      lowPrice: "159",
+      highPrice: "199",
       offerCount: 3,
       url: `${SITE_URL}/pricing`,
     },
@@ -76,10 +76,12 @@ export default function Home() {
   return (
     <>
       {/* ----------------------------------------------------------------- */}
-      {/* Hero — photography-forward                                         */}
-      {/* Left: kicker rule, serif headline, lede, CTAs, trust strip.        */}
-      {/* Right: real lifestyle portrait — first impression is a person,     */}
-      {/* not an abstract card. Sage glow + grain frame the warmth.          */}
+      {/* Hero — clinician-led framing, editorial card-stack on the right.   */}
+      {/* H1 leads with the clinician (per Iter 10 user direction: emphasize  */}
+      {/* a well-prepared professional rather than the "easy/frictionless"   */}
+      {/* angle the previous H1 hammered). Right column restores the         */}
+      {/* "Three simple steps" process card that lived here before the       */}
+      {/* bedroom-photo experiment — the photo now lives on /how-it-works.   */}
       {/* ----------------------------------------------------------------- */}
       <section className="relative overflow-hidden bg-glow-sage">
         <div
@@ -88,7 +90,7 @@ export default function Home() {
         />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-20 md:pt-24 md:pb-28">
           <div className="grid md:grid-cols-12 gap-10 md:gap-14 items-center">
-            <div className="md:col-span-6 lg:col-span-6">
+            <div className="md:col-span-7 lg:col-span-7">
               <Reveal>
                 <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
                   GLP-1 treatment from home
@@ -96,14 +98,15 @@ export default function Home() {
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
-                  A provider, a plan, and{" "}
-                  <em className="italic font-normal text-primary-dark">nothing in the way</em>.
+                  Care that begins with a{" "}
+                  <em className="italic font-normal text-primary-dark">clinician</em>.
                 </h1>
               </Reveal>
               <Reveal delay={160}>
-                <p className="mt-7 text-lg text-foreground/70 leading-relaxed max-w-lg">
-                  A short online assessment, a conversation with a licensed provider, and a plan
-                  shaped around you — delivered to your door, with ongoing medical support.
+                <p className="mt-7 text-lg text-foreground/70 leading-relaxed max-w-xl">
+                  Board-certified providers — licensed in your state, trained in obesity medicine —
+                  review your assessment, talk with you on a virtual visit, and decide together
+                  whether GLP-1 treatment is the right next step.
                 </p>
               </Reveal>
               <Reveal delay={240}>
@@ -145,41 +148,62 @@ export default function Home() {
               </Reveal>
             </div>
 
-            {/* Hero portrait — real photography leads the experience */}
-            <Reveal delay={200} className="md:col-span-6 lg:col-span-6">
+            {/* Process card — three-step preview. Replaces the bedroom photo
+                (which moved to /how-it-works). Numbered list reads as a
+                clean structural complement to the serif H1. */}
+            <Reveal delay={200} className="md:col-span-5 lg:col-span-5">
               <div className="relative mx-auto max-w-md md:max-w-none">
                 {/* Decorative dotted tile, back layer */}
                 <div
                   aria-hidden
                   className="absolute -top-5 -right-5 w-32 h-32 rounded-3xl bg-dots opacity-70 hidden md:block"
                 />
-                {/* Portrait frame — native ~4:5 aspect, no crop */}
-                <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] bg-secondary-light shadow-2xl shadow-primary/15 ring-1 ring-white/40">
-                  <Image
-                    src="/images/home-bedroom.jpg"
-                    alt="Person relaxing in bed, smiling at their phone with morning light coming through the window"
-                    fill
-                    sizes="(max-width: 768px) 90vw, 520px"
-                    className="object-cover object-center"
-                    priority
-                  />
-                  {/* Subtle bottom gradient for text legibility on the floating pill */}
-                  <div
-                    aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 via-black/0 to-transparent pointer-events-none"
-                  />
+                <div className="relative rounded-[2rem] bg-white p-8 md:p-10 shadow-2xl shadow-primary/15 ring-1 ring-white/40">
+                  <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                    Three simple steps
+                  </p>
+                  <h2 className="mt-4 font-display text-[1.75rem] leading-[1.15] text-foreground">
+                    From first question to your doorstep.
+                  </h2>
+                  <ol className="mt-7 space-y-5">
+                    {heroSteps.map((step, i) => (
+                      <li key={step.title} className="flex gap-4">
+                        <span
+                          aria-hidden
+                          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/12 font-display text-base text-primary-dark tabular-nums"
+                        >
+                          {i + 1}
+                        </span>
+                        <div>
+                          <div className="font-display text-[15.5px] text-foreground leading-tight">
+                            {step.title}
+                          </div>
+                          <p className="mt-1 text-[13.5px] text-foreground/60 leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="mt-7 flex items-center gap-2 rounded-xl bg-secondary-light/60 px-4 py-3">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.8}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 flex-shrink-0 text-primary-dark"
+                      aria-hidden
+                    >
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" />
+                    </svg>
+                    <span className="text-[12.5px] text-foreground/70">
+                      Most people finish the assessment in about 5 minutes.
+                    </span>
+                  </div>
                 </div>
-                {/* Floating "No insurance" pill */}
-                <div
-                  aria-hidden
-                  className="absolute -bottom-4 -left-4 rounded-full bg-white border border-primary/25 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-dark shadow-lg shadow-primary/10 hidden sm:block"
-                >
-                  No insurance needed
-                </div>
-                {/* Models-shown microcopy */}
-                <p className="mt-5 text-center text-[10.5px] uppercase tracking-[0.18em] text-foreground/35">
-                  Photography is illustrative — models shown.
-                </p>
               </div>
             </Reveal>
           </div>
@@ -265,7 +289,7 @@ export default function Home() {
             <Reveal delay={220}>
               <p className="mt-4 text-lg text-foreground/70 leading-relaxed">
                 In the STEP 1 clinical trial (Wilding et al., NEJM 2021), adults with obesity who
-                took semaglutide 2.4&nbsp;mg weekly lost an average of{" "}
+                took semaglutide 2.4&nbsp;mg lost an average of{" "}
                 <strong className="text-foreground">~14.9% of body weight</strong> over 68 weeks,
                 compared with ~2.4% on placebo.
               </p>
@@ -581,6 +605,27 @@ function ArrowIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+// Compact 3-step preview rendered inside the hero process card. The
+// full 4-step grid lower on the page (`steps`) keeps "Home Delivery
+// & Support" — this shorter version folds delivery + support into a
+// single closing step so the card stays scannable.
+const heroSteps = [
+  {
+    title: "Online assessment",
+    description: "A short health questionnaire. About five minutes, from anywhere.",
+  },
+  {
+    title: "Visit with a clinician",
+    description:
+      "A licensed provider reviews your answers and meets with you on a virtual visit.",
+  },
+  {
+    title: "Treatment, delivered",
+    description:
+      "If it's a good fit, your plan ships to your door — with provider support along the way.",
+  },
+];
+
 const steps = [
   {
     title: "Online Assessment",
@@ -627,7 +672,7 @@ const stats = [
   {
     value: "~14.9%",
     label: "Average weight reduction",
-    note: "Adults with obesity on semaglutide 2.4 mg weekly over 68 weeks (STEP 1).",
+    note: "Adults with obesity on semaglutide 2.4 mg over 68 weeks (STEP 1).",
   },
   {
     value: "~5 min",

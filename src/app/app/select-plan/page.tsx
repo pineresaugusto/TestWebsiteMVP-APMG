@@ -3,24 +3,50 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { PLAN_LIST, PLANS, type PlanTier } from "@/lib/plans";
-import { set, useDemoState } from "@/lib/demoState";
+import {
+  BUNDLE_CADENCES,
+  cadenceShortLabel,
+  parseCadence,
+  PLAN_LIST,
+  PLANS,
+  priceForCadence,
+  type BundleCadence,
+  type PlanTier,
+} from "@/lib/plans";
+import { set, useDemoState, useInitialQueryParam } from "@/lib/demoState";
+
+function isPlanTier(value: string | null | undefined): value is PlanTier {
+  return value === "start" || value === "accelerate" || value === "transform";
+}
 
 export default function SelectPlanPage() {
   const router = useRouter();
   const demo = useDemoState();
   const fromQuiz = demo.quiz.completed && demo.quiz.eligible;
-  const storedSelection = demo.plan?.tier ?? demo.quiz.recommendedPlan ?? null;
-  const [override, setOverride] = useState<PlanTier | null>(null);
-  const selected = override ?? storedSelection;
+
+  // Initial selection: query param (from /pricing PricingCard deep-link) →
+  // demoState (returning visitor) → quiz recommendation. Query params win
+  // because they're the most recent expression of intent.
+  const planParam = useInitialQueryParam("plan");
+  const cadenceParam = useInitialQueryParam("cadence");
+  const initialTier: PlanTier | null = isPlanTier(planParam)
+    ? planParam
+    : demo.plan?.tier ?? demo.quiz.recommendedPlan ?? null;
+  const initialCadence: BundleCadence = cadenceParam
+    ? parseCadence(cadenceParam)
+    : demo.plan?.cadence ?? 1;
+
+  const [selected, setSelected] = useState<PlanTier | null>(initialTier);
+  const [cadence, setCadence] = useState<BundleCadence>(initialCadence);
 
   const onContinue = () => {
     if (!selected) return;
-    set({ plan: { tier: selected } });
+    set({ plan: { tier: selected, cadence } });
     router.push("/app/checkout");
   };
 
   const selectedPlan = selected ? PLANS[selected] : null;
+  const selectedQuote = selectedPlan ? priceForCadence(selectedPlan, cadence) : null;
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-12 md:px-8 md:py-16">
@@ -35,7 +61,7 @@ export default function SelectPlanPage() {
             You can change this anytime.
           </>
         ) : (
-          <>Not sure? Take the assessment anytime for a personalized recommendation.</>
+          <>Not sure? Just pick the most affordable one — you can change later.</>
         )}
       </p>
 
@@ -43,11 +69,12 @@ export default function SelectPlanPage() {
         {PLAN_LIST.map((plan) => {
           const isSelected = selected === plan.id;
           const showRecommended = plan.popular && fromQuiz;
+          const { perMonth } = priceForCadence(plan, cadence);
           return (
             <button
               key={plan.id}
               type="button"
-              onClick={() => setOverride(plan.id)}
+              onClick={() => setSelected(plan.id)}
               className={`relative flex flex-col rounded-2xl border-2 bg-white p-6 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md ${
                 isSelected
                   ? "border-primary ring-4 ring-primary/15"
@@ -72,13 +99,17 @@ export default function SelectPlanPage() {
               <div className="text-xl font-bold text-foreground">{plan.name}</div>
               <div className="mt-1 text-sm text-foreground/50">{plan.tagline}</div>
               <div className="mt-4 font-display text-4xl font-semibold tabular-nums text-foreground">
-                ${plan.price}
+                ${perMonth}
                 <span className="ml-1 text-base font-medium text-foreground/45">
                   /mo
                 </span>
               </div>
-              <div className="mt-1 text-xs text-foreground/45">{plan.dose}</div>
-              <ul className="mt-5 flex-1 space-y-2 text-sm text-foreground">
+              {plan.builtsOn && (
+                <div className="mt-3 text-xs font-medium text-foreground/65">
+                  Everything in {PLANS[plan.builtsOn].name}, plus:
+                </div>
+              )}
+              <ul className="mt-3 flex-1 space-y-2 text-sm text-foreground">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2.5">
                     <svg
@@ -102,14 +133,55 @@ export default function SelectPlanPage() {
         })}
       </div>
 
-      <div className="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl border border-secondary/60 bg-white p-5 shadow-sm md:flex-row md:px-7 md:py-5">
+      {/* Bundle-and-save row — single shared selector below the cards so the
+          three plan prices update in lockstep. Subtle by design (per Iter 10
+          direction): a quiet pill group, not a hero badge. */}
+      <div className="mt-8 flex flex-col items-center gap-2 rounded-2xl border border-secondary/40 bg-secondary-light/40 px-6 py-5 text-center md:flex-row md:justify-between md:text-left">
+        <div className="text-sm">
+          <div className="font-semibold text-foreground">Bundle &amp; save</div>
+          <div className="text-foreground/55">
+            Pay for several months upfront for a lower monthly price.
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-label="Choose billing cadence"
+          className="inline-flex flex-wrap items-center gap-1 rounded-full bg-white p-1 shadow-sm"
+        >
+          {BUNDLE_CADENCES.map((c) => {
+            const active = c === cadence;
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setCadence(c)}
+                aria-pressed={active}
+                className={`rounded-full px-3 py-1 text-xs font-medium tabular-nums transition-colors ${
+                  active
+                    ? "bg-primary text-white shadow-sm"
+                    : "text-foreground/60 hover:text-foreground"
+                }`}
+              >
+                {cadenceShortLabel(c)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-2xl border border-secondary/60 bg-white p-5 shadow-sm md:flex-row md:px-7 md:py-5">
         <div className="text-sm font-semibold text-foreground">
-          {selectedPlan ? (
+          {selectedPlan && selectedQuote ? (
             <>
               Selected:{" "}
               <span className="text-primary-dark">
-                {selectedPlan.name} — ${selectedPlan.price}/mo
+                {selectedPlan.name} — ${selectedQuote.perMonth}/mo
               </span>
+              {cadence > 1 && (
+                <span className="ml-1 font-medium text-foreground/55">
+                  · billed ${selectedQuote.total.toLocaleString()} every {cadence} months
+                </span>
+              )}
             </>
           ) : (
             <span className="font-medium text-foreground/45">

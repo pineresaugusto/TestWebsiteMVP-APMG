@@ -6,13 +6,19 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PLANS } from "@/lib/plans";
+import { PLANS, priceForCadence, type BundleCadence } from "@/lib/plans";
 import { set, useDemoState } from "@/lib/demoState";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const demo = useDemoState();
   const plan = PLANS[demo.plan?.tier ?? "accelerate"];
+  const cadence: BundleCadence = demo.plan?.cadence ?? 1;
+  const quote = priceForCadence(plan, cadence);
+  // What the card is actually charged today: monthly cadence = one
+  // month, bundle cadences = the upfront total (3/6/12 months at the
+  // discounted per-month rate). Source of truth lives in plans.ts.
+  const dueToday = quote.total;
   const prefilledName = demo.user
     ? `${demo.user.firstName} ${demo.user.lastName}`.trim()
     : "";
@@ -175,7 +181,10 @@ export default function CheckoutPage() {
                 Processing payment...
               </>
             ) : (
-              <>Pay ${plan.price}/mo</>
+              <>
+                Pay ${dueToday.toLocaleString()}
+                {cadence === 1 ? "/mo" : ""}
+              </>
             )}
           </button>
           <p className="flex items-center justify-center gap-1.5 text-xs text-foreground/40">
@@ -215,11 +224,17 @@ export default function CheckoutPage() {
             </div>
           </div>
           <dl className="mt-4 space-y-1.5 text-sm">
-            <Line label="Today's charge" value={`$${plan.price}`} />
-            <Line label="Billed monthly" value="Cancel anytime" />
+            <Line
+              label={cadence === 1 ? "Monthly rate" : `Per month (${cadence}-month bundle)`}
+              value={`$${quote.perMonth}`}
+            />
+            <Line
+              label={cadence === 1 ? "Billed monthly" : `Billed every ${cadence} months`}
+              value="Cancel anytime"
+            />
             <div className="mt-2 flex justify-between border-t border-secondary/30 pt-4 text-base">
               <dt className="text-foreground/55">Due today</dt>
-              <dd className="font-bold text-foreground">${plan.price}</dd>
+              <dd className="font-bold text-foreground">${dueToday.toLocaleString()}</dd>
             </div>
           </dl>
           <ul className="mt-5 space-y-2 border-t border-secondary/20 pt-4 text-sm">
@@ -242,8 +257,9 @@ export default function CheckoutPage() {
             ))}
           </ul>
           <p className="mt-5 text-xs leading-relaxed text-foreground/40">
-            By confirming, you authorize Nuvela to charge your card monthly until
-            cancelled.
+            {cadence === 1
+              ? "By confirming, you authorize Nuvela to charge your card monthly until cancelled."
+              : `By confirming, you authorize Nuvela to charge your card $${dueToday.toLocaleString()} today and every ${cadence} months thereafter until cancelled.`}
           </p>
         </div>
       </aside>

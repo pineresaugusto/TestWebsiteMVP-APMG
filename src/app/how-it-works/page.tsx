@@ -69,6 +69,64 @@ export default function HowItWorks() {
         </div>
       </section>
 
+      {/* ----------------------------------------------------------------- */}
+      {/* From-home editorial — bedroom portrait moved here from the home    */}
+      {/* hero. Two-column layout: portrait on the left, copy on the right.  */}
+      {/* Sits between the journey steps and the medication explainer so it  */}
+      {/* breathes between two text-heavy sections. Native 4:5 aspect, no    */}
+      {/* crop. No outcome claims; copy frames the from-home experience.    */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="relative overflow-hidden bg-secondary-light/45 py-20 md:py-28">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-grain opacity-[0.18] pointer-events-none mix-blend-soft-light"
+        />
+        <div
+          aria-hidden
+          className="absolute -top-32 -left-20 w-96 h-96 rounded-full bg-primary/15 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+            <Reveal className="md:col-span-5">
+              <div className="relative mx-auto max-w-sm md:max-w-none">
+                <div
+                  aria-hidden
+                  className="absolute -bottom-4 -right-4 w-28 h-28 rounded-3xl bg-accent/15 hidden md:block"
+                />
+                <div className="relative overflow-hidden rounded-[2rem] aspect-[4/5] bg-secondary-light shadow-xl shadow-primary/10 ring-1 ring-white/50">
+                  <Image
+                    src="/images/home-bedroom.jpg"
+                    alt="Person relaxing at home, smiling at their phone with morning light coming through a window"
+                    fill
+                    sizes="(max-width: 768px) 90vw, 420px"
+                    className="object-cover object-center"
+                  />
+                </div>
+                <p className="mt-4 text-center text-[10.5px] uppercase tracking-[0.18em] text-foreground/35 md:hidden">
+                  Photography is illustrative — models shown.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={80} className="md:col-span-7">
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                Care, where you are
+              </p>
+              <h2 className="mt-5 font-display text-[2rem] md:text-[2.75rem] leading-[1.05] text-foreground">
+                Every step of this — at home, on your time.
+              </h2>
+              <p className="mt-6 text-foreground/70 leading-relaxed text-lg">
+                The assessment, the visit with your clinician, the follow-ups, even the package on
+                the doorstep. Nothing requires a waiting room. The whole arc of care fits into the
+                spaces of an ordinary day.
+              </p>
+              <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-foreground/35 hidden md:block">
+                Photography is illustrative — models shown.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* About the Medication */}
       <section className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -77,10 +135,12 @@ export default function HowItWorks() {
               Understanding GLP-1 medications
             </h2>
 
-            {/* Product visual — full uncropped frame shows GLP-1 medications in
-                multiple forms (injection pens and a tablet bottle). Nuvela's
-                providers prescribe weekly injectable compounded semaglutide;
-                the wider category context is included for educational clarity. */}
+            {/* Product visual — full uncropped frame shows GLP-1 medications
+                in multiple forms (injection pens and a tablet bottle). The
+                disclaimer below is intentionally form- and frequency-agnostic
+                (Iter 10): the prescribing cadence and exact administration
+                are clinical decisions that haven't been finalized at the
+                business level, so the site avoids any specific claim. */}
             <Reveal delay={80}>
               <div className="mt-10 relative overflow-hidden rounded-2xl aspect-[3/2] bg-secondary-light shadow-lg shadow-primary/5">
                 <Image
@@ -92,7 +152,7 @@ export default function HowItWorks() {
                 />
               </div>
               <p className="mt-3 text-center text-[11px] uppercase tracking-[0.18em] text-foreground/40">
-                For illustration only. Nuvela providers prescribe weekly injectable compounded semaglutide.
+                For illustration only. Nuvela providers prescribe compounded semaglutide.
               </p>
             </Reveal>
 
@@ -119,7 +179,7 @@ export default function HowItWorks() {
             <h3 className="mt-10 font-display text-2xl text-foreground">Clinical Results</h3>
             <p className="mt-3 text-foreground/70 leading-relaxed">
               In the STEP clinical trial program (Wilding et al., NEJM 2021), adults with obesity
-              who took semaglutide 2.4&nbsp;mg weekly lost an average of approximately 14.9% of
+              who took semaglutide 2.4&nbsp;mg lost an average of approximately 14.9% of
               their body weight over 68 weeks, compared with ~2.4% on placebo. Individual results
               vary and depend on many factors, including starting weight, adherence, and lifestyle.
             </p>
@@ -333,7 +393,7 @@ const faqs = [
   {
     question: "How is the medication administered?",
     answer:
-      "Semaglutide is administered as a once-weekly subcutaneous injection (just under the skin). The injection is simple to self-administer using a small needle, similar to what's used for insulin. Your care team will provide detailed instructions and support.",
+      "Your provider explains exactly how to administer your treatment during your consultation, and your care team walks you through the technique step-by-step with detailed instructions. Any required supplies are included with your plan.",
   },
   {
     question: "Is the telehealth consultation a real medical visit?",

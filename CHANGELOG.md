@@ -6,6 +6,200 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 11: pricing model + hero copy rework
+
+Three intertwined changes confirmed with the user before
+implementation: a new pricing model that no longer ties the plan
+tier to medication or dose; a hero-copy reorientation that leads
+with the clinician rather than the frictionless-experience angle
+the previous H1 had drifted toward; and the relocation of the
+bedroom-photo hero so the home page reopens with the structural
+process card it had before the photo experiment. The pricing
+model also lays the groundwork for billing-cadence persistence
+through the demo funnel, so a visitor who picks "12 months" on
+`/pricing` arrives at `/app/select-plan` with the same number
+already chosen.
+
+### Changed
+- **Pricing model — `src/lib/plans.ts` (rewritten).**
+  Tiers re-priced to **Start $159 / Accelerate $179 /
+  Transform $199**, all monthly. The `dose` field is gone — per
+  user direction, doses must not vary by plan because that would
+  force a different relationship with the prescribing provider
+  per tier. All three tiers ship the same medication, the same
+  visits, the same supplies, the same shipping; the only
+  differences are software/AI features (24/7 chat companion,
+  AI-built nutrition plan, AI-built fitness plan, progress
+  dashboard, priority response). Added `BundleCadence`
+  (1 / 3 / 6 / 12), a `roundUpToCharm()` helper that rounds UP
+  to the next price ending in 9 ("143.10 → 149"), and
+  `priceForCadence()` that compounds 10% off per step
+  (`1mo → 3mo × 0.9 → 6mo × 0.9 → 12mo × 0.9`) and rounds the
+  per-month for display. Per-month grid lands at:
+  `Start 159/149/129/119`,
+  `Accelerate 179/169/149/139`,
+  `Transform 199/189/169/149`. Collisions across tiers
+  (e.g. `Accelerate 6mo $149 = Start 3mo $149`) accepted by user
+  as a clean-numbers trade-off — the rounded display means real
+  savings sit closer to ~6%/step than a true 10%/step.
+- **`src/components/PricingCard.tsx` (new).** Per-tier card with
+  a **subtle** cadence selector — small pill row, no "SAVE!"
+  badge, no countdown timer. User direction was explicit:
+  "shouldn't look like something hugely advertised that screams
+  'HEY, GET MORE', rather more like 'Hey, here's this option if
+  you prefer it'." When cadence > 1, the only callout is a
+  one-line "Billed `$Y` upfront as an `N`-month bundle" subtext.
+  Card also renders the new "Everything in `<previous>`, plus:"
+  framing for Accelerate / Transform so the upgrade story is
+  implicit without showing a full feature matrix on screen.
+  CTA links carry both `?plan=` and `?cadence=` so the funnel
+  can pick up the visitor's choice.
+- **`src/app/pricing/page.tsx`.** Rewritten to use `PricingCard`,
+  added the friction-reducer line *"Not sure which plan to
+  choose? Just pick the most affordable one — you can always
+  change plans later"* above the cards (per Iter 11 user
+  direction), and an explicit "Medication, visits, and supplies
+  are identical across tiers" callout to make the same-medication
+  rule plain. JSON-LD `Service + Offer` blocks updated to the new
+  prices automatically (rendered straight from `PLAN_LIST`); the
+  `from $199/mo` copy in metadata + hero is now `from $159/mo`.
+- **`src/app/page.tsx` — hero rework.**
+  - **H1**: `"A provider, a plan, and nothing in the way."` →
+    **`"Care that begins with a clinician."`** (italic on
+    *clinician*). Subhead now leads with "Board-certified
+    providers — licensed in your state, trained in obesity
+    medicine" so the first impression emphasizes a
+    well-prepared professional rather than the
+    easy/frictionless angle the previous copy hammered.
+  - **Right column**: bedroom-portrait photo replaced with the
+    restored **"Three simple steps"** process card — three
+    numbered steps, a closing pill that reads "Most people
+    finish the assessment in about 5 minutes." This puts the
+    structural preview the home page had before the
+    photo-as-hero experiment back where it belongs.
+  - **AggregateOffer JSON-LD**: `lowPrice 199 / highPrice 399`
+    → `lowPrice 159 / highPrice 199` to match the new tiers.
+- **`src/app/how-it-works/page.tsx`.**
+  - **Disclaimer** under the GLP-1 product photo:
+    `"Nuvela providers prescribe weekly injectable compounded
+    semaglutide."` →
+    **`"Nuvela providers prescribe compounded semaglutide."`**
+    Per Iter 11 user direction: do not mention the prescription
+    frequency or the administration form anywhere on the site
+    — the cadence isn't finalized at the business level, and
+    avoiding the claim removes a class of factual mistakes
+    later.
+  - **New editorial section** between the journey-steps and the
+    medication explainer: 2-column "Care, where you are" with
+    the bedroom-portrait (`home-bedroom.jpg`) on the left at its
+    native 4:5 aspect, copy on the right framing the from-home
+    arc. Native aspect, no crop — same no-crop rule as Iter 8.
+- **`src/app/app/select-plan/page.tsx`.** Removed the dead
+  `{plan.dose}` reference (the field is gone), added the
+  "Everything in `<previous>`, plus:" framing above the feature
+  bullets, and added a **shared bundle-and-save selector below
+  the three cards** — one cadence row, all three card prices
+  update in lockstep. Reads `?plan=` and `?cadence=` query
+  params on entry so a deep-link from `/pricing` arrives with
+  the right card pre-selected and the right cadence already
+  chosen. Persists `{ tier, cadence }` to demoState on Continue.
+- **`src/lib/demoState.ts`.** `DemoState.plan` shape extended:
+  `{ tier: PlanTier }` → `{ tier: PlanTier; cadence?: BundleCadence }`.
+  Cadence is optional so existing localStorage snapshots still
+  parse without bumping `STORAGE_KEY` again.
+
+### Removed
+- `Plan.dose` field (was on `src/lib/plans.ts`). Doses are a
+  clinical decision made by the prescriber, not a marketing-tier
+  property. The dashboard / orders still carry post-prescription
+  dose info on `DemoState.dashboard.currentDose` and
+  `Order.dose` — those are *clinical* state, unaffected by this
+  change.
+- Bedroom-portrait hero on the home page (moved to
+  `/how-it-works`, see Changed).
+- `Plan.tagline` copy refresh: Accelerate/Transform taglines
+  reworded to lean on the AI/software differentiation rather
+  than dose progression.
+
+### Verification
+- `npm run build` clean — 24 routes prerender.
+- `npm run lint` clean — 0 errors, 11 pre-existing warnings
+  (designs/shared.js unused exports + react-hook-form
+  incompatible-library on `get-started`). No new findings.
+- Runtime smoke test via `curl`:
+  - `/pricing` initial render: `$159 / $179 / $199` per card
+    (1mo cadence default), JSON-LD `Service + Offer` prices
+    matching at 159 / 179 / 199.
+  - `/` AggregateOffer: `lowPrice 159 / highPrice 199`.
+  - `/` H1 rendered as `"Care that begins with a clinician."`
+    with italic emphasis on *clinician*.
+  - `/how-it-works` disclaimer: exact text
+    `"For illustration only. Nuvela providers prescribe
+    compounded semaglutide."` — no frequency, no form.
+  - `/how-it-works` has `home-bedroom.jpg` in the new editorial
+    section; home page no longer references that image.
+
+### Follow-up pass (same iteration)
+After the initial Iter 11 wrap landed, the user asked to close
+out the three flagged items. Two completed in code; the third
+narrowed to a tooling-only blocker.
+
+- **Checkout cadence wiring — completed.**
+  `src/app/app/checkout/page.tsx` now imports `priceForCadence`
+  + `BundleCadence`, reads `demo.plan?.cadence ?? 1`, and
+  renders the order summary in cadence-aware terms: monthly
+  cadence shows "Monthly rate · Billed monthly · Due today
+  $X"; bundle cadences show "Per month (N-month bundle) ·
+  Billed every N months · Due today $Y" where Y is the upfront
+  total. Submit button label updates to "Pay $Y" (no "/mo"
+  suffix on bundles). Authorization fine print also branches
+  on cadence. Verified `priceForCadence` references appear in
+  the built static client chunk
+  (`.next/static/chunks/0aidu.yhhpaw9.js`).
+- **No-frequency rule — completed across the site.**
+  Every remaining mention scrubbed:
+  - `/how-it-works` FAQ "How is the medication administered?"
+    answer: removed "Semaglutide is administered as a
+    once-weekly subcutaneous injection (just under the
+    skin)..." Replaced with provider-deferred phrasing:
+    "Your provider explains exactly how to administer your
+    treatment during your consultation, and your care team
+    walks you through the technique step-by-step..."
+  - `/faq` (both the React `SECTIONS` and the parallel
+    plain-text `FAQ_JSONLD` mirror) — same answer rewritten,
+    both halves in lockstep so the JSON-LD doesn't drift.
+  - STEP 1 trial citations: "semaglutide 2.4 mg **weekly**
+    lost an average of ~14.9%..." → "semaglutide 2.4 mg lost
+    an average of ~14.9%..." in `src/app/page.tsx` (×2: prose
+    + stat note) and `src/app/how-it-works/page.tsx`. The
+    finding still attributes to STEP 1 / Wilding et al., and
+    14.9% over 68 weeks is unchanged — only the protocol
+    detail was dropped.
+  - Confirmed via build-artifact grep: `weekly injectable`,
+    `once-weekly subcutaneous`, and `2.4 mg weekly` each
+    return zero matches across all `.next/` files. Sitemap
+    `changeFrequency: "weekly"` and the dashboard "Keep
+    logging weekly" copy are untouched — they describe
+    sitemap protocol and weight-log cadence, not medication.
+- **Visual responsive sweep — completed.** First attempt
+  using Chrome `--headless=new --window-size` produced
+  false-positive overflow at 375px (no
+  `Emulation.setDeviceMetricsOverride`, layout viewport
+  defaults to ~980 and gets clipped into the screenshot).
+  Switched to `puppeteer-core` against the cached Chrome for
+  Testing 147 in `~/.cache/puppeteer/`, with proper mobile
+  device emulation (`isMobile: true`, `deviceScaleFactor: 2`,
+  iPhone UA). All 15 screenshots clean — `/`, `/pricing`,
+  `/how-it-works`, `/app/select-plan`, `/app/checkout` at
+  375 / 768 / 1440. New H1 wraps cleanly on every breakpoint;
+  cadence pill row on `PricingCard` fits at 375 without
+  truncation; shared "Bundle & save" selector on
+  `/app/select-plan` stacks below the cards on mobile and
+  sits inline at 1440. Screenshots at
+  `docs/screenshots/iter11/`. Iter 11 visual sign-off closed.
+
+---
+
 ## [Unreleased] — Iteration 10: pitch-readiness polish + social proof
 
 Branched as `claude/iter-7-polish-social` before merging the SEO

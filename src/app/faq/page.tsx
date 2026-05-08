@@ -70,7 +70,7 @@ const FAQ_JSONLD: { q: string; a: string }[] = [
   },
   {
     q: "How is the medication administered?",
-    a: "GLP-1 treatment is typically self-administered as a once-weekly subcutaneous injection using a small needle. Your care team will walk you through the technique, and injection supplies are included with your plan.",
+    a: "Your provider explains exactly how to administer your treatment during your consultation, and your care team walks you through the technique step-by-step. Any required supplies are included with your plan.",
   },
   {
     q: "Is compounded semaglutide the same as Ozempic or Wegovy?",
@@ -238,9 +238,9 @@ const SECTIONS: Section[] = [
         q: "How is the medication administered?",
         a: (
           <>
-            GLP-1 treatment is typically self-administered as a once-weekly subcutaneous injection
-            using a small needle. Your care team will walk you through the technique, and injection
-            supplies are included with your plan.
+            Your provider explains exactly how to administer your treatment during your
+            consultation, and your care team walks you through the technique step-by-step. Any
+            required supplies are included with your plan.
           </>
         ),
       },

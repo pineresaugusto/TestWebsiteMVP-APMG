@@ -7,6 +7,78 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-05-08 — Mauger00
+- Iteration 11 (pricing model + hero copy rework). Three threads
+  in one pass, all confirmed with the user before changes
+- **Pricing model rewritten** (`src/lib/plans.ts`): tiers re-priced
+  to Start $159 / Accelerate $179 / Transform $199, all monthly.
+  `Plan.dose` field removed — doses must not vary by tier (would
+  force a different relationship with the prescribing provider
+  per plan). All three tiers now ship the same medication, the
+  same visits, the same supplies; the only differences are
+  software/AI features (24/7 chat, AI nutrition plan, AI fitness
+  plan, progress dashboard, priority response). Added
+  `BundleCadence` (1/3/6/12), `roundUpToCharm()`, and
+  `priceForCadence()` that compounds 10% off per step and rounds
+  the per-month UP to the next $X9. Per-month grid:
+  159/149/129/119, 179/169/149/139, 199/189/169/149. Collisions
+  across tiers (e.g. Accelerate 6mo $149 = Start 3mo $149)
+  accepted as the clean-numbers trade-off
+- **`PricingCard` (new client component)** + rewritten
+  `/pricing/page.tsx`: subtle cadence pill row inside each card
+  per user direction ("not 'HEY, GET MORE', more 'here's this
+  option if you prefer it'"), no SAVE-! badges, one-line
+  "Billed `$Y` upfront as an `N`-month bundle" subtext only when
+  cadence > 1. Added the friction-reducer line "Not sure which
+  plan to choose? Just pick the most affordable one — you can
+  always change plans later." above the cards, and a
+  same-medication callout under the "Every plan includes" grid.
+  CTA links carry `?plan=&cadence=` so the funnel picks up the
+  visitor's choice
+- **Home hero reworked**: H1 "A provider, a plan, and nothing in
+  the way." → "Care that begins with a clinician." (italic on
+  *clinician*). Subhead now leads with board-certified providers
+  licensed in the visitor's state and trained in obesity
+  medicine — first impression is professional capability rather
+  than friction-removal. Right column restored to the "Three
+  simple steps" process card it had before the bedroom-photo
+  hero experiment (photo moved, see below). AggregateOffer
+  JSON-LD updated `lowPrice 199 / highPrice 399` →
+  `lowPrice 159 / highPrice 199`
+- **`/how-it-works` reworked**: disclaimer under the GLP-1
+  product photo went form- and frequency-agnostic. Was
+  "Nuvela providers prescribe weekly injectable compounded
+  semaglutide." Now "Nuvela providers prescribe compounded
+  semaglutide." Per user direction, prescribing cadence and
+  administration form aren't finalized at the business level
+  yet, so the site avoids any specific claim. New 2-column
+  editorial section ("Care, where you are") between the journey
+  steps and the medication explainer — uses the relocated
+  `home-bedroom.jpg` at native 4:5, no crop
+- **Demo funnel**: `DemoState.plan` shape extended from
+  `{ tier }` to `{ tier; cadence? }`. Cadence is optional so
+  existing localStorage snapshots still parse without bumping
+  the storage key. `/app/select-plan` reads `?plan=&cadence=`
+  query params on entry, has a single shared bundle-and-save
+  selector below the three cards (all three card prices update
+  in lockstep), persists tier + cadence on Continue. Removed
+  the dead `{plan.dose}` reference; added "Everything in
+  `<previous>`, plus:" framing above the per-tier feature lists
+- `npm run build` clean (24 routes), `npm run lint` clean
+  (0 errors, 11 pre-existing warnings unchanged from Iter 10).
+  Runtime smoke test via `curl`: pricing card prices, JSON-LD
+  Service+Offer prices, AggregateOffer range, the new H1, and
+  the form-/frequency-agnostic disclaimer all verified
+- **Not done this iteration** (flagged in CHANGELOG): visual
+  responsive pass at 375/768/1440 not re-run after the
+  structural changes; `/app/checkout` doesn't yet read
+  `demo.plan.cadence` and still shows the monthly-only price;
+  no-frequency rule applied to the disclaimer + home hero only,
+  factual clinical references to weekly semaglutide
+  administration still exist in the FAQ + STEP 1 citation
+  (those describe trial protocol / class behavior, not Nuvela's
+  prescribing — flagged for user review)
+
 ### 2026-04-27 — adpineres-ef
 - Iter 10 (renumbered from branch `iter-7-polish-social` after
   main's iter 8/9 SEO work merged in): pitch-readiness polish +
