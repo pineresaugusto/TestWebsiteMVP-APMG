@@ -7,6 +7,60 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-05-08 — Mauger00 (Iter 12)
+- Iteration 12: six threads from a real-user dogfood pass on
+  Iter 11. Confirmed scope before implementation, landed in
+  one pass
+- **Assessment timing**: user clocked the real quiz at 1m02s,
+  so "About 5 minutes" copy was wrong everywhere. Swept "5
+  min(utes)" → "under 2 minutes" across `home` (hero card +
+  heroSteps + steps + stats value + final CTA), `/about`,
+  `/get-started` (step-1 subtitle + SEO meta + OG), and
+  `/how-it-works`. Two `/app/dashboard/resources` "5 min
+  read" labels left alone — those describe article reading
+  time, not the quiz
+- **Bundle savings UX**: `priceForCadence()` extended to
+  return `baselinePerMonth` + `annualSavings`. PricingCard
+  and `/app/select-plan` cards now render the smaller
+  struck-through 1-month price next to the larger bundled
+  price, with a "Save $X/year vs monthly" line below in
+  primary-dark. Worked example: Start on 12mo →
+  `~~$159~~ $119/mo · Save $480/year vs monthly`. No "SAVE!"
+  stickers, same restrained register Iter 11 set
+- **No-hidden-fees emphasis**: surfaced in three more spots.
+  PricingCard helper text now ends with "· No hidden fees"
+  (both monthly and bundled variants). `/app/select-plan`
+  footer fine print gained "No hidden fees" alongside the
+  existing "No insurance required". Home hero three-steps
+  card replaces its single 5-min timing line with a row of
+  three reassurance chips (⏱ Under 2 min · 🛡 No insurance ·
+  ✓ No hidden fees) using three new compact chip-icon
+  helpers in `src/app/page.tsx`
+- **Home H1 rewritten**: "Care that begins with a *clinician*."
+  → "Real GLP-1 care, in *good* hands." per user direction
+  (welcoming + professional + reassuring). Same italic-on-
+  payoff structure the previous H1 used; "good hands" is a
+  verbatim phrase from the user's brief
+- **Reply-time stat dropped**: user flagged "1 day · Typical
+  message reply" as unverifiable (no message-volume data
+  yet). Replaced stats[2] with a hedged same-day-visit tile:
+  `Same-day` / `Visits when available` / "When schedules
+  allow, your first virtual visit can happen the same day,
+  and approved prescriptions can ship the next business day.
+  Subject to provider, state, and pharmacy capacity." Hedge
+  travels with the claim. Patient-side dashboard copy
+  ("Typical response: within 1 business day" + "Within 24
+  hours" on the welcome screen) deliberately not touched —
+  those are post-conversion in-product copy, not marketing
+- `npm run build` clean (26 routes), `npm run lint` clean (0
+  errors, 11 pre-existing warnings unchanged from Iter
+  10/11). Visual sweep at 375 / 768 / 1440 via
+  `puppeteer-core` against cached Chrome for Testing 147 with
+  proper mobile emulation. 15 baseline screenshots in
+  `docs/screenshots/iter12/` plus three state-specific
+  captures showing the strike-through + savings line on
+  `/pricing` and `/app/select-plan` with bundles selected
+
 ### 2026-05-08 — Mauger00
 - Iteration 11 (pricing model + hero copy rework). Three threads
   in one pass, all confirmed with the user before changes

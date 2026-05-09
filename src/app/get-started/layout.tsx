@@ -9,13 +9,13 @@ import { SITE_NAME } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Free GLP-1 Eligibility Assessment — Start Online",
   description:
-    "Take Nuvela's free 5-minute GLP-1 eligibility assessment. Answer a few questions and see if online GLP-1 weight loss treatment with a licensed provider may be right for you.",
+    "Take Nuvela's free 2-minute GLP-1 eligibility assessment. Answer a few questions and see if online GLP-1 weight loss treatment with a licensed provider may be right for you.",
   alternates: { canonical: "/get-started" },
   openGraph: {
     url: "/get-started",
     title: `Free GLP-1 Eligibility Assessment | ${SITE_NAME}`,
     description:
-      "Answer a few questions and see if GLP-1 weight loss treatment with a licensed provider may be right for you. Takes about 5 minutes.",
+      "Answer a few questions and see if GLP-1 weight loss treatment with a licensed provider may be right for you. Takes under 2 minutes.",
   },
 };
 

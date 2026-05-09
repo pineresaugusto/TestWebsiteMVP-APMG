@@ -69,7 +69,11 @@ export default function SelectPlanPage() {
         {PLAN_LIST.map((plan) => {
           const isSelected = selected === plan.id;
           const showRecommended = plan.popular && fromQuiz;
-          const { perMonth } = priceForCadence(plan, cadence);
+          const { perMonth, baselinePerMonth, annualSavings } = priceForCadence(
+            plan,
+            cadence,
+          );
+          const isBundled = cadence > 1;
           return (
             <button
               key={plan.id}
@@ -98,12 +102,27 @@ export default function SelectPlanPage() {
               </span>
               <div className="text-xl font-bold text-foreground">{plan.name}</div>
               <div className="mt-1 text-sm text-foreground/50">{plan.tagline}</div>
-              <div className="mt-4 font-display text-4xl font-semibold tabular-nums text-foreground">
-                ${perMonth}
-                <span className="ml-1 text-base font-medium text-foreground/45">
-                  /mo
-                </span>
+              <div className="mt-4 flex items-baseline gap-2">
+                {isBundled && (
+                  <span
+                    className="font-display text-lg font-medium tabular-nums text-foreground/35 line-through decoration-[1.5px] decoration-foreground/40"
+                    aria-label={`Regular monthly price ${baselinePerMonth} dollars`}
+                  >
+                    ${baselinePerMonth}
+                  </span>
+                )}
+                <div className="font-display text-4xl font-semibold tabular-nums text-foreground">
+                  ${perMonth}
+                  <span className="ml-1 text-base font-medium text-foreground/45">
+                    /mo
+                  </span>
+                </div>
               </div>
+              {isBundled && (
+                <div className="mt-1 text-[11.5px] font-medium text-primary-dark tabular-nums">
+                  Save ${annualSavings.toLocaleString()}/year vs monthly
+                </div>
+              )}
               {plan.builtsOn && (
                 <div className="mt-3 text-xs font-medium text-foreground/65">
                   Everything in {PLANS[plan.builtsOn].name}, plus:
@@ -199,7 +218,7 @@ export default function SelectPlanPage() {
         </button>
       </div>
       <p className="mt-5 text-center text-xs text-foreground/40">
-        Pricing shown is illustrative. Cancel anytime. No insurance required.{" "}
+        Pricing shown is illustrative. Cancel anytime. No insurance required. No hidden fees.{" "}
         <Link href="/medical-disclaimer" className="text-primary-dark hover:underline">
           Medical disclaimer
         </Link>

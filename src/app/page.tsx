@@ -98,8 +98,8 @@ export default function Home() {
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
-                  Care that begins with a{" "}
-                  <em className="italic font-normal text-primary-dark">clinician</em>.
+                  Real GLP-1 care, in{" "}
+                  <em className="italic font-normal text-primary-dark">good</em> hands.
                 </h1>
               </Reveal>
               <Reveal delay={160}>
@@ -185,24 +185,24 @@ export default function Home() {
                       </li>
                     ))}
                   </ol>
-                  <div className="mt-7 flex items-center gap-2 rounded-xl bg-secondary-light/60 px-4 py-3">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={1.8}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4 flex-shrink-0 text-primary-dark"
-                      aria-hidden
-                    >
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v5l3 2" />
-                    </svg>
-                    <span className="text-[12.5px] text-foreground/70">
-                      Most people finish the assessment in about 5 minutes.
-                    </span>
-                  </div>
+                  {/* Reassurance chips — replaces the single timing line.
+                      Three operational truths the visitor wants to hear before
+                      starting: it's quick, no insurance, no surprise charges. */}
+                  <ul className="mt-7 flex flex-wrap gap-1.5">
+                    {[
+                      { icon: <ChipClockIcon />, label: "Under 2 minutes" },
+                      { icon: <ChipShieldIcon />, label: "No insurance" },
+                      { icon: <ChipCheckIcon />, label: "No hidden fees" },
+                    ].map((chip) => (
+                      <li
+                        key={chip.label}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-secondary-light/60 px-3 py-1.5 text-[11.5px] font-medium text-foreground/70"
+                      >
+                        {chip.icon}
+                        {chip.label}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </Reveal>
@@ -551,7 +551,7 @@ export default function Home() {
             Ready when you are.
           </h2>
           <p className="mt-5 text-lg text-white/85 max-w-xl mx-auto">
-            Take the short assessment — about 5 minutes — and see if GLP-1 treatment might be a
+            Take the short assessment — under 2 minutes — and see if GLP-1 treatment might be a
             good fit. No commitment.
           </p>
           <Link
@@ -590,6 +590,60 @@ function CheckIcon() {
   );
 }
 
+// Compact chip icons for the hero process card.
+// Stroke-only, sized to sit next to small (~11.5px) chip labels.
+function ChipClockIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-primary-dark"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
+
+function ChipShieldIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-primary-dark"
+      aria-hidden
+    >
+      <path d="M12 3l8 3v6c0 5-3.5 8.5-8 9.5C7.5 20.5 4 17 4 12V6l8-3z" />
+    </svg>
+  );
+}
+
+function ChipCheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-primary-dark"
+      aria-hidden
+    >
+      <path d="M5 12.5l4.5 4.5L19 7.5" />
+    </svg>
+  );
+}
+
 function ArrowIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg
@@ -612,7 +666,7 @@ function ArrowIcon({ className = "w-4 h-4" }: { className?: string }) {
 const heroSteps = [
   {
     title: "Online assessment",
-    description: "A short health questionnaire. About five minutes, from anywhere.",
+    description: "A short health questionnaire. Under two minutes, from anywhere.",
   },
   {
     title: "Visit with a clinician",
@@ -630,7 +684,7 @@ const steps = [
   {
     title: "Online Assessment",
     description:
-      "A short health questionnaire from the comfort of your home. Most people finish in about five minutes.",
+      "A short health questionnaire from the comfort of your home. Most people finish in under two minutes.",
   },
   {
     title: "Provider Consultation",
@@ -666,8 +720,14 @@ const homeBandPhotos = [
 
 // Stats — kept to three to read like a deliberate set, not a wall of
 // numbers. Each value links to a defensible source: the trial citation
-// for efficacy; the assessment-time and response-time numbers describe
-// platform behavior we control.
+// for efficacy; the assessment-time describes platform behavior we
+// control; the visit-availability stat is hedged because real-world
+// scheduling depends on provider/state/pharmacy capacity that isn't
+// uniform across the network. Iter 12 user note: "1-day reply" was
+// removed because the platform doesn't have message-volume data yet —
+// what we *do* know is that same-day virtual visits are possible when
+// schedules align, and approved prescriptions can ship the next
+// business day. The note keeps the operative hedge inline.
 const stats = [
   {
     value: "~14.9%",
@@ -675,14 +735,14 @@ const stats = [
     note: "Adults with obesity on semaglutide 2.4 mg over 68 weeks (STEP 1).",
   },
   {
-    value: "~5 min",
+    value: "<2 min",
     label: "Online assessment",
     note: "A short health questionnaire reviewed before any provider visit.",
   },
   {
-    value: "1 day",
-    label: "Typical message reply",
-    note: "Care-team messages are answered within one business day, on average.",
+    value: "Same-day",
+    label: "Visits when available",
+    note: "When schedules allow, your first virtual visit can happen the same day, and approved prescriptions can ship the next business day. Subject to provider, state, and pharmacy capacity.",
   },
 ];
 

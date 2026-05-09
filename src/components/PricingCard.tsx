@@ -35,7 +35,11 @@ type Props = {
 
 export default function PricingCard({ plan }: Props) {
   const [cadence, setCadence] = useState<BundleCadence>(1);
-  const { perMonth, total } = priceForCadence(plan, cadence);
+  const { perMonth, total, baselinePerMonth, annualSavings } = priceForCadence(
+    plan,
+    cadence,
+  );
+  const isBundled = cadence > 1;
   const previousTier: PlanTier | null = plan.builtsOn;
   const previousName = previousTier ? PLANS[previousTier].name : null;
 
@@ -57,12 +61,28 @@ export default function PricingCard({ plan }: Props) {
         <h3 className="font-display text-2xl text-foreground">{plan.name}</h3>
         <p className="mt-1 text-sm text-foreground/60">{plan.tagline}</p>
 
-        <div className="mt-6 flex items-baseline gap-1">
+        {/* Price block. When bundled, the 1-month baseline is shown
+            struck-through to the LEFT of the new rate so the discount is
+            visible at a glance — without using "SAVE!" stickers. */}
+        <div className="mt-6 flex items-baseline gap-2">
+          {isBundled && (
+            <span
+              className="font-display text-2xl text-foreground/35 tabular-nums line-through decoration-[1.5px] decoration-foreground/40"
+              aria-label={`Regular monthly price ${baselinePerMonth} dollars`}
+            >
+              ${baselinePerMonth}
+            </span>
+          )}
           <span className="font-display text-5xl text-foreground tabular-nums">
             ${perMonth}
           </span>
           <span className="text-foreground/50">/mo</span>
         </div>
+        {isBundled && (
+          <p className="mt-1 text-[12px] font-medium text-primary-dark tabular-nums">
+            Save ${annualSavings.toLocaleString()}/year vs monthly
+          </p>
+        )}
 
         {/* Cadence selector — quiet, not screaming */}
         <div className="mt-4">
@@ -93,8 +113,8 @@ export default function PricingCard({ plan }: Props) {
 
           <p className="mt-2 text-[11px] text-foreground/45 min-h-[1rem]">
             {cadence === 1
-              ? "Billed monthly. Cancel anytime."
-              : `Billed $${total.toLocaleString()} upfront as a ${cadence}-month bundle.`}
+              ? "Billed monthly · Cancel anytime · No hidden fees"
+              : `Billed $${total.toLocaleString()} upfront as a ${cadence}-month bundle · No hidden fees`}
           </p>
         </div>
       </div>

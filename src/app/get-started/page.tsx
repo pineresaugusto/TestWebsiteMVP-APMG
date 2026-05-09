@@ -221,7 +221,7 @@ export default function GetStarted() {
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Step 1: Basics */}
           {step === 1 && (
-            <StepWrapper title="Let's start with the basics" subtitle="About 5 minutes, in plain language. Nothing is submitted until the final step — you can go back or stop at any point.">
+            <StepWrapper title="Let's start with the basics" subtitle="Under 2 minutes, in plain language. Nothing is submitted until the final step — you can go back or stop at any point.">
               <div className="mb-6 text-right">
                 <Link
                   href="/app/signup?skipped=quiz"

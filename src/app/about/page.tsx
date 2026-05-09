@@ -192,7 +192,7 @@ export default function About() {
             A gentler way to start
           </h2>
           <p className="mt-5 text-white/85 max-w-xl mx-auto">
-            The assessment is free and takes about 5 minutes. No commitment, no insurance needed.
+            The assessment is free and takes under 2 minutes. No commitment, no insurance needed.
           </p>
           <Link
             href="/get-started"

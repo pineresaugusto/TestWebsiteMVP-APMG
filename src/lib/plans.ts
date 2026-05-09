@@ -125,7 +125,19 @@ export function roundUpToCharm(value: number): number {
 export function priceForCadence(
   plan: Plan,
   cadence: BundleCadence,
-): { perMonth: number; total: number; months: BundleCadence } {
+): {
+  perMonth: number;
+  total: number;
+  months: BundleCadence;
+  /** The 1-month rate, always returned so the UI can render a strike-through baseline. */
+  baselinePerMonth: number;
+  /**
+   * Annualized savings vs the 1-month rate.
+   *   = (baseline - perMonth) * 12
+   * Zero when cadence === 1.
+   */
+  annualSavings: number;
+} {
   const steps: Record<BundleCadence, number> = { 1: 0, 3: 1, 6: 2, 12: 3 };
   const stepCount = steps[cadence];
   const discounted = plan.price * Math.pow(0.9, stepCount);
@@ -134,6 +146,8 @@ export function priceForCadence(
     perMonth,
     total: perMonth * cadence,
     months: cadence,
+    baselinePerMonth: plan.price,
+    annualSavings: (plan.price - perMonth) * 12,
   };
 }
 

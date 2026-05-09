@@ -6,6 +6,108 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 12: assessment timing, bundle-savings UX, hero rewrite
+
+Six threads from a real-user dogfood pass on Iter 11. The user
+ran the assessment end-to-end in 1m02s, dropped the cooled "1
+day reply" stat as unverifiable, and asked for stronger
+no-hidden-fees framing across the funnel. Confirmed scope before
+implementation; landed in one pass.
+
+### Changed
+
+- **Assessment-time copy: "5 minutes" → "under 2 minutes"**
+  swept across the site after the user clocked the real flow at
+  1m02s. Touched: home hero process card chip, `heroSteps[0]`,
+  `steps[0]` in the four-step grid, the home `stats[1]` value
+  (`~5 min` → `<2 min`), the final home CTA copy, the
+  `/about` CTA, the `/get-started` step-1 subtitle, the
+  `/get-started` SEO `description` and OG description, and the
+  `/how-it-works` step-1 details bullet. The two
+  `/app/dashboard/resources` "5 min read" article-time labels
+  were left alone — those describe article reading time, not
+  the quiz.
+- **Pricing & select-plan: strike-through baseline + annual
+  savings line when cadence > 1.** `priceForCadence()` now
+  returns `baselinePerMonth` (the 1-month rate) and
+  `annualSavings` (= `(baseline − perMonth) * 12`). When the
+  visitor toggles 3 / 6 / 12 mo on `PricingCard` or the shared
+  selector on `/app/select-plan`, each card shows the smaller
+  struck-through original price next to the new larger bundled
+  price, with a `Save $X/year vs monthly` line below in
+  primary-dark. No "SAVE!" stickers — same restrained pattern
+  the Iter 11 cadence row established. Worked example for a
+  Start tier on 12 mo: `~~$159~~ $119/mo · Save $480/year vs
+  monthly`.
+- **No-hidden-fees: surfaced in three more spots.**
+  `PricingCard` helper text now reads
+  `Billed monthly · Cancel anytime · No hidden fees` (and the
+  bundle variant ends with `· No hidden fees`).
+  `/app/select-plan` footer fine print gained `No hidden fees`
+  alongside the existing `No insurance required`. Home hero
+  three-steps card replaces its single timing line with a row
+  of three reassurance chips: ⏱ Under 2 min · 🛡 No insurance
+  · ✓ No hidden fees. Pricing page hero already had the line —
+  left as-is.
+- **Home hero H1 rewrite.** "Care that begins with a
+  *clinician*." → "Real GLP-1 care, in *good* hands." Per
+  user direction (welcoming + professional + reassuring). Same
+  italic-on-payoff structure the previous H1 used; "good hands"
+  is a verbatim phrase from the user's brief, with "good"
+  italicized in primary-dark to land the emotional weight.
+- **Home stats: dropped the unverifiable "1 day reply" tile.**
+  User flagged that we don't actually have message-volume data
+  yet. Replaced with a hedged same-day-visit stat:
+  `Same-day` / `Visits when available` /
+  `When schedules allow, your first virtual visit can happen
+  the same day, and approved prescriptions can ship the next
+  business day. Subject to provider, state, and pharmacy
+  capacity.` Hedge phrasing kept inline so the operative
+  caveats travel with the claim. Patient-side dashboard copy
+  ("Typical response: within 1 business day" in
+  `/app/dashboard/messages`, "Within 24 hours" in
+  `/app/welcome`) deliberately untouched — those are
+  in-product copy on routes the demo funnel reaches after
+  conversion, not pre-conversion marketing claims.
+
+### Added
+
+- `priceForCadence()` extended return type:
+  `{ perMonth, total, months, baselinePerMonth, annualSavings }`.
+  Backwards compatible — existing callers ignoring the new
+  fields continue to work.
+- Three new compact chip-icon helpers in `src/app/page.tsx`:
+  `ChipClockIcon`, `ChipShieldIcon`, `ChipCheckIcon`.
+  Stroke-only at `h-3.5 w-3.5`, `text-primary-dark`, sized to
+  sit next to the new 11.5px chip labels.
+
+### Verification
+
+- `npm run lint` clean (0 errors, 11 pre-existing warnings
+  unchanged from Iter 10/11).
+- `npm run build` clean — all 26 routes prerender.
+- `curl` against the running prod build confirms the new H1,
+  the strike-through markup (`<span ... line-through ...>$159</span>`),
+  the `Save $X/year vs monthly` lines, the `Same-day` stat,
+  the `Under 2 minutes` chip, and the `No hidden fees`
+  helper-text additions all landed in the SSR HTML.
+- Visual sweep at 375 / 768 / 1440 via `puppeteer-core` against
+  cached Chrome for Testing 147 with proper mobile emulation
+  (`isMobile: true`, `deviceScaleFactor: 2`, iPhone UA). 15
+  baseline screenshots in `docs/screenshots/iter12/` plus three
+  state-specific captures: `pricing-1440-bundle6.png` and
+  `pricing-375-bundle6.png` showing strike-through + savings
+  on `/pricing` with 6-mo cadence selected, and
+  `select-plan-1440-bundle12.png` showing all three cards
+  bundled at 12 mo.
+- Stat-tile screenshot (`home-stats-1440.png`) confirms the
+  hedge text on the Same-day tile fits the existing 3-up grid
+  layout without breaking it. Note paragraph runs to 4 lines
+  vs the other two tiles' 2 — accepted, the asymmetry reads
+  as deliberate (the longer caveat is the point).
+
+---
+
 ## [Unreleased] — Iteration 11: pricing model + hero copy rework
 
 Three intertwined changes confirmed with the user before

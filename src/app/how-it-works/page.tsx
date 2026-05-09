@@ -300,7 +300,7 @@ const journeySteps = [
     description:
       "Answer a few questions about your health, weight goals, and medical history. Our assessment is designed with input from medical professionals to determine if GLP-1 treatment may be right for you.",
     details: [
-      "Takes less than 5 minutes to complete",
+      "Takes less than 2 minutes to complete",
       "Secure and confidential",
       "No cost or obligation",
       "Screens for contraindications to keep you safe",
