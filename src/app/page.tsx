@@ -185,13 +185,15 @@ export default function Home() {
                       </li>
                     ))}
                   </ol>
-                  {/* Reassurance chips — replaces the single timing line.
-                      Three operational truths the visitor wants to hear before
-                      starting: it's quick, no insurance, no surprise charges. */}
+                  {/* Reassurance chips — two operational truths the visitor
+                      wants to hear before starting: no insurance gate, no
+                      surprise charges. (Earlier iterations also chipped the
+                      "Under 2 minutes" assessment time, but on a card titled
+                      "Three simple steps" that timing read as if the WHOLE
+                      flow took 2 minutes — only the assessment does.) */}
                   <ul className="mt-7 flex flex-wrap gap-1.5">
                     {[
-                      { icon: <ChipClockIcon />, label: "Under 2 minutes" },
-                      { icon: <ChipShieldIcon />, label: "No insurance" },
+                      { icon: <ChipShieldIcon />, label: "No insurance needed" },
                       { icon: <ChipCheckIcon />, label: "No hidden fees" },
                     ].map((chip) => (
                       <li
@@ -592,24 +594,6 @@ function CheckIcon() {
 
 // Compact chip icons for the hero process card.
 // Stroke-only, sized to sit next to small (~11.5px) chip labels.
-function ChipClockIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-3.5 w-3.5 text-primary-dark"
-      aria-hidden
-    >
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 2" />
-    </svg>
-  );
-}
-
 function ChipShieldIcon() {
   return (
     <svg

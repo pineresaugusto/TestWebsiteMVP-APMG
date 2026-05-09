@@ -65,7 +65,25 @@ export default function SelectPlanPage() {
         )}
       </p>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-3">
+      {/* Trust chips. Surfaced above the cards (not just in the fine print at
+          the bottom) so the visitor sees the two reassurances they care about
+          most before evaluating prices: no insurance gate, no surprise fees. */}
+      <ul className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-1.5">
+        {[
+          { icon: <ChipShieldIcon />, label: "No insurance needed" },
+          { icon: <ChipCheckIcon />, label: "No hidden fees" },
+        ].map((chip) => (
+          <li
+            key={chip.label}
+            className="inline-flex items-center gap-1.5 rounded-full bg-secondary-light/60 px-3.5 py-1.5 text-[12px] font-medium text-foreground/75"
+          >
+            {chip.icon}
+            {chip.label}
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-8 grid gap-5 md:grid-cols-3">
         {PLAN_LIST.map((plan) => {
           const isSelected = selected === plan.id;
           const showRecommended = plan.popular && fromQuiz;
@@ -224,5 +242,41 @@ export default function SelectPlanPage() {
         </Link>
       </p>
     </div>
+  );
+}
+
+// Compact chip icons for the trust strip above the plan grid.
+// Mirrors the home hero chips so the visual language is consistent.
+function ChipShieldIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-primary-dark"
+      aria-hidden
+    >
+      <path d="M12 3l8 3v6c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V6l8-3z" />
+    </svg>
+  );
+}
+
+function ChipCheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-primary-dark"
+      aria-hidden
+    >
+      <path d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
   );
 }

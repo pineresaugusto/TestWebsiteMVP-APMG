@@ -141,13 +141,7 @@ export default function SignupPage() {
 
       <aside className="hidden rounded-2xl border border-secondary bg-gradient-to-br from-primary/10 to-secondary/20 p-10 md:block">
         <div className="mx-auto max-w-sm text-center">
-          <p className="font-display text-2xl italic leading-snug text-foreground">
-            &ldquo;A provider, a plan, and nothing in the way.&rdquo;
-          </p>
-          <p className="mt-3 text-sm font-medium text-foreground/50">
-            The Nuvela promise
-          </p>
-          <ul className="mt-10 space-y-4 text-left">
+          <ul className="space-y-4 text-left">
             <PanelFeature
               title="Licensed providers"
               body="Board-certified clinicians in your state"
