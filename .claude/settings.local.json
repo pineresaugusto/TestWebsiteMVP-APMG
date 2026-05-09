@@ -99,7 +99,10 @@
       "Bash(grep -cE \"Save \\\\\\\\\\\\$|line-through|No hidden fees\")",
       "Bash(curl -s http://localhost:3000/get-started)",
       "Bash(node .sweep-pricing.mjs)",
-      "Bash(node .stats.mjs)"
+      "Bash(node .stats.mjs)",
+      "Bash(ls -d ~/.local/*/node-*)",
+      "Bash(ls -d ~/.nvm/versions/node/*/bin)",
+      "Bash(node .shot.mjs)"
     ]
   }
 }

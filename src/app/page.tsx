@@ -158,7 +158,7 @@ export default function Home() {
                   aria-hidden
                   className="absolute -top-5 -right-5 w-32 h-32 rounded-3xl bg-dots opacity-70 hidden md:block"
                 />
-                <div className="relative rounded-[2rem] bg-white p-8 md:p-10 shadow-2xl shadow-primary/15 ring-1 ring-white/40">
+                <div className="relative rounded-[2rem] bg-secondary-light p-8 md:p-10 shadow-2xl shadow-primary/15 ring-1 ring-foreground/5">
                   <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
                     Three simple steps
                   </p>
@@ -196,7 +196,7 @@ export default function Home() {
                     ].map((chip) => (
                       <li
                         key={chip.label}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-secondary-light/60 px-3 py-1.5 text-[11.5px] font-medium text-foreground/70"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-white/75 px-3 py-1.5 text-[11.5px] font-medium text-foreground/70"
                       >
                         {chip.icon}
                         {chip.label}
