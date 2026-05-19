@@ -7,6 +7,11 @@ import { get, set, useInitialQueryParam } from "@/lib/demoState";
 
 type Errors = Partial<Record<"firstName" | "lastName" | "email" | "password", string>>;
 
+// Default path is "skip the quiz, pick a plan now" — fastest conversion and
+// what most pitch viewers will pick. The assessment remains available to
+// take any time before the patient schedules an appointment.
+type StartPath = "plan-first" | "quiz-first";
+
 export default function SignupPage() {
   const router = useRouter();
   const fromQuiz = useInitialQueryParam("from") === "quiz";
@@ -25,6 +30,11 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
+
+  // Path the user wants after creating the account. Hidden when arriving
+  // from a completed quiz — at that point the assessment is already done,
+  // and the next step is naturally plan selection.
+  const [startPath, setStartPath] = useState<StartPath>("plan-first");
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,7 +55,14 @@ export default function SignupPage() {
         createdAt: current.user?.createdAt ?? new Date().toISOString(),
       },
     });
-    router.push("/app/select-plan");
+
+    // Quiz already done → straight to plan selection (with recommendation).
+    // Otherwise honor the user's path choice.
+    if (fromQuiz || startPath === "plan-first") {
+      router.push("/app/select-plan");
+    } else {
+      router.push("/get-started");
+    }
   };
 
   return (
@@ -58,7 +75,32 @@ export default function SignupPage() {
           So we can save your progress and connect you with your care team.
         </p>
 
-        <form onSubmit={onSubmit} className="mt-8 space-y-5" noValidate>
+        {!fromQuiz && (
+          <fieldset className="mt-7">
+            <legend className="mb-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-foreground/55">
+              How would you like to start?
+            </legend>
+            <div className="space-y-2.5">
+              <PathOption
+                value="plan-first"
+                checked={startPath === "plan-first"}
+                onChange={setStartPath}
+                title="Pick a plan and start now"
+                body="Skip the assessment for now — you can complete it any time before your first appointment."
+                badge="Recommended"
+              />
+              <PathOption
+                value="quiz-first"
+                checked={startPath === "quiz-first"}
+                onChange={setStartPath}
+                title="Take a 2-minute assessment first"
+                body="Get a personalized plan recommendation based on your health and goals."
+              />
+            </div>
+          </fieldset>
+        )}
+
+        <form onSubmit={onSubmit} className="mt-7 space-y-5" noValidate>
           <div className="grid grid-cols-2 gap-4">
             <Field
               label="First name"
@@ -115,13 +157,22 @@ export default function SignupPage() {
             type="submit"
             className="w-full rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
           >
-            Continue
+            {fromQuiz || startPath === "plan-first"
+              ? "Create account and pick a plan"
+              : "Create account and start assessment"}
           </button>
         </form>
 
+        <p className="mt-4 text-center text-[12.5px] text-foreground/55">
+          Already have an account?{" "}
+          <Link href="/signin" className="font-semibold text-primary-dark hover:underline">
+            Sign in
+          </Link>
+        </p>
+
         <Link
           href="/app/select-plan"
-          className="mt-4 block text-center text-sm text-foreground/50 transition-colors hover:text-foreground/80"
+          className="mt-3 block text-center text-sm text-foreground/45 transition-colors hover:text-foreground/70"
         >
           Continue as guest →
         </Link>
@@ -192,6 +243,66 @@ function Field({
       />
       {error && <p className="mt-1.5 text-xs text-accent-dark">{error}</p>}
     </div>
+  );
+}
+
+function PathOption({
+  value,
+  checked,
+  onChange,
+  title,
+  body,
+  badge,
+}: {
+  value: StartPath;
+  checked: boolean;
+  onChange: (v: StartPath) => void;
+  title: string;
+  body: string;
+  badge?: string;
+}) {
+  return (
+    <label
+      className={`relative block cursor-pointer rounded-xl border bg-white p-4 transition-all ${
+        checked
+          ? "border-primary ring-2 ring-primary/25 shadow-sm"
+          : "border-secondary/60 hover:border-primary/40"
+      }`}
+    >
+      <input
+        type="radio"
+        name="start-path"
+        value={value}
+        checked={checked}
+        onChange={() => onChange(value)}
+        className="sr-only"
+      />
+      <div className="flex items-start gap-3">
+        <span
+          aria-hidden
+          className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 ${
+            checked ? "border-primary" : "border-foreground/25"
+          }`}
+        >
+          {checked && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[14px] font-semibold text-foreground">
+              {title}
+            </span>
+            {badge && (
+              <span className="rounded-full bg-primary/12 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-primary-dark">
+                {badge}
+              </span>
+            )}
+          </div>
+          <p className="mt-1 text-[12.5px] leading-relaxed text-foreground/60">
+            {body}
+          </p>
+        </div>
+      </div>
+    </label>
   );
 }
 

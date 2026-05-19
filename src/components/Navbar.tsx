@@ -37,16 +37,16 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/signin"
-              className="text-sm font-medium text-foreground/70 hover:text-primary-dark transition-colors"
-            >
-              Sign in
-            </Link>
-            <Link
               href="/get-started"
               className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white shadow-sm shadow-accent/25 hover:bg-accent-dark hover:shadow-md hover:-translate-y-[1px] transition-all"
             >
               Get Started
+            </Link>
+            <Link
+              href="/signin"
+              className="text-sm font-medium text-foreground/70 hover:text-primary-dark transition-colors"
+            >
+              Sign in
             </Link>
           </div>
 
@@ -80,18 +80,18 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/signin"
-              onClick={() => setMobileOpen(false)}
-              className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-secondary-light transition-colors"
-            >
-              Sign in
-            </Link>
-            <Link
               href="/get-started"
               onClick={() => setMobileOpen(false)}
               className="block rounded-full bg-accent px-6 py-2.5 text-center text-sm font-semibold text-white hover:bg-accent-dark transition-colors"
             >
               Get Started
+            </Link>
+            <Link
+              href="/signin"
+              onClick={() => setMobileOpen(false)}
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-foreground/70 hover:bg-secondary-light transition-colors"
+            >
+              Sign in
             </Link>
           </div>
         )}

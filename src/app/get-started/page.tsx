@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { set } from "@/lib/demoState";
+import { get, set } from "@/lib/demoState";
 import type { PlanTier } from "@/lib/plans";
 
 const TOTAL_STEPS = 7;
@@ -130,7 +130,11 @@ export default function GetStarted() {
           recommendedPlan: tier.id,
         },
       });
-      router.push("/app/signup?from=quiz");
+      // If the visitor already has an account (signed up first, taking the
+      // quiz second), skip the signup step and land them straight on plan
+      // selection. The select-plan page will pick up the recommendation.
+      const hasAccount = !!get().user;
+      router.push(hasAccount ? "/app/select-plan" : "/app/signup?from=quiz");
       return;
     }
     const disqualifying = watchAll.medicalConditions?.find((c) =>
