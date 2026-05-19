@@ -98,15 +98,15 @@ export default function Home() {
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
-                  Real GLP-1 care, in{" "}
-                  <em className="italic font-normal text-primary-dark">good</em> hands.
+                  Treatment, prescribed by{" "}
+                  <em className="italic font-normal text-primary-dark">real</em> clinicians.
                 </h1>
               </Reveal>
               <Reveal delay={160}>
                 <p className="mt-7 text-lg text-foreground/70 leading-relaxed max-w-xl">
                   Board-certified providers — licensed in your state, trained in obesity medicine —
-                  review your assessment, talk with you on a virtual visit, and decide together
-                  whether GLP-1 treatment is the right next step.
+                  review your assessment, consult with you by video or secure message, and decide
+                  together whether GLP-1 treatment is the right next step.
                 </p>
               </Reveal>
               <Reveal delay={240}>
@@ -229,7 +229,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={60}>
               <h2 className="mt-5 font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
-                A consultation, then your medication. That&rsquo;s it.
+                A consultation, then a care plan made for you. That&rsquo;s it.
               </h2>
             </Reveal>
           </div>
@@ -655,7 +655,7 @@ const heroSteps = [
   {
     title: "Visit with a clinician",
     description:
-      "A licensed provider reviews your answers and meets with you on a virtual visit.",
+      "A licensed provider reviews your answers and consults with you — by video or secure message.",
   },
   {
     title: "Treatment, delivered",
@@ -673,7 +673,7 @@ const steps = [
   {
     title: "Provider Consultation",
     description:
-      "A licensed healthcare provider reviews your information and conducts a virtual consultation.",
+      "A licensed healthcare provider reviews your information and consults with you — by video visit or asynchronously by secure message, depending on what suits your care.",
   },
   {
     title: "Personalized Treatment",

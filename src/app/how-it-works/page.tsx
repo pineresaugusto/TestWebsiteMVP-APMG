@@ -310,10 +310,10 @@ const journeySteps = [
   {
     title: "Consult With a Licensed Provider",
     description:
-      "A board-certified healthcare provider licensed in your state reviews your assessment and conducts a virtual consultation. They'll answer your questions and determine if GLP-1 treatment is appropriate for you.",
+      "A board-certified healthcare provider licensed in your state reviews your assessment and consults with you — by video visit or asynchronously by secure message, depending on what fits your care. They'll answer your questions and determine if GLP-1 treatment is appropriate for you.",
     details: [
       "Board-certified providers only",
-      "Virtual visit from home — no office wait times",
+      "Visits by video or secure message — no office wait times",
       "Thorough medical review before any prescription",
       "Your provider makes all medical decisions",
     ],
