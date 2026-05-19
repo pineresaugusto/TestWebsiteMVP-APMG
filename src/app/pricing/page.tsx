@@ -12,15 +12,15 @@ import { absoluteUrl, breadcrumbJsonLd, SITE_NAME, SITE_URL } from "@/lib/seo";
 // + the "all-inclusive" differentiator. The plan-bound Service offers
 // below give Google enough to potentially surface a price snippet.
 export const metadata: Metadata = {
-  title: "GLP-1 Weight Loss Pricing — Plans from $159/Month",
+  title: "Pricing — GLP-1 Weight Loss & Peptide Programs from $159/Month",
   description:
-    "Simple, all-inclusive GLP-1 weight loss pricing. Three monthly plans from $159 — covers medication, provider visits, supplies, and shipping. No insurance, cancel anytime.",
+    "Simple, all-inclusive pricing for GLP-1 weight loss treatment and other Nuvela peptide programs. Three monthly plans from $159 — covers medication, provider visits, supplies, and shipping. No insurance, cancel anytime.",
   alternates: { canonical: "/pricing" },
   openGraph: {
     url: "/pricing",
-    title: `GLP-1 Weight Loss Pricing — Plans from $159/mo | ${SITE_NAME}`,
+    title: `Pricing — Plans from $159/mo | ${SITE_NAME}`,
     description:
-      "Three transparent monthly plans, all-inclusive of medication, consultations, supplies, and shipping. No insurance required.",
+      "Three transparent monthly plans, all-inclusive of medication, consultations, supplies, and shipping — applied uniformly across every Nuvela program.",
   },
 };
 
@@ -36,8 +36,8 @@ const pricingJsonLd = [
   ...PLAN_LIST.map((tier) => ({
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `Nuvela ${tier.name} — GLP-1 Weight Loss Plan`,
-    serviceType: "Telehealth weight loss treatment",
+    name: `Nuvela ${tier.name} — Peptide Program Plan`,
+    serviceType: "Telehealth peptide and weight-management treatment",
     description: tier.tagline,
     provider: {
       "@type": "Organization",
@@ -120,9 +120,11 @@ export default function Pricing() {
 
           {/* Fine print */}
           <p className="mt-12 text-center text-xs text-foreground/40 max-w-2xl mx-auto">
-            Pricing shown is illustrative. Final pricing is determined during your consultation
-            based on your individual treatment plan. Compounded semaglutide is not an FDA-approved
-            product. All medical decisions are made by your independent licensed provider. See our{" "}
+            Pricing applies uniformly across every Nuvela program (weight management, vitality,
+            sexual & intimacy). Final pricing is determined during your consultation based on your
+            individual treatment plan. Compounded medications shipped by our partner pharmacies are
+            not FDA-approved products. All medical decisions are made by your independent licensed
+            provider. See our{" "}
             <Link
               href="/medical-disclaimer"
               className="underline hover:text-foreground/70"

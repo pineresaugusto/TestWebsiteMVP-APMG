@@ -4,9 +4,9 @@ export default function Footer() {
   return (
     <footer className="bg-foreground text-white/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand */}
-          <div className="md:col-span-1">
+          <div className="col-span-2 md:col-span-1">
             <Link
               href="/"
               className="font-display text-2xl text-white tracking-[-0.01em]"
@@ -14,8 +14,31 @@ export default function Footer() {
               Nuvela
             </Link>
             <p className="mt-3 text-sm leading-6 text-white/60">
-              Clinically-studied GLP-1 weight loss treatment, guided by licensed providers.
+              Doctor-prescribed peptide programs, guided by licensed providers. Weight management
+              leads what we treat.
             </p>
+          </div>
+
+          {/* Programs — new in Iter 13. Anchors to the home page Programs
+              section since per-program landing pages don't exist yet. */}
+          <div>
+            <h3 className="text-sm font-semibold text-white">Programs</h3>
+            <ul className="mt-3 space-y-2">
+              {[
+                { href: "/#programs", label: "Weight management" },
+                { href: "/#programs", label: "Vitality" },
+                { href: "/#programs", label: "Sexual & intimacy" },
+              ].map((link, i) => (
+                <li key={i}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-white/60 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Quick links */}

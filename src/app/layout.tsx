@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Nuvela is an online GLP-1 weight loss program that connects you with licensed providers for clinically-studied treatment, delivered to your door — no insurance required, cancel anytime.",
+    "Nuvela's GLP-1 weight loss program leads doctor-prescribed peptide care, with vitality and sexual health programs alongside. Connects you with licensed providers for clinically-studied treatment, delivered to your door — no insurance required, cancel anytime.",
   applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
@@ -47,13 +47,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description:
-      "Clinically-studied GLP-1 weight loss treatment with licensed providers. All-inclusive monthly plans from $199. No insurance required.",
+      "GLP-1 weight loss treatment plus vitality and sexual health programs. Licensed providers, clinically-studied treatment, home delivery. From $159/month.",
     images: [
       {
         url: "/images/home-bedroom.jpg",
         width: 1400,
         height: 1750,
-        alt: "Person relaxing at home, smiling at their phone — Nuvela telehealth GLP-1 weight loss",
+        alt: "Person relaxing at home, smiling at their phone — Nuvela telehealth peptide programs",
       },
     ],
   },
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description:
-      "Clinically-studied GLP-1 weight loss treatment with licensed providers. All-inclusive monthly plans from $199.",
+      "GLP-1 weight loss treatment plus vitality and sexual health programs. Licensed providers, home delivery, from $159/month.",
     images: ["/images/home-bedroom.jpg"],
   },
   robots: {
@@ -103,7 +103,7 @@ const organizationJsonLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/favicon.ico`,
   description:
-    "Online GLP-1 weight loss program connecting patients with licensed healthcare providers across the United States.",
+    "Online doctor-prescribed peptide care — led by GLP-1 weight management, with vitality and sexual health programs alongside. Connects patients with licensed healthcare providers across the United States.",
   areaServed: {
     "@type": "Country",
     name: "United States",
@@ -111,8 +111,15 @@ const organizationJsonLd = {
   knowsAbout: [
     "GLP-1 weight loss treatment",
     "Compounded semaglutide",
+    "Compounded tirzepatide",
     "Telehealth weight loss",
     "Online weight loss program",
+    "Compounded peptide treatments",
+    "Sermorelin therapy",
+    "Tesamorelin therapy",
+    "PT-141 bremelanotide",
+    "Sexual health telehealth",
+    "Vitality and recovery programs",
   ],
 };
 

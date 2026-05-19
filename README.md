@@ -7,6 +7,114 @@
 Reverse-chronological. Add an entry when you finish a work session.
 Format: `### YYYY-MM-DD — github-username`
 
+### 2026-05-09 — Mauger00 (Iter 13)
+- Iteration 13: strategic reshape from GLP-1-weight-loss-only
+  telehealth to a doctor-prescribed peptide platform, weight
+  management remaining the primary marketing focus. User direction
+  was explicit: "not drastic." Used the **grill-me** skill at the
+  start of the session to nail down six foundational decisions
+  (pharmacy capability, brand structure, lead framing, quiz
+  category count, how-it-works broadening, not-sure path UX) before
+  any code touched. Plan file at
+  `.claude/plans/polished-dancing-starfish.md`
+- **Pharmacy capability** (the bottleneck that gated everything
+  else): user confirmed the legally-clean molecule list is
+  semaglutide + tirzepatide (GLP-1) + sermorelin + tesamorelin +
+  PT-141 / bremelanotide + oxytocin. Nothing else — no ipamorelin /
+  CJC-1295 / BPC-157 / TB-500 / research peptides. Category mapping:
+  Weight management (lead), Vitality (sermorelin + tesamorelin fold
+  together — overlapping audiences for sleep / energy / lean body),
+  Sexual & intimacy (PT-141 + oxytocin), Not sure
+- **Phase A — Quiz reshape**: `/get-started` rebuilt around a
+  chooser-first flow. Four large cards (Weight management is
+  `Featured`; Vitality; Sexual & intimacy; "I'm not sure yet"). The
+  "not sure" path runs a 3-question triage with simple priority
+  routing (weight wins, then sexual, then vitality; fallback to
+  weight). Each category branch carries its own short assessment:
+  Weight keeps the full 7-step flow (untouched per user direction —
+  weight-loss copy was already good enough), Vitality and Sexual
+  each get a 5-step branch. Per-branch condition lists +
+  disqualifying flags (Weight: pancreatitis / MTC / MEN 2 ·
+  Vitality: active cancer · Sexual: cardiovascular event past 6
+  months). Plan recommendation: Weight = BMI-tiered (existing) ·
+  Vitality + Sexual = Accelerate default (tiers differ by software,
+  not medication, so the recommendation is "where most patients
+  start"). `DemoState.quiz.category` added as **optional** —
+  backward-compat with iter-A/B/C snapshots preserved, no
+  `STORAGE_KEY` bump. Existing seed presets updated to include
+  `category: "weight"`
+- **Phase B — Home Programs section + footer**: new `#programs`
+  section between the photo band and the GLP-1 science section,
+  with a parchment (`bg-secondary-light/40`) backdrop so it
+  visually separates from the white sections on either side. Lead
+  Featured tile is full-width (Weight management with sage ring +
+  FEATURED badge); below it sits a 3-up grid (Vitality / Sexual &
+  intimacy / Not sure yet?). Each card carries a molecule chip
+  (e.g., "PT-141 (VYLEESI) · OXYTOCIN") for credibility anchoring.
+  No new photos — inline SVG iconography only, in the editorial
+  restraint pattern Iter 11/12 set. Footer gained a Programs
+  column between Brand and Quick Links; the three links anchor to
+  `/#programs` since per-program landing pages don't exist yet
+- **Phase C — Marketing copy broadening** (light touch, per user
+  direction "no need to change much of the illustrations for
+  weight management"): tone shifts on the metadata layer + a
+  one-line preamble on `/how-it-works`; pricing fine print
+  broadened to "across every Nuvela program"; About mission + hero
+  subtitle rebuilt around peptide-care-led-by-GLP-1; FAQ gained
+  two new top Q&A ("What programs do you offer?" + "How do I know
+  which program is right for me?") with the rich React + plain-text
+  JSON-LD mirror updated in lockstep; Providers H1 italic-payoff
+  word "GLP-1 telehealth" → "peptide telehealth"; Medical
+  Disclaimer "Compounded semaglutide" block expanded to name every
+  program molecule + new "Program availability" hedge block. Home
+  hero (kicker, H1, subhead, three-steps card), photo band kicker,
+  photo band H2, and "What are GLP-1 medications?" section all
+  intentionally untouched — they're the lead-program first
+  impression and that's where weight loss should keep leading.
+  `plans.ts`: four feature strings rewritten as goal-agnostic
+  ("Compounded semaglutide medication" → "Prescription medication
+  for your program"; "AI-built nutrition plan" → "AI plan tailored
+  to your program and goals"; etc.). Tier names + prices +
+  structure **unchanged**
+- **Phase D — SEO sweep**: `SITE_TAGLINE` in `seo.ts`:
+  `"GLP-1 Weight Loss Treatment Online"` →
+  `"Doctor-prescribed peptide programs — weight loss, vitality, and
+  more"`. Root layout title default + description + OG + Twitter
+  card broadened. Organization JSON-LD `knowsAbout` kept the four
+  GLP-1 entries at array head (Google reads order as importance)
+  and appended seven peptide-related entries. Home page Service
+  JSON-LD `name` + `serviceType` + `description` broadened.
+  Pricing per-tier `Service.name` broadened. Per-route titles +
+  descriptions broadened on `/`, `/how-it-works`, `/pricing`,
+  `/about`, `/get-started`, `/providers`, `/faq`,
+  `/medical-disclaimer`. Weight-loss keywords deliberately
+  preserved in first 50 chars of every primary-revenue page title.
+  Sitemap + robots unchanged (no new routes yet)
+- **Skills used** beyond grill-me (informal self-passes):
+  legal-nuvela (platform framing throughout, all-program FDA-not-
+  approved disclaimer, new program-availability hedge, no outcome
+  promises on non-weight programs, PT-141 anchored to FDA-approved
+  Vyleesi status); frontend-design (Programs + chooser + triage
+  match the sage-stroked / parchment-card editorial restraint of
+  the rest of the site); SEO (weight-loss keyword preservation, no
+  schema cannibalization)
+- `npm run lint` clean (0 errors, 12 pre-existing warnings
+  unchanged from Iter 12). `npm run build` clean across all 26
+  routes. Visual sweep via `puppeteer-core` against Chrome for
+  Testing 147 with mobile emulation (`isMobile: true`,
+  `deviceScaleFactor: 2`, iPhone UA): home + Programs section at
+  1440 and 375, `/get-started` chooser at 1440 and 375, triage at
+  1440, Vitality branch entry at 1440, `/about`, `/faq`,
+  `/pricing`, `/medical-disclaimer` at 1440. Screenshots in
+  `docs/screenshots/iter13/`
+- **16 files modified, 0 added, 0 deleted.** Backward-compat with
+  existing iter-A/B/C demo snapshots preserved (optional
+  `category` field, no `STORAGE_KEY` bump). Deferred for future
+  iterations: per-program landing pages, dashboard program-
+  awareness, new photography, sitemap updates, formal
+  legal-nuvela + SEO skill invocations, real pharmacy contract
+  validation of the molecule list
+
 ### 2026-05-08 — Mauger00 (Iter 12)
 - Iteration 12: six threads from a real-user dogfood pass on
   Iter 11. Confirmed scope before implementation, landed in

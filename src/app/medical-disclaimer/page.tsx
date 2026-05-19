@@ -6,7 +6,7 @@ import Reveal from "@/components/Reveal";
 export const metadata: Metadata = {
   title: "Medical Disclaimer — Nuvela",
   description:
-    "Important information about the educational nature of the Nuvela website, compounded semaglutide, and the role of your licensed provider.",
+    "Important information about the educational nature of the Nuvela website, compounded medications used across Nuvela's peptide programs, and the role of your licensed provider.",
 };
 
 export default function MedicalDisclaimer() {
@@ -48,35 +48,56 @@ export default function MedicalDisclaimer() {
             </p>
           </Block>
 
-          <Block title="Compounded semaglutide is not FDA-approved">
+          <Block title="Compounded medications are not FDA-approved">
             <p>
-              If a provider prescribes compounded semaglutide, you should understand that
-              compounded medications are prepared by state-licensed pharmacies for
-              patient-specific needs and are not FDA-approved products. Compounded medications do
-              not undergo the same FDA review for safety, effectiveness, or quality as
-              commercially manufactured products such as Ozempic&reg; or Wegovy&reg;. This is an
-              important trade-off that your provider and pharmacy should discuss with you,
-              including any risks specific to compounded preparations.
+              Across Nuvela&rsquo;s programs, some treatments your provider may prescribe are
+              compounded by state-licensed pharmacies for patient-specific needs and are{" "}
+              <strong className="font-semibold">not FDA-approved products</strong>. This includes
+              compounded semaglutide and tirzepatide (weight management), sermorelin and
+              tesamorelin (vitality), and certain formulations of bremelanotide and oxytocin
+              (sexual &amp; intimacy). Compounded medications do not undergo the same FDA review
+              for safety, effectiveness, or quality as commercially manufactured products such as
+              Ozempic&reg;, Wegovy&reg;, or Vyleesi&reg;. This is an important trade-off that your
+              provider and pharmacy should discuss with you, including any risks specific to
+              compounded preparations.
             </p>
             <p>
-              Ozempic&reg; and Wegovy&reg; are registered trademarks of their respective owners.
-              Nuvela is not affiliated with, endorsed by, or sponsored by any brand-name
-              manufacturer.
+              Ozempic&reg;, Wegovy&reg;, and Vyleesi&reg; are registered trademarks of their
+              respective owners. Nuvela is not affiliated with, endorsed by, or sponsored by any
+              brand-name manufacturer.
+            </p>
+          </Block>
+
+          <Block title="Program availability">
+            <p>
+              Each Nuvela program is offered subject to provider availability, pharmacy capacity,
+              and the laws of the patient&rsquo;s state of residence. Not every program is
+              available in every state, and program availability may change at any time without
+              notice. A licensed provider determines whether any program is appropriate for you
+              during your consultation.
             </p>
           </Block>
 
           <Block title="Potential risks and side effects">
             <p>
-              GLP-1 therapy can cause side effects. Commonly reported side effects include nausea,
-              vomiting, diarrhea, constipation, abdominal pain, reduced appetite, fatigue, and
-              injection-site reactions. Less common but serious risks may include pancreatitis,
-              gallbladder problems, kidney problems, serious allergic reactions, and others.
+              Every program at Nuvela carries program-specific risks and side effects, which your
+              provider will review in detail before prescribing.
             </p>
             <p>
-              Certain conditions make GLP-1 therapy unsafe or inadvisable, including a personal or
-              family history of medullary thyroid carcinoma, multiple endocrine neoplasia syndrome
-              type 2 (MEN 2), and a history of pancreatitis. GLP-1 therapy is not recommended
-              during pregnancy or breastfeeding.
+              <strong className="font-semibold">GLP-1 therapy (weight management)</strong> can cause
+              side effects. Commonly reported side effects include nausea, vomiting, diarrhea,
+              constipation, abdominal pain, reduced appetite, fatigue, and injection-site
+              reactions. Less common but serious risks may include pancreatitis, gallbladder
+              problems, kidney problems, serious allergic reactions, and others. Certain conditions
+              make GLP-1 therapy unsafe or inadvisable, including a personal or family history of
+              medullary thyroid carcinoma, multiple endocrine neoplasia syndrome type 2 (MEN 2),
+              and a history of pancreatitis. GLP-1 therapy is not recommended during pregnancy or
+              breastfeeding.
+            </p>
+            <p>
+              <strong className="font-semibold">Other Nuvela programs</strong> use different
+              medications with their own risk profiles and contraindications. Your provider will
+              review these with you in full before any prescription is made.
             </p>
             <p>
               Your licensed provider is responsible for reviewing the full risk profile with you

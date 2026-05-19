@@ -46,10 +46,13 @@ export type Plan = {
   features: string[];
 };
 
+// Goal-agnostic foundation features — Iter 13 reword. Same features
+// across every program (weight, vitality, sexual & intimacy); the
+// specific medication is determined by the consultation, not the tier.
 const sharedFoundationFeatures = [
-  "Compounded semaglutide medication",
+  "Prescription medication for your program",
   "Provider consultations & ongoing visits",
-  "Injection supplies & free shipping",
+  "Supplies & free shipping",
   "Direct messaging with your care team",
   "Cancel anytime",
 ];
@@ -73,8 +76,8 @@ export const PLANS: Record<PlanTier, Plan> = {
     builtsOn: "start",
     features: [
       "24/7 AI health companion (questions between visits)",
-      "Personalized AI-built nutrition plan",
-      "Recipe library + grocery prompts",
+      "AI plan tailored to your program and goals",
+      "Habit & lifestyle tools",
     ],
   },
   transform: {
@@ -85,7 +88,7 @@ export const PLANS: Record<PlanTier, Plan> = {
     popular: false,
     builtsOn: "accelerate",
     features: [
-      "Personalized AI-built fitness & movement plan",
+      "AI-built movement & lifestyle plan",
       "Progress dashboard with trend tracking",
       "Priority care-team response times",
     ],

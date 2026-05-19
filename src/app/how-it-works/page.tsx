@@ -16,7 +16,7 @@ export default function HowItWorks() {
             How Nuvela <em className="not-italic text-primary-dark">works</em>
           </>
         }
-        description="From your first assessment to ongoing support — a calm, step-by-step look at what the experience feels like."
+        description="From your first assessment to ongoing support — a calm, step-by-step look at what the experience feels like. This page focuses on the weight management program; vitality and sexual health programs share the same journey."
       />
 
       {/* Patient Journey — clean stacked typography, no image tiles */}

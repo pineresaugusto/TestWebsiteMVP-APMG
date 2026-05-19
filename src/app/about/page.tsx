@@ -9,15 +9,15 @@ import { breadcrumbJsonLd, SITE_NAME } from "@/lib/seo";
 // "what is Nuvela GLP-1" + "Nuvela telehealth weight loss". Title
 // keeps "About" up front but reinforces what Nuvela actually is.
 export const metadata: Metadata = {
-  title: "About Nuvela — Online GLP-1 Weight Loss Care",
+  title: "About Nuvela — Doctor-Prescribed Peptide Programs",
   description:
-    "Nuvela is a telehealth platform connecting patients with licensed providers for clinically-studied GLP-1 weight loss treatment. Learn our mission and how the platform works.",
+    "Nuvela is a telehealth platform connecting patients with licensed providers for doctor-prescribed peptide treatments — led by GLP-1 weight loss, with vitality and sexual health programs. Learn our mission and how the platform works.",
   alternates: { canonical: "/about" },
   openGraph: {
     url: "/about",
-    title: `About ${SITE_NAME} — Online GLP-1 Weight Loss Care`,
+    title: `About ${SITE_NAME} — Doctor-Prescribed Peptide Programs`,
     description:
-      "Our mission: make GLP-1 weight loss care accessible, affordable, and genuinely supportive — through licensed providers and a simple monthly plan.",
+      "Our mission: make doctor-prescribed peptide care accessible, affordable, and genuinely supportive — led by GLP-1 weight management, through licensed providers and a simple monthly plan.",
   },
 };
 
@@ -36,7 +36,7 @@ export default function About() {
             About <em className="not-italic text-primary-dark">Nuvela</em>
           </>
         }
-        description="We believe everyone deserves access to clinically-studied weight-loss care — without the barriers, the stigma, or the confusion."
+        description="We believe everyone deserves access to clinically-studied, doctor-prescribed care — led by GLP-1 weight management, without the barriers, the stigma, or the confusion."
       />
 
       {/* Mission */}
@@ -48,10 +48,10 @@ export default function About() {
                 Our mission
               </h2>
               <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
-                Nuvela exists to make GLP-1 weight loss treatment accessible, affordable, and
-                genuinely supportive. We&apos;re not selling a quick fix — we&apos;re building a
-                medical platform that connects patients with licensed providers for guided,
-                evidence-based weight management.
+                Nuvela exists to make doctor-prescribed peptide care accessible, affordable, and
+                genuinely supportive — led by GLP-1 weight management, where most patients start.
+                We&apos;re not selling a quick fix — we&apos;re building a medical platform that
+                connects patients with licensed providers for guided, evidence-based treatment.
               </p>
               <p className="mt-4 text-lg text-foreground/70 leading-relaxed">
                 Too many people who could benefit from these proven treatments face barriers: long wait

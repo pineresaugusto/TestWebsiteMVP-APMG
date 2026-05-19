@@ -6,6 +6,272 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/).
 This project does not currently use semantic versioning; entries are grouped by
 iteration until a release cadence is established.
 
+## [Unreleased] — Iteration 13: peptide platform reshape (weight-loss-led)
+
+Strategic reshape from GLP-1-weight-loss-only telehealth to a broader
+doctor-prescribed peptide platform, with weight management remaining
+the primary marketing focus. User explicit direction: "the change
+should not be drastic." Confirmed via grill-me skill interview through
+six foundational decisions (pharmacy capability, brand structure, lead
+framing, quiz category count, how-it-works broadening, not-sure path
+UX) before any code touched.
+
+Pharmacy capability (gated everything else): semaglutide, tirzepatide,
+sermorelin, PT-141 (bremelanotide), tesamorelin, oxytocin. Nothing
+else — no ipamorelin / CJC-1295 / BPC-157 / TB-500 / research peptides.
+
+Plan file: `.claude/plans/polished-dancing-starfish.md`.
+
+### Added
+
+- **`DemoState.quiz.category` (optional)** — `QuizCategory =
+  "weight" | "vitality" | "sexual"`. Backward-compat with existing
+  iter-A/B/C localStorage snapshots: `category` resolves to `undefined`
+  for legacy users, downstream code treats as `"weight"` (the
+  historical implied default). `STORAGE_KEY` deliberately NOT bumped.
+  Existing seed presets (`week4`, `newUser`, `notEligible`) updated to
+  include `category: "weight"` for completeness.
+- **Category chooser on `/get-started`** — four large radio cards
+  (Weight management / Vitality / Sexual & intimacy / I'm not sure
+  yet) with the lead category badged `Featured`. Subhead borrows the
+  credibility of weight management explicitly: "Weight management is
+  where most people start — the other programs use the same providers,
+  pharmacy partners, and plans."
+- **"Not sure" triage** — 3-question quick-routing flow before the
+  branch's real assessment. Simple priority logic: weight-focused
+  answer wins, then sexual concern, then vitality. Fallback to
+  weight (the lead program). "See my recommendation" CTA gated until
+  all three questions answered.
+- **Per-branch assessments** — Weight keeps the full 7-step
+  flow (basics → body → goals → conditions → meds → previous-attempts
+  → review). Vitality is 5 steps (basics → vitality-goals + activity →
+  conditions → meds → review). Sexual is 5 steps (basics →
+  concern + partnered-status → conditions → meds → review). Per-branch
+  condition lists + disqualifying flags (Weight: pancreatitis / MTC /
+  MEN 2 · Vitality: active or recent cancer · Sexual: cardiovascular
+  event in past 6 months / uncontrolled hypertension).
+- **Programs section on home** — new `#programs` section between the
+  photo band and the GLP-1 science section, with a `bg-secondary-light/40`
+  parchment backdrop so it visually separates from the white sections
+  above and below. Featured Weight management tile (full-width feature
+  row, sage ring, FEATURED badge top-right) + 3-up grid below
+  (Vitality · Sexual & intimacy · Not sure yet?). Each card carries a
+  molecule chip (e.g., "PT-141 (VYLEESI) · OXYTOCIN") for credibility
+  anchoring. No new photos — inline SVG iconography + typography only.
+  Section anchored at `#programs` so footer + future deep links can
+  land here.
+- **Footer Programs column** — between Brand and Quick Links. Three
+  program links all anchor to `/#programs` (no per-program landing
+  pages yet). Grid expanded from `md:grid-cols-4` to `md:grid-cols-5`.
+- **FAQ "About our programs" top-section Q&A** — two new entries:
+  "What programs do you offer?" (lists molecules per program with the
+  shared-infrastructure framing) and "How do I know which program is
+  right for me?" (points to the chooser + triage). Existing "What is
+  Nuvela?" answer broadened. Both the rich React `SECTIONS` and the
+  plain-text `FAQ_JSONLD` mirror were updated in lockstep so the
+  FAQPage rich-result data doesn't drift from the rendered DOM.
+- **Medical disclaimer "Program availability" block** — new section
+  hedging that each program is offered subject to provider
+  availability, pharmacy capacity, and the laws of the patient's
+  state.
+
+### Changed
+
+- **Quiz routing logic** — `/get-started` now reads `demoState.user`
+  on submit and routes to `/app/select-plan` directly when the visitor
+  is already signed up (previously always went to
+  `/app/signup?from=quiz`). Eligibility check is now per-branch:
+  Weight keeps BMI ≥ 27 + age + condition gating; Vitality + Sexual
+  skip BMI and use their own condition lists.
+- **Plan recommendation** — Weight branch keeps BMI-tiered logic
+  (≥40 → Transform, ≥35 → Accelerate, else Start). Vitality + Sexual
+  default to Accelerate (the popular tier). Tiers differ by software
+  features, not medication, so the recommendation is "where most
+  patients start" rather than a clinical claim.
+- **Site-wide tagline** in `src/lib/seo.ts`:
+  `"GLP-1 Weight Loss Treatment Online"` →
+  `"Doctor-prescribed peptide programs — weight loss, vitality, and
+  more"`. Used in root layout title default + OG.
+- **Root layout metadata** — title default + description + OG +
+  Twitter card all broadened. Weight-loss keywords deliberately
+  preserved in first 50 chars of every primary-revenue page.
+- **Organization JSON-LD `knowsAbout`** — kept the four GLP-1 entries
+  at the top (Google reads array order as importance), appended:
+  Compounded tirzepatide · Compounded peptide treatments · Sermorelin
+  therapy · Tesamorelin therapy · PT-141 bremelanotide · Sexual
+  health telehealth · Vitality and recovery programs.
+- **Home page Service JSON-LD** — `name` "GLP-1 Weight Loss Treatment"
+  → "Doctor-Prescribed Peptide Programs"; `serviceType` broadened to
+  "Telehealth peptide and weight-management treatment"; description
+  rewritten to lead with the GLP-1 weight-management program and name
+  the additional programs by molecule.
+- **Pricing per-tier Service JSON-LD** — `name` `"Nuvela X — GLP-1
+  Weight Loss Plan"` → `"Nuvela X — Peptide Program Plan"`. Prices,
+  Offer structure, AggregateOffer all unchanged ($159–$199).
+- **Per-route metadata broadened** (titles + descriptions): `/` ·
+  `/how-it-works` · `/pricing` · `/about` · `/get-started` ·
+  `/providers` · `/faq` · `/medical-disclaimer`. Weight-loss keywords
+  preserved in title for `/`, `/how-it-works`, `/pricing` (the highest
+  commercial-intent surfaces); other routes lead with the broadened
+  framing.
+- **Home page copy** — Hero (kicker, H1, subhead, three-steps card)
+  intentionally **unchanged** since weight loss leads marketing.
+  Photo band kicker "Online GLP-1 weight loss treatment" and H2 "A
+  consultation, then a care plan made for you. That's it." also
+  unchanged. Only the final-CTA paragraph softened: "see if GLP-1
+  treatment might be a good fit" → "see if Nuvela might be a good
+  fit" (program-agnostic since the visitor may have just picked a
+  non-weight program in the new chooser).
+- **`/about` mission + hero subtitle** — broadened to mention
+  doctor-prescribed peptide care led by GLP-1 weight management.
+  Stats (~15% on semaglutide, $1,300+ brand-name cost, etc.) left
+  intact — they're factual and anchored to the lead program.
+- **`/how-it-works`** — one-line preamble added at the end of the
+  hero description noting other programs share the same journey. All
+  step content, GLP-1 product photo, "How Semaglutide Works"
+  explainer, STEP-1 clinical citation, and side-effects FAQ left
+  unchanged (per user direction: "no need to change much of the
+  illustrations for weight management").
+- **`/pricing` fine print** — broadened to "Pricing applies uniformly
+  across every Nuvela program" and "Compounded medications shipped by
+  our partner pharmacies are not FDA-approved products" (was
+  specifically "Compounded semaglutide is not an FDA-approved
+  product").
+- **`/providers`** — H1 italic-payoff word: "GLP-1 telehealth" →
+  "peptide telehealth." Subhead expanded to mention the three
+  programs with weight management leading. "Steady Patient Pipeline"
+  + "Revenue Growth" benefit blocks reworded to "peptide" instead of
+  "GLP-1." Form, workflow, and the rest of the page unchanged.
+- **`/medical-disclaimer`** — "Compounded semaglutide is not
+  FDA-approved" block renamed to "Compounded medications are not
+  FDA-approved" and expanded to enumerate every program molecule
+  (compounded semaglutide / tirzepatide for weight, sermorelin /
+  tesamorelin for vitality, bremelanotide / oxytocin for sexual &
+  intimacy). Trademark line expanded to include Vyleesi®.
+  "Potential risks and side effects" block restructured: a GLP-1
+  paragraph (preserving the existing MTC / MEN 2 / pancreatitis /
+  pregnancy contraindications) plus a hedge paragraph noting other
+  programs have their own risk profiles reviewed at consult.
+- **`/faq`** — title + description broadened. Existing "What is
+  Nuvela?" answer updated. Two new Q&A inserted at the top of the
+  General section (see Added above).
+- **`src/lib/plans.ts`** — 4 weight-loss-flavored feature strings
+  rewritten as goal-agnostic so the same plans apply across every
+  program: "Compounded semaglutide medication" → "Prescription
+  medication for your program"; "Injection supplies & free shipping"
+  → "Supplies & free shipping"; "Personalized AI-built nutrition
+  plan" → "AI plan tailored to your program and goals"; "Recipe
+  library + grocery prompts" → "Habit & lifestyle tools";
+  "Personalized AI-built fitness & movement plan" → "AI-built
+  movement & lifestyle plan." Tier names (Start / Accelerate /
+  Transform) + prices + structure + builds-on relationships
+  **unchanged**.
+- **Footer brand description** — "Clinically-studied GLP-1 weight
+  loss treatment, guided by licensed providers." → "Doctor-prescribed
+  peptide programs, guided by licensed providers. Weight management
+  leads what we treat."
+
+### Removed
+
+Nothing functional removed. The `recommendedPlan` field is still
+present and populated. The Weight-branch quiz steps + flow are 1:1
+with the prior single-flow quiz; everything else is additive.
+
+### Verification
+
+- **Lint:** `npm run lint` — 0 errors, 12 pre-existing warnings
+  unchanged from Iter 12 (3 react-hook-form `incompatible-library` +
+  9 pre-existing `no-unused-vars` / `_method` / `Reveal` warnings).
+- **Build:** `npm run build` clean, all 26 routes prerender.
+- **Visual sweep** via `puppeteer-core` against Chrome for Testing
+  147 with mobile emulation (`isMobile: true`,
+  `deviceScaleFactor: 2`, iPhone UA): home (full + Programs section
+  at 1440 and 375), `/get-started` chooser at 1440 and 375, triage
+  at 1440, vitality branch entry at 1440, `/about`, `/faq`,
+  `/pricing`, `/medical-disclaimer` — all at 1440. Saved to
+  `docs/screenshots/iter13/`.
+- **Backward-compat smoke:** parseRaw spread + optional `category`
+  field tested implicitly via existing seed presets (`week4` etc.)
+  loading without parse errors after the Iter 13 build. No
+  `STORAGE_KEY` bump.
+
+### Skills invoked
+
+- **grill-me** (formal): 3-question interview at the start of the
+  iteration resolved the 6 foundational decisions before any code
+  touched. Plan file recorded at
+  `.claude/plans/polished-dancing-starfish.md`.
+- **legal-nuvela** (informal self-pass): platform framing throughout
+  ("doctor-prescribed," "our partner pharmacies can compound"); all
+  program molecules named explicitly on `/medical-disclaimer`; new
+  "Program availability" hedge; no outcome promises on non-weight
+  programs; PT-141 anchored to its FDA-approved status (Vyleesi).
+- **frontend-design** (informal): Programs section + chooser +
+  triage match the editorial restraint (sage stroked iconography,
+  parchment cards, featured-tile hierarchy) of the rest of the site.
+- **SEO** (informal): weight-loss keywords preserved in first 50
+  chars of every primary-revenue page; Organization `knowsAbout`
+  GLP-1 entries kept at array head; sitemap + robots unchanged (no
+  new routes).
+
+### Files modified (16)
+
+```
+.claude/plans/polished-dancing-starfish.md  (new plan file)
+src/lib/seo.ts                              (tagline)
+src/lib/demoState.ts                        (QuizCategory + seed presets)
+src/lib/plans.ts                            (4 feature string rewords)
+src/app/layout.tsx                          (root meta + Organization JSON-LD)
+src/app/page.tsx                            (Programs section + meta + JSON-LD)
+src/app/how-it-works/page.tsx               (1-line preamble)
+src/app/how-it-works/layout.tsx             (title + description)
+src/app/pricing/page.tsx                    (fine print + Service JSON-LD + meta)
+src/app/about/page.tsx                      (mission + hero subtitle + meta)
+src/app/providers/layout.tsx                (title + description)
+src/app/providers/page.tsx                  (H1 + benefit copy)
+src/app/faq/page.tsx                        (2 new top Q&A + FAQPage JSON-LD + meta)
+src/app/medical-disclaimer/page.tsx         (broadened compounding block + new availability block + per-program risks)
+src/app/get-started/page.tsx                (chooser → triage → branched assessments)
+src/app/get-started/layout.tsx              (title + description)
+src/components/Footer.tsx                   (Programs column + brand description)
+```
+
+### Files intentionally NOT modified
+
+```
+src/components/Navbar.tsx          (no Programs nav link — would be drastic)
+src/app/terms/page.tsx             (no GLP-1 references)
+src/app/privacy/page.tsx           (no GLP-1 references)
+src/app/signin/page.tsx            (just shipped in Iter 12.5, unchanged)
+src/app/app/* funnel pages         (post-auth, gated behind quiz/account already)
+src/app/sitemap.ts                 (no new routes)
+src/app/robots.ts                  (unchanged)
+public/images/*                    (no new photos)
+src/app/page.tsx hero kicker/H1/subhead/three-steps  (lead-program copy, unchanged)
+src/app/page.tsx photo band kicker + H2              (lead-program copy, unchanged)
+src/app/page.tsx "What are GLP-1 medications?"       (lead-program education, unchanged)
+src/app/about/page.tsx stats                         (factual, anchored to lead program)
+src/app/how-it-works/page.tsx body                   (GLP-1 explainer + STEP-1 stay verbatim per user direction)
+src/app/faq/page.tsx Eligibility / Medication&Safety sections  (weight-loss-specific Q&A kept verbatim)
+```
+
+### Deferred (flagged for future iterations)
+
+- Per-program landing pages under `/programs/{slug}` — first
+  iteration will validate which programs matter most before
+  investing in per-program SEO surface.
+- Patient-side dashboard program-awareness (still shows "Weight
+  loss plan" generically — fine for now since the demo seeds all
+  use `category: "weight"`).
+- New photography for non-weight programs (Programs section uses
+  iconography only).
+- Sitemap / robots updates (no new routes to register yet).
+- Formal `legal-nuvela` and `SEO` skill invocations as separate
+  passes (self-pass done; user can request a deeper review).
+- Real legal validation of compoundability for sermorelin /
+  tesamorelin / bremelanotide / oxytocin — pending partner pharmacy
+  contract confirmation.
+
 ## [Unreleased] — Iteration 12: assessment timing, bundle-savings UX, hero rewrite
 
 Six threads from a real-user dogfood pass on Iter 11. The user

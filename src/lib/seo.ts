@@ -19,7 +19,7 @@ export const SITE_URL =
 
 export const SITE_NAME = "Nuvela";
 
-export const SITE_TAGLINE = "GLP-1 Weight Loss Treatment Online";
+export const SITE_TAGLINE = "Doctor-prescribed peptide programs — weight loss, vitality, and more";
 
 /** Build an absolute URL from a path like "/pricing". */
 export function absoluteUrl(path: string): string {

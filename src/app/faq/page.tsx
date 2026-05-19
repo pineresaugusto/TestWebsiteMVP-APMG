@@ -11,15 +11,15 @@ import { breadcrumbJsonLd, SITE_NAME } from "@/lib/seo";
 // FAQPage JSON-LD below makes those Q&A pairs eligible for
 // rich-result rendering on Google.
 export const metadata: Metadata = {
-  title: "GLP-1 Weight Loss FAQ — Eligibility, Pricing, Safety",
+  title: "Nuvela FAQ — Programs, Eligibility, Pricing, Safety",
   description:
-    "Answers to common GLP-1 weight loss questions: who qualifies, how compounded semaglutide compares to Ozempic and Wegovy, pricing, delivery, side effects, and how Nuvela works.",
+    "Answers to common questions about Nuvela's GLP-1 weight loss program and other peptide programs: who qualifies, how compounded medications work, pricing, delivery, side effects, and how the platform works.",
   alternates: { canonical: "/faq" },
   openGraph: {
     url: "/faq",
-    title: `GLP-1 Weight Loss FAQ | ${SITE_NAME}`,
+    title: `Nuvela FAQ — Programs, Eligibility, Pricing | ${SITE_NAME}`,
     description:
-      "Eligibility, pricing, safety, delivery, and how the platform works — straight answers.",
+      "Programs, eligibility, pricing, safety, delivery, and how the platform works — straight answers.",
   },
 };
 
@@ -34,7 +34,15 @@ type Section = { title: string; items: QA[] };
 const FAQ_JSONLD: { q: string; a: string }[] = [
   {
     q: "What is Nuvela?",
-    a: "Nuvela is a telehealth platform being built to connect adults exploring GLP-1 weight loss treatment with licensed healthcare providers. Eligible patients can be evaluated online, receive a prescription if appropriate, and have treatment shipped to their home as part of a monthly plan.",
+    a: "Nuvela is a telehealth platform being built to connect adults with licensed healthcare providers for doctor-prescribed peptide treatments — led by GLP-1 weight loss, with additional programs for vitality (sleep, energy, recovery) and sexual health. Eligible patients can be evaluated online, receive a prescription if appropriate, and have treatment shipped to their home as part of a monthly plan.",
+  },
+  {
+    q: "What programs do you offer?",
+    a: "Three programs share the same provider model and pharmacy partners. Weight management is the lead program and where most patients start — GLP-1 receptor agonists (compounded semaglutide and tirzepatide). Vitality covers sleep, daytime energy, recovery, and lean body composition through GHRH analog therapy (sermorelin, tesamorelin). Sexual & intimacy covers desire and function concerns (PT-141 / bremelanotide, oxytocin).",
+  },
+  {
+    q: "How do I know which program is right for me?",
+    a: "Start by picking the program that matches your main goal in our 2-minute assessment. If you are not sure, the 'I'm not sure yet' option runs a quick 3-question triage and routes you into a recommended program. Your provider will confirm the right fit during your consultation — programs can also be adjusted later.",
   },
   {
     q: "Is Nuvela a pharmacy or a medical practice?",
@@ -133,10 +141,38 @@ const SECTIONS: Section[] = [
         q: "What is Nuvela?",
         a: (
           <>
-            Nuvela is a telehealth platform being built to connect adults exploring GLP-1 weight
-            loss treatment with licensed healthcare providers. Eligible patients can be evaluated
-            online, receive a prescription if appropriate, and have treatment shipped to their home
-            as part of a monthly plan.
+            Nuvela is a telehealth platform being built to connect adults with licensed healthcare
+            providers for doctor-prescribed peptide treatments — led by GLP-1 weight loss, with
+            additional programs for vitality (sleep, energy, recovery) and sexual health. Eligible
+            patients can be evaluated online, receive a prescription if appropriate, and have
+            treatment shipped to their home as part of a monthly plan.
+          </>
+        ),
+      },
+      {
+        q: "What programs do you offer?",
+        a: (
+          <>
+            Three programs share the same provider model and pharmacy partners.{" "}
+            <strong className="font-semibold text-foreground">Weight management</strong> is the lead
+            program and where most patients start — GLP-1 receptor agonists (compounded semaglutide
+            and tirzepatide).{" "}
+            <strong className="font-semibold text-foreground">Vitality</strong> covers sleep,
+            daytime energy, recovery, and lean body composition through GHRH analog therapy
+            (sermorelin, tesamorelin).{" "}
+            <strong className="font-semibold text-foreground">Sexual &amp; intimacy</strong> covers
+            desire and function concerns (PT-141 / bremelanotide, oxytocin).
+          </>
+        ),
+      },
+      {
+        q: "How do I know which program is right for me?",
+        a: (
+          <>
+            Start by picking the program that matches your main goal in our 2-minute assessment. If
+            you are not sure, the &ldquo;I&rsquo;m not sure yet&rdquo; option runs a quick 3-question
+            triage and routes you into a recommended program. Your provider will confirm the right
+            fit during your consultation — programs can also be adjusted later.
           </>
         ),
       },

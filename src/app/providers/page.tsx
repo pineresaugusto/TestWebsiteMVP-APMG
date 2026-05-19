@@ -24,15 +24,16 @@ export default function Providers() {
             </Reveal>
             <Reveal delay={80}>
               <h1 className="mt-6 font-display text-4xl md:text-5xl lg:text-[3.75rem] leading-[1.05] text-foreground">
-                Partner with Nuvela — grow your practice with{" "}
-                <em className="not-italic text-primary-dark">GLP-1 telehealth</em>.
+                Partner with Nuvela &mdash; grow your practice in{" "}
+                <em className="not-italic text-primary-dark">peptide telehealth</em>.
               </h1>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 text-lg text-foreground/70 leading-relaxed">
-                Join our network of licensed providers and help patients achieve lasting weight loss
-                with GLP-1 treatment. We handle patient acquisition, technology, and operations — you
-                focus on what you do best: practicing medicine.
+                Join our network of licensed providers and help patients across our peptide programs
+                &mdash; led by GLP-1 weight management, with vitality and sexual health alongside. We
+                handle patient acquisition, technology, and operations &mdash; you focus on what you
+                do best: practicing medicine.
               </p>
             </Reveal>
           </div>
@@ -236,7 +237,7 @@ const benefits = [
   {
     title: "Steady Patient Pipeline",
     description:
-      "Nuvela handles all marketing and patient acquisition. You receive a consistent stream of pre-screened, motivated patients ready for GLP-1 consultation.",
+      "Nuvela handles all marketing and patient acquisition. You receive a consistent stream of pre-screened, motivated patients ready for peptide consultation — across weight management, vitality, and sexual health programs.",
     icon: (
       <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
@@ -276,7 +277,7 @@ const benefits = [
   {
     title: "Revenue Growth",
     description:
-      "Competitive, volume-based compensation. Grow your income by expanding your practice into the high-demand GLP-1 telehealth space.",
+      "Competitive, volume-based compensation. Grow your income by expanding your practice into the high-demand peptide telehealth space, with weight management as the leading entry point.",
     icon: (
       <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />

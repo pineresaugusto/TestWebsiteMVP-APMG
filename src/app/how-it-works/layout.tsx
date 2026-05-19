@@ -7,15 +7,15 @@ import { breadcrumbJsonLd, SITE_NAME } from "@/lib/seo";
 // per-route metadata and the BreadcrumbList JSON-LD without changing
 // the page's interactivity.
 export const metadata: Metadata = {
-  title: "How GLP-1 Weight Loss Treatment Works — Step by Step",
+  title: "How Nuvela Works — GLP-1 Weight Loss & Other Peptide Programs",
   description:
-    "See how Nuvela's online GLP-1 weight loss program works: short health assessment, virtual consultation with a licensed provider, prescription if appropriate, and home delivery.",
+    "See how Nuvela's online GLP-1 weight loss treatment works — plus a brief look at vitality and sexual health programs. Short assessment, virtual consultation with a licensed provider, prescription if appropriate, and home delivery.",
   alternates: { canonical: "/how-it-works" },
   openGraph: {
     url: "/how-it-works",
-    title: `How GLP-1 Weight Loss Treatment Works | ${SITE_NAME}`,
+    title: `How GLP-1 Weight Loss & Other Programs Work | ${SITE_NAME}`,
     description:
-      "From assessment to delivery — a calm, step-by-step look at the online GLP-1 weight loss experience with Nuvela.",
+      "From assessment to delivery — a calm, step-by-step look at the online GLP-1 weight loss experience, plus other Nuvela peptide programs.",
   },
 };
 

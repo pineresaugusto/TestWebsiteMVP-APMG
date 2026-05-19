@@ -25,6 +25,20 @@ export type Order = {
   estimatedDelivery: string;
 };
 
+/**
+ * Which Nuvela program the visitor picked during the quiz chooser.
+ * Added in Iter 13 alongside the multi-program reshape.
+ *
+ * - "weight"   → Weight management (semaglutide / tirzepatide). Lead program.
+ * - "vitality" → Sleep / energy / recovery / lean body (sermorelin, tesamorelin).
+ * - "sexual"   → Desire and function (PT-141 / bremelanotide, oxytocin).
+ *
+ * Optional on the quiz slice so existing iter-A/B/C localStorage snapshots
+ * still parse. Treat `undefined` as "weight" — the historical default —
+ * for any downstream code that needs a value.
+ */
+export type QuizCategory = "weight" | "vitality" | "sexual";
+
 export type DemoState = {
   user: {
     email: string;
@@ -37,6 +51,7 @@ export type DemoState = {
     eligible: boolean;
     recommendedPlan: PlanTier | null;
     contraindicationReason?: string;
+    category?: QuizCategory;
   };
   plan: { tier: PlanTier; cadence?: BundleCadence } | null;
   payment: {
@@ -221,6 +236,7 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
         eligible: false,
         recommendedPlan: null,
         contraindicationReason: "history of medullary thyroid carcinoma",
+        category: "weight",
       },
     });
     return;
@@ -239,7 +255,7 @@ export function seed(preset: "newUser" | "week4" | "notEligible"): void {
         email: "sarah.mitchell@email.com",
         createdAt: now,
       },
-      quiz: { completed: true, eligible: true, recommendedPlan: "accelerate" },
+      quiz: { completed: true, eligible: true, recommendedPlan: "accelerate", category: "weight" },
       plan: { tier: "accelerate" },
       payment: { completed: true, cardLast4: "4242", subscribedAt: now },
       dashboard: {

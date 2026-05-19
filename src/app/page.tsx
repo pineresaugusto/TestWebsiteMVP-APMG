@@ -11,15 +11,15 @@ import { SITE_NAME, SITE_URL } from "@/lib/seo";
 // Description is sub-160 chars and reads like marketing copy, not
 // like a list of keywords.
 export const metadata: Metadata = {
-  title: "GLP-1 Weight Loss Treatment Online — Licensed Providers",
+  title: "GLP-1 Weight Loss & Peptide Treatments Online — Nuvela",
   description:
-    "Start your GLP-1 weight loss journey with Nuvela. Online consultation with licensed providers, clinically-studied treatment, and home delivery — from $159/month.",
+    "GLP-1 weight loss treatment from Nuvela, plus vitality and sexual health programs. Online consultation with licensed providers, clinically-studied treatment, home delivery — from $159/month.",
   alternates: { canonical: "/" },
   openGraph: {
     url: SITE_URL,
-    title: "GLP-1 Weight Loss Treatment Online — Licensed Providers | Nuvela",
+    title: "GLP-1 Weight Loss & Peptide Treatments Online | Nuvela",
     description:
-      "Online consultation with licensed providers, clinically-studied GLP-1 treatment, home delivery. From $159/month — no insurance required.",
+      "GLP-1 weight loss treatment plus vitality and sexual health programs. Licensed providers, clinically-studied treatment, home delivery. From $159/month — no insurance required.",
   },
 };
 
@@ -44,8 +44,8 @@ const homeJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "GLP-1 Weight Loss Treatment",
-    serviceType: "Telehealth weight loss treatment",
+    name: "Doctor-Prescribed Peptide Programs",
+    serviceType: "Telehealth peptide and weight-management treatment",
     provider: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -56,7 +56,7 @@ const homeJsonLd = [
       name: "United States",
     },
     description:
-      "Online weight-loss program connecting patients with licensed providers for evaluation, prescription of compounded semaglutide when clinically appropriate, and home delivery as part of an all-inclusive monthly plan.",
+      "Online platform connecting patients with licensed providers for evaluation and, when clinically appropriate, prescription of compounded peptide treatments — led by GLP-1 weight management (semaglutide, tirzepatide), with additional programs for vitality (sermorelin) and sexual health (PT-141). All-inclusive monthly plan, home delivery.",
     audience: {
       "@type": "PeopleAudience",
       suggestedMinAge: 18,
@@ -259,6 +259,94 @@ export default function Home() {
               Photography is illustrative — models shown.
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Programs — added in Iter 13 alongside the multi-program reshape.   */}
+      {/* Weight management leads (Featured tile, full-width feature row);   */}
+      {/* the other three programs sit in a smaller 3-up grid below.         */}
+      {/* Borrows the credibility of weight management explicitly in the     */}
+      {/* subhead ("same providers, same pharmacy partners, same plans").    */}
+      {/* No new photos — icon + typography in line with editorial restraint.*/}
+      {/* ----------------------------------------------------------------- */}
+      <section id="programs" className="bg-secondary-light/40 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <Reveal>
+              <p className="rule-kicker text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-dark">
+                What we treat
+              </p>
+            </Reveal>
+            <Reveal delay={60}>
+              <h2 className="mt-5 font-display text-3xl md:text-[2.5rem] leading-[1.1] text-foreground">
+                Doctor-prescribed programs.
+              </h2>
+            </Reveal>
+            <Reveal delay={120}>
+              <p className="mt-5 text-base md:text-lg text-foreground/65 leading-relaxed">
+                Weight management is where most patients start. The other programs run on the same
+                provider model, the same pharmacy partners, and the same plans.
+              </p>
+            </Reveal>
+          </div>
+
+          {/* Featured program: Weight management. Full-width feature row so
+              the visual hierarchy makes the lead category obvious. */}
+          <Reveal delay={180}>
+            <ProgramFeature
+              icon={<ProgramIconWeight />}
+              label="Weight management"
+              molecules="Semaglutide · Tirzepatide"
+              description="GLP-1 receptor agonists for doctor-supervised weight reduction. Clinically-studied, prescribed by board-certified providers, and shipped from state-licensed pharmacies."
+              featured
+            />
+          </Reveal>
+
+          {/* Other programs: 3-up smaller grid. Restrained tone — Sexual &
+              intimacy especially gets the most clinical, non-suggestive
+              copy (anchored to PT-141, the FDA-approved molecule). */}
+          <div className="mt-5 grid gap-5 md:grid-cols-3">
+            <Reveal delay={240}>
+              <ProgramCard
+                icon={<ProgramIconVitality />}
+                label="Vitality"
+                molecules="Sermorelin · Tesamorelin"
+                description="Sleep quality, energy, and recovery, supported by GHRH analog therapy."
+              />
+            </Reveal>
+            <Reveal delay={300}>
+              <ProgramCard
+                icon={<ProgramIconIntimacy />}
+                label="Sexual & intimacy"
+                molecules="PT-141 (Vyleesi) · Oxytocin"
+                description="For desire and function concerns, with doctor-prescribed options."
+              />
+            </Reveal>
+            <Reveal delay={360}>
+              <ProgramCard
+                icon={<ProgramIconConsult />}
+                label="Not sure yet?"
+                molecules="Quick triage"
+                description="A 3-question triage routes you into the program that fits best."
+                cta
+              />
+            </Reveal>
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/get-started"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-md shadow-accent/25 hover:bg-accent-dark hover:-translate-y-[1px] transition-all"
+            >
+              Take the assessment
+              <ArrowIcon className="w-4 h-4" />
+            </Link>
+            <p className="mt-4 text-[11.5px] text-foreground/45">
+              Eligibility, contraindications, and treatment options are
+              determined by the prescribing clinician during the consultation.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -553,7 +641,7 @@ export default function Home() {
             Ready when you are.
           </h2>
           <p className="mt-5 text-lg text-white/85 max-w-xl mx-auto">
-            Take the short assessment — under 2 minutes — and see if GLP-1 treatment might be a
+            Pick a program, answer a few questions — under 2 minutes — and see if Nuvela might be a
             good fit. No commitment.
           </p>
           <Link
@@ -639,6 +727,144 @@ function ArrowIcon({ className = "w-4 h-4" }: { className?: string }) {
       aria-hidden
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+    </svg>
+  );
+}
+
+// =====================================================================
+// Programs section (Iter 13). Featured row + 3-up grid below.
+// =====================================================================
+
+function ProgramFeature({
+  icon,
+  label,
+  molecules,
+  description,
+  featured = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  molecules: string;
+  description: string;
+  featured?: boolean;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-3xl border bg-white p-7 md:p-10 transition-all ${
+        featured
+          ? "border-primary/25 ring-1 ring-primary/15 shadow-lg shadow-primary/10"
+          : "border-secondary/60"
+      }`}
+    >
+      {featured && (
+        <div className="absolute top-5 right-5 rounded-full bg-primary/12 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-dark">
+          Featured
+        </div>
+      )}
+      <div className="grid md:grid-cols-[auto_1fr] gap-5 md:gap-8 items-start">
+        <span
+          aria-hidden
+          className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/8 text-primary-dark"
+        >
+          {icon}
+        </span>
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-display text-[1.5rem] md:text-[1.75rem] text-foreground">{label}</span>
+            <span className="text-[11.5px] uppercase tracking-[0.14em] text-foreground/45 tabular-nums">
+              {molecules}
+            </span>
+          </div>
+          <p className="mt-3 text-foreground/65 leading-relaxed max-w-2xl">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProgramCard({
+  icon,
+  label,
+  molecules,
+  description,
+  cta = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  molecules: string;
+  description: string;
+  cta?: boolean;
+}) {
+  return (
+    <div
+      className={`group h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-[1px] hover:shadow-md ${
+        cta ? "border-dashed border-primary/30" : "border-secondary/60 hover:border-primary/40"
+      }`}
+    >
+      <span
+        aria-hidden
+        className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/8 text-primary-dark"
+      >
+        {icon}
+      </span>
+      <div className="mt-4 flex items-baseline gap-2 flex-wrap">
+        <span className="font-display text-[1.2rem] text-foreground">{label}</span>
+      </div>
+      <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-foreground/40 tabular-nums">
+        {molecules}
+      </p>
+      <p className="mt-3 text-[13.5px] text-foreground/60 leading-relaxed">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+// Inline SVG icons — stroked, ~28px, sage primary-dark. Drawn at 24×24
+// viewBox with strokeWidth 1.6 to match the editorial weight of the
+// rest of the site's typography.
+function ProgramIconWeight() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden>
+      <path d="M5 7h14l-1.5 11.5a2 2 0 01-2 1.5H8.5a2 2 0 01-2-1.5L5 7z" />
+      <path d="M9 7V5a3 3 0 016 0v2" />
+      <path d="M9.5 11.5l1.5 1.5 3.5-3.5" />
+    </svg>
+  );
+}
+
+function ProgramIconVitality() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden>
+      <path d="M12 2v3" />
+      <path d="M12 19v3" />
+      <path d="M4.93 4.93l2.12 2.12" />
+      <path d="M16.95 16.95l2.12 2.12" />
+      <path d="M2 12h3" />
+      <path d="M19 12h3" />
+      <path d="M4.93 19.07l2.12-2.12" />
+      <path d="M16.95 7.05l2.12-2.12" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function ProgramIconIntimacy() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden>
+      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+    </svg>
+  );
+}
+
+function ProgramIconConsult() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5" />
+      <path d="M12 17h.01" />
     </svg>
   );
 }
