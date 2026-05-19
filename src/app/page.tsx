@@ -98,8 +98,8 @@ export default function Home() {
               </Reveal>
               <Reveal delay={80}>
                 <h1 className="mt-6 font-display text-[2.75rem] sm:text-5xl lg:text-[4.25rem] leading-[1.03] text-foreground">
-                  Treatment, prescribed by{" "}
-                  <em className="italic font-normal text-primary-dark">real</em> clinicians.
+                  Modern medicine,{" "}
+                  <em className="italic font-normal text-primary-dark">properly</em> prescribed.
                 </h1>
               </Reveal>
               <Reveal delay={160}>
