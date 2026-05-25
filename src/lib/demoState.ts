@@ -39,6 +39,22 @@ export type Order = {
  */
 export type QuizCategory = "weight" | "vitality" | "sexual";
 
+/**
+ * Which programs are currently launched / shown to visitors.
+ *
+ * Iter 13.5: vitality and sexual programs are shipped in code (quiz
+ * branches, eligibility logic, DemoState all in place) but gated off
+ * the UI pending pharmacy contracts and clinical workflow finalization.
+ * The Programs section on home shows them as "coming soon"; the quiz
+ * chooser disables those cards. Flipping this set re-enables them
+ * everywhere without further code changes.
+ */
+export const LIVE_PROGRAMS: ReadonlySet<QuizCategory> = new Set(["weight"]);
+
+export function isProgramLive(c: QuizCategory): boolean {
+  return LIVE_PROGRAMS.has(c);
+}
+
 export type DemoState = {
   user: {
     email: string;

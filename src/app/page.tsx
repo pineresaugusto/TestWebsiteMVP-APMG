@@ -305,7 +305,11 @@ export default function Home() {
 
           {/* Other programs: 3-up smaller grid. Restrained tone — Sexual &
               intimacy especially gets the most clinical, non-suggestive
-              copy (anchored to PT-141, the FDA-approved molecule). */}
+              copy (anchored to PT-141, the FDA-approved molecule).
+              Vitality and Sexual are gated behind LIVE_PROGRAMS (see
+              src/lib/demoState.ts) — code is in place but the visitor
+              cards show "coming soon" until the pharmacy + clinical
+              workflows for those programs are finalized. */}
           <div className="mt-5 grid gap-5 md:grid-cols-3">
             <Reveal delay={240}>
               <ProgramCard
@@ -313,6 +317,7 @@ export default function Home() {
                 label="Vitality"
                 molecules="Sermorelin · Tesamorelin"
                 description="Sleep quality, energy, and recovery, supported by GHRH analog therapy."
+                comingSoon
               />
             </Reveal>
             <Reveal delay={300}>
@@ -321,18 +326,35 @@ export default function Home() {
                 label="Sexual & intimacy"
                 molecules="PT-141 (Vyleesi) · Oxytocin"
                 description="For desire and function concerns, with doctor-prescribed options."
+                comingSoon
               />
             </Reveal>
             <Reveal delay={360}>
               <ProgramCard
                 icon={<ProgramIconConsult />}
                 label="Not sure yet?"
-                molecules="Quick triage"
-                description="A 3-question triage routes you into the program that fits best."
+                molecules="Get started"
+                description="Take our assessment and we'll get you started with the right care."
                 cta
               />
             </Reveal>
           </div>
+
+          {/* Coming-soon banner — sits directly under the Vitality + Sexual
+              tiles so visitors don't expect to start those programs today. */}
+          <Reveal delay={400}>
+            <div className="mt-6 mx-auto max-w-3xl rounded-xl border border-dashed border-primary/30 bg-secondary-light/60 px-5 py-4 text-center">
+              <p className="text-[12.5px] font-medium text-foreground/70">
+                <span className="font-semibold text-primary-dark">Coming soon —</span>{" "}
+                Vitality and Sexual &amp; intimacy programs are launching after weight
+                management. Want to be notified?{" "}
+                <Link href="/get-started" className="text-primary-dark underline-offset-2 hover:underline">
+                  Start with weight management
+                </Link>{" "}
+                and your care team will keep you posted.
+              </p>
+            </div>
+          </Reveal>
 
           <div className="mt-12 text-center">
             <Link
@@ -790,32 +812,54 @@ function ProgramCard({
   molecules,
   description,
   cta = false,
+  comingSoon = false,
 }: {
   icon: React.ReactNode;
   label: string;
   molecules: string;
   description: string;
   cta?: boolean;
+  /**
+   * When true the card renders in a muted "preview" state with a
+   * Coming Soon badge. Not interactive (no hover lift). Used for
+   * programs that are coded but not yet UI-live (see LIVE_PROGRAMS).
+   */
+  comingSoon?: boolean;
 }) {
+  const baseBorder = comingSoon
+    ? "border-secondary/40 bg-secondary-light/30"
+    : cta
+    ? "border-dashed border-primary/30 hover:-translate-y-[1px] hover:shadow-md"
+    : "border-secondary/60 hover:border-primary/40 hover:-translate-y-[1px] hover:shadow-md";
   return (
     <div
-      className={`group h-full rounded-2xl border bg-white p-6 transition-all hover:-translate-y-[1px] hover:shadow-md ${
-        cta ? "border-dashed border-primary/30" : "border-secondary/60 hover:border-primary/40"
-      }`}
+      aria-disabled={comingSoon || undefined}
+      className={`relative group h-full rounded-2xl border bg-white p-6 transition-all ${baseBorder}`}
     >
+      {comingSoon && (
+        <div className="absolute top-4 right-4 rounded-full bg-secondary-light px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-foreground/55">
+          Coming soon
+        </div>
+      )}
       <span
         aria-hidden
-        className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/8 text-primary-dark"
+        className={`inline-flex h-10 w-10 items-center justify-center rounded-xl ${
+          comingSoon
+            ? "bg-foreground/5 text-foreground/35"
+            : "bg-primary/8 text-primary-dark"
+        }`}
       >
         {icon}
       </span>
       <div className="mt-4 flex items-baseline gap-2 flex-wrap">
-        <span className="font-display text-[1.2rem] text-foreground">{label}</span>
+        <span className={`font-display text-[1.2rem] ${comingSoon ? "text-foreground/55" : "text-foreground"}`}>
+          {label}
+        </span>
       </div>
-      <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-foreground/40 tabular-nums">
+      <p className={`mt-0.5 text-[11px] uppercase tracking-[0.12em] tabular-nums ${comingSoon ? "text-foreground/30" : "text-foreground/40"}`}>
         {molecules}
       </p>
-      <p className="mt-3 text-[13.5px] text-foreground/60 leading-relaxed">
+      <p className={`mt-3 text-[13.5px] leading-relaxed ${comingSoon ? "text-foreground/45" : "text-foreground/60"}`}>
         {description}
       </p>
     </div>

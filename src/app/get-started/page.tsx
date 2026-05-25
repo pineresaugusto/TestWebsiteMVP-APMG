@@ -34,7 +34,13 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { get, set, type QuizCategory } from "@/lib/demoState";
+import { get, set, isProgramLive, LIVE_PROGRAMS, type QuizCategory } from "@/lib/demoState";
+
+// Static derived list — used to drive "if only one program is live,
+// skip the triage and route straight there" logic in the chooser.
+const LIVE_PROGRAMS_LIST: QuizCategory[] = (["weight", "vitality", "sexual"] as const).filter((c) =>
+  LIVE_PROGRAMS.has(c),
+);
 import type { PlanTier } from "@/lib/plans";
 
 // "not-sure" is a chooser option but never persists as a category —
@@ -291,6 +297,16 @@ export default function GetStarted() {
   const goToStep = (s: number) => setStep(s);
 
   const onChooseCategory = (c: ChooserChoice) => {
+    // Iter 13.5: while only weight management is live, "not sure"
+    // skips the triage and routes the visitor straight into the
+    // weight-management assessment. The triage component is still
+    // mounted in source — it'll re-engage once a second program
+    // ships and `LIVE_PROGRAMS` includes more than one entry.
+    if (c === "not-sure" && LIVE_PROGRAMS_LIST.length === 1) {
+      setChoice(LIVE_PROGRAMS_LIST[0]);
+      setStep(1);
+      return;
+    }
     setChoice(c);
     setStep(1);
   };
@@ -851,6 +867,10 @@ function stepIndex(category: QuizCategory, key: string): number {
 // =====================================================================
 
 function CategoryChooser({ onPick }: { onPick: (c: ChooserChoice) => void }) {
+  // Programs that aren't in LIVE_PROGRAMS render in a muted "preview"
+  // state with a Coming Soon pill. Code paths for them still exist
+  // (per Iter 13.5: stored, not shown) — the chooser just won't
+  // dispatch onPick when a non-live card is clicked.
   const cards: Array<{
     id: ChooserChoice;
     label: string;
@@ -871,12 +891,15 @@ function CategoryChooser({ onPick }: { onPick: (c: ChooserChoice) => void }) {
     {
       id: "sexual",
       label: "Sexual & intimacy",
-      helper: "For desire and function concerns. FDA-approved and compounded options.",
+      helper: "For desire and function concerns. Doctor-prescribed options.",
     },
     {
       id: "not-sure",
       label: "I'm not sure yet",
-      helper: "We'll ask a few quick questions and recommend a program to start with.",
+      helper:
+        LIVE_PROGRAMS_LIST.length === 1
+          ? "Start with our weight-management assessment — we'll get you to the right care."
+          : "We'll ask a few quick questions and recommend a program to start with.",
     },
   ];
 
@@ -897,40 +920,61 @@ function CategoryChooser({ onPick }: { onPick: (c: ChooserChoice) => void }) {
         </div>
 
         <div className="mt-10 space-y-3">
-          {cards.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => onPick(c.id)}
-              className={`group block w-full rounded-2xl border bg-white p-5 text-left transition-all hover:-translate-y-[1px] hover:shadow-md ${
-                c.featured
-                  ? "border-primary/30 ring-1 ring-primary/15 shadow-sm"
-                  : "border-secondary/60 hover:border-primary/40"
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <span
-                  aria-hidden
-                  className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary-dark transition-colors group-hover:bg-primary/15"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-display text-[1.05rem] text-foreground">{c.label}</span>
-                    {c.featured && (
-                      <span className="rounded-full bg-primary/12 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary-dark">
-                        Featured
-                      </span>
-                    )}
+          {cards.map((c) => {
+            const isCategory = c.id !== "not-sure";
+            const live = !isCategory || isProgramLive(c.id as QuizCategory);
+            return (
+              <button
+                key={c.id}
+                type="button"
+                disabled={!live}
+                onClick={() => live && onPick(c.id)}
+                aria-disabled={!live || undefined}
+                className={`group relative block w-full rounded-2xl border bg-white p-5 text-left transition-all ${
+                  !live
+                    ? "cursor-not-allowed border-secondary/40 bg-secondary-light/30"
+                    : c.featured
+                    ? "border-primary/30 ring-1 ring-primary/15 shadow-sm hover:-translate-y-[1px] hover:shadow-md"
+                    : "border-secondary/60 hover:border-primary/40 hover:-translate-y-[1px] hover:shadow-md"
+                }`}
+              >
+                {!live && (
+                  <div className="absolute top-3 right-3 rounded-full bg-secondary-light px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-foreground/55">
+                    Coming soon
                   </div>
-                  <p className="mt-1 text-[13px] text-foreground/60 leading-relaxed">{c.helper}</p>
+                )}
+                <div className="flex items-start gap-4">
+                  <span
+                    aria-hidden
+                    className={`mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition-colors ${
+                      !live
+                        ? "bg-foreground/5 text-foreground/30"
+                        : "bg-primary/10 text-primary-dark group-hover:bg-primary/15"
+                    }`}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`font-display text-[1.05rem] ${!live ? "text-foreground/55" : "text-foreground"}`}>
+                        {c.label}
+                      </span>
+                      {c.featured && live && (
+                        <span className="rounded-full bg-primary/12 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary-dark">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                    <p className={`mt-1 text-[13px] leading-relaxed ${!live ? "text-foreground/45" : "text-foreground/60"}`}>
+                      {c.helper}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
 
         <p className="mt-8 text-center text-xs text-foreground/40">
